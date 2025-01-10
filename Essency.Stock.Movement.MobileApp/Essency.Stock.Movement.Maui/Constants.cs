@@ -1,6 +1,4 @@
-﻿using System.Data.SqlTypes;
-
-namespace Essency.Stock.Movement.Maui
+﻿namespace Essency.Stock.Movement.Maui
 {
     public static class Constants
     {

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Essency.Stock.Movement.Maui
+namespace Essency.Stock.Movement.Maui.Platforms.MacCatalyst
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

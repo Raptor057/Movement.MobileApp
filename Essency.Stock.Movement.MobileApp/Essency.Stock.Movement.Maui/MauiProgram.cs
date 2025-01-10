@@ -1,5 +1,6 @@
-﻿using Essency.Stock.Movement.Maui.Data;
+﻿using Essency.Stock.Movement.Maui.DataSources.SQLite;
 using Microsoft.Extensions.Logging;
+using SQLite;
 
 
 namespace Essency.Stock.Movement.Maui
@@ -16,18 +17,19 @@ namespace Essency.Stock.Movement.Maui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
 #if DEBUG
-    		builder.Logging.AddDebug();
-            builder.Services.AddSingleton<EssencyStockMovementSqLite>();
-            builder.Services.AddTransient<EssencyStockMovementSqLite>();
-
-            builder.Services.AddSingleton<EssencyStockMovementSqLite>();
-#else
-
+            builder.Logging.AddDebug();
 #endif
 
+            // Configura la conexión SQLite
+            builder.Services.AddSingleton(_ => new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags));
+            builder.Services.AddSingleton<SQLiteMauiConnection>();
+
+            // Inicializar Plugin.LocalNotification
+            //builder.UseLocalNotification();
+
             return builder.Build();
+
         }
     }
 }

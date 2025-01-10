@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essency.Stock.Movement.Maui", "Essency.Stock.Movement.Maui\Essency.Stock.Movement.Maui.csproj", "{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essency.Stock.Movement.Maui", "Essency.Stock.Movement.Maui\Essency.Stock.Movement.Maui.csproj", "{AE0326EF-E156-4337-BA43-F6B17A4B7789}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4A42A69-A8E5-4725-8AFF-F4A971F7E2DB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AE0326EF-E156-4337-BA43-F6B17A4B7789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE0326EF-E156-4337-BA43-F6B17A4B7789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE0326EF-E156-4337-BA43-F6B17A4B7789}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AE0326EF-E156-4337-BA43-F6B17A4B7789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE0326EF-E156-4337-BA43-F6B17A4B7789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE0326EF-E156-4337-BA43-F6B17A4B7789}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Essency.Stock.Movement.Maui
+namespace Essency.Stock.Movement.Maui.Platforms.MacCatalyst
 {
     public class Program
     {

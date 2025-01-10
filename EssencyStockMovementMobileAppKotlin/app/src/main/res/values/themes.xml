@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.EssencyStockMovement" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="Theme.EssencyStockMovement.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.EssencyStockMovement.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.EssencyStockMovement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

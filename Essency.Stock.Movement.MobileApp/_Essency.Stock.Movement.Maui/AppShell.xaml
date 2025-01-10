@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Essency.Stock.Movement.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Essency.Stock.Movement.Maui"
+    xmlns:login="clr-namespace:Essency.Stock.Movement.Maui.Views.Pages.Login"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Essency.Stock.Movement.Maui">
+
+    <!-- LoginPage como página inicial -->
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate login:Login}"
+        Route="LoginPage" />
+
+    <!-- MainPage como secundaria -->
+    <ShellContent
+        Title="Essency Stock Movement"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
+</Shell>

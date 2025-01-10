@@ -7,10 +7,16 @@
         public MainPage()
         {
             InitializeComponent();
+            
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void OnCounterClicked(object sender, EventArgs e)
         {
+            string dbPath = Constants.DatabasePath;
+
+            // Enviar notificación
+            //await DisplayAlert("Database Initialized", $"The database was created successfully at:\n{dbPath}","OK");
+
             count++;
 
             if (count == 1)
@@ -21,5 +27,4 @@
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
     }
-
 }
