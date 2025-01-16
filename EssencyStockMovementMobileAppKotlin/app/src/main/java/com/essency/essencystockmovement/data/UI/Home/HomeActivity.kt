@@ -1,5 +1,7 @@
 package com.essency.essencystockmovement.data.UI.Home
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.UI.LoginActivity
 import com.essency.essencystockmovement.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -40,16 +43,56 @@ class HomeActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_Receiving, R.id.nav_Preparing_for_shipment, R.id.nav_Inventory, R.id.nav_Reporting,R.id.nav_Setting,R.id.nav_logout
-            ), drawerLayout)
+                R.id.nav_Home,
+                R.id.nav_Receiving,
+                R.id.nav_Preparing_for_shipment,
+                R.id.nav_Inventory,
+                R.id.nav_Reporting,
+                R.id.nav_Setting,
+                R.id.nav_Info,
+                R.id.nav_Help
+            ), drawerLayout
+        )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Agrega un listener para manejar el clic en Logout
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_Logout -> {
+                    handleLogout() // Llama al método para manejar el logout
+                    true
+                }
+                else -> {
+                    menuItem.isChecked = true
+                    navController.navigate(menuItem.itemId)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+            }
+        }
+    }
+
+
+    private fun handleLogout() {
+        AlertDialog.Builder(this)
+            .setTitle("Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.activity_main_drawer, menu)
+
+        //menuInflater.inflate(R.menu.activity_main_drawer, menu)
         return true
     }
 
