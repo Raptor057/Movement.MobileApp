@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class PreparingForShipmentViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+        value = "This is Preparing For Shipment Fragment"
     }
     val text: LiveData<String> = _text
 }

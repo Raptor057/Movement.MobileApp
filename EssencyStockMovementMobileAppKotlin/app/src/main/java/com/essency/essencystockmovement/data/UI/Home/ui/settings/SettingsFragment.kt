@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.essency.essencystockmovement.data.UI.Home.ui.reporting.ReportingViewModel
 import com.essency.essencystockmovement.databinding.FragmentSettingsBinding
 
-class SettingsFragment : Fragment()  {
+class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
 
@@ -22,14 +23,14 @@ class SettingsFragment : Fragment()  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val SettingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(this)[SettingsViewModel::class.java]
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textSettings
-        SettingsViewModel.text.observe(viewLifecycleOwner) {
+        homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

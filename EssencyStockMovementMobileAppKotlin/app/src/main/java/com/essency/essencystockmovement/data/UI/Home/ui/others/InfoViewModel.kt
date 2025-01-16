@@ -1,13 +1,13 @@
-package com.essency.essencystockmovement.data.UI.Home.ui.inventory
+package com.essency.essencystockmovement.data.UI.Home.ui.others
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class InventoryViewModel : ViewModel() {
+class InfoViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is Inventory Fragment"
+        value = "This is Info Fragment"
     }
     val text: LiveData<String> = _text
 }

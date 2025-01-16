@@ -16,7 +16,7 @@
         <activity
             android:name=".data.UI.Home.HomeActivity"
             android:exported="false"
-            android:label="@string/title_activity_home"
+            android:label="@string/todo"
             android:theme="@style/Theme.EssencyStockMovement.NoActionBar" />
         <activity
             android:name=".data.UI.LoginActivity"
