@@ -20,20 +20,22 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             UserName TEXT NOT NULL,
             Name TEXT NOT NULL,
             LastName TEXT NOT NULL,
-            Password TEXT NOT NULL,
+            PasswordHash TEXT NOT NULL,
+            Salt TEXT NOT NULL,
             CreateUserDate DATETIME NOT NULL,
             IsAdmin BOOLEAN NOT NULL,
-            Enable BOOLEAN NOT NULL
-            );
+            Enable BOOLEAN NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryAppUsers)
 
         // *** Agregar usuario predeterminado ***
+        /*
+        * Usuario: Admin
+        * Password: Admin123*
+        */
         val defaultUserInsert = """
-        INSERT INTO AppUsers 
-            (UserName, Name, LastName, Password, CreateUserDate, IsAdmin, Enable)
-        VALUES
-            ('Admin', 'System', 'Admin', 'Admin123*', datetime('now'), 1, 1);
+        INSERT INTO AppUsers (UserName, Name, LastName, PasswordHash, Salt,CreateUserDate, IsAdmin, Enable)
+        VALUES ('Admin', 'System', 'Admin', 'OPeT4bF/+q1SLsjOaiAILe2aYGJDIzWwnbqL2W7XhEU=','hXzGR5D26k8de0CHXzp4kA==', datetime('now'), 1, 1);
     """.trimIndent()
         db.execSQL(defaultUserInsert)
 
@@ -41,15 +43,13 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             CREATE TABLE AppConfigurationRegularExpression (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             NameRegularExpression TEXT NOT NULL,
-            RegularExpression TEXT NOT NULL
-            );
+            RegularExpression TEXT NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryAppConfigurationRegularExpression)
 
         val createTableQueryAppConfigurationEmail = """
             CREATE TABLE AppConfigurationEmail (
-            Email TEXT NOT NULL
-            );
+            Email TEXT NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryAppConfigurationEmail)
 
@@ -59,8 +59,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             Timestamp DATETIME,
             LogLevel TEXT,
             Message TEXT,
-            Exception TEXT
-            );
+            Exception TEXT);
         """.trimIndent()
         db.execSQL(createTableQueryLogEntry)
 
@@ -80,8 +79,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             Date TEXT NOT NULL,
             TimeStamp DATETIME NOT NULL,
             User TEXT NOT NULL,
-            ContBolNum TEXT NOT NULL
-            );
+            ContBolNum TEXT NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryStockList)
 
@@ -91,13 +89,35 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             IDStock INTEGER NOT NULL,
             Saved BOOLEAN NOT NULL,
             SendByEmail BOOLEAN NOT NULL,
-            TimeStamp DATETIME NOT NULL
-            );
+            TimeStamp DATETIME NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryTraceabilityStockList)
 
+        val createTableQueryMovementType = """
+            CREATE TABLE 
+            MovementType (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            Type TEXT NOT NULL,
+            Source TEXT NOT NULL,
+            Destination TEXT NOT NULL);
+        """.trimIndent()
+        db.execSQL(createTableQueryMovementType)
 
+        val createTableQueryLanguage = """
+            CREATE TABLE
+            Language(
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            LanguageName TEXT NOT NULL,
+            ActiveLanguage BOOLEAN NOT NULL);
+        """.trimIndent()
+        db.execSQL(createTableQueryLanguage)
 
+        // *** Agregar lenguaje predeterminado  ***
+        val InsertLanguage = """
+        INSERT INTO Language (LanguageName,ActiveLanguage)
+        VALUES ('Français',0),('Español',0),('English',1);
+        """.trimIndent()
+        db.execSQL(InsertLanguage)
 
 
 
@@ -113,6 +133,8 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL("DROP TABLE IF EXISTS LogEntry")
         db.execSQL("DROP TABLE IF EXISTS StockList")
         db.execSQL("DROP TABLE IF EXISTS TraceabilityStockList")
+        db.execSQL("DROP TABLE IF EXISTS MovementType")
+        db.execSQL("DROP TABLE IF EXISTS Language")
         onCreate(db)
     }
 

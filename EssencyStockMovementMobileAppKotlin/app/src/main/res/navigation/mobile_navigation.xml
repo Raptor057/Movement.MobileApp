@@ -2,30 +2,32 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_transform">
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@+id/nav_Receiving">
 
     <fragment
-        android:id="@+id/nav_transform"
-        android:name="com.essency.essencystockmovement.data.UI.ui.transform.TransformFragment"
-        android:label="@string/menu_transform"
-        tools:layout="@layout/fragment_transform" />
+        android:id="@+id/nav_Receiving"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.home.HomeFragment"
+        android:label="@string/Receiving"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_reflow"
-        android:name="com.essency.essencystockmovement.data.UI.ui.reflow.ReflowFragment"
-        android:label="@string/menu_reflow"
-        tools:layout="@layout/fragment_reflow" />
+        android:id="@+id/nav_Preparing_for_shipment"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.preparingforshipment.PreparingForShipmentFragment"
+        android:label="@string/Preparing_for_shipment"
+        tools:layout="@layout/fragment_preparing_for_shipment" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.essency.essencystockmovement.data.UI.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_Inventory"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.inventory.InventoryFragment"
+        android:label="@string/Inventory"
+        tools:layout="@layout/fragment_inventory" />
 
     <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.essency.essencystockmovement.data.UI.ui.settings.SettingsFragment"
+        android:id="@+id/nav_Setting"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings"
+        />
+
 </navigation>

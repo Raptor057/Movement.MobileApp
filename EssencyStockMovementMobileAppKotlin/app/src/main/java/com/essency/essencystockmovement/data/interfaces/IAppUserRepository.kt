@@ -9,5 +9,6 @@ interface IAppUserRepository {
     fun getById(id: Int): AppUser?
     fun update(appUser: AppUser): Int
     fun deleteById(id: Int): Int
-    // Agrega más métodos según necesites (p.ej. getByUsername, etc.)
+    fun login(username: String, password: String) : Boolean
+
 }

@@ -1,38 +1,41 @@
 <resources>
     <string name="app_name">Essency Stock Movement</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_transform">Transform</string>
-    <string name="menu_reflow">Reflow</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_settings">Settings</string>
-
-    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
-    <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
-        typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
-        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-        type specimen book"
-    </string>
-    <string name="fab_content_description">Represents a view to invoke an action</string>
-    <string name="image_view_item_transform_content_description">Represents an image view in the
-        item
-    </string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+    <string name="prompt_email" translatable="false">Email</string>
+    <string name="prompt_password" translatable="false">Password</string>
+    <string name="action_sign_in" translatable="false">Sign in or register</string>
+    <string name="action_sign_in_short" translatable="false">Sign in</string>
+    <string name="welcome" translatable="false">Welcome!</string>
+    <string name="invalid_username" translatable="false">Not a valid username</string>
+    <string name="invalid_password" translatable="false">Password must be &gt;5 characters</string>
+    <string name="login_failed" translatable="false">Login failed</string>
+    <string name="title_activity_home" translatable="false">HomeActivity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="login_Image" translatable="false">Login Image</string>
+    <string name="menu_transform" translatable="false">Transform</string>
+    <string name="menu_reflow" translatable="false">Reflow</string>
+    <string name="menu_slideshow" translatable="false">Slideshow</string>
+    <string name="menu_settings" translatable="false">Settings</string>
+    <string name="lorem_ipsum_title" translatable="false">Lorem Ipsum</string>
+    <string name="lorem_ipsum" translatable="false">Lorem Ipsum is simply placeholder text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard placeholder text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="fab_content_description" translatable="false">Represents a view to invoke an action</string>
+    <string name="image_view_item_transform_content_description" translatable="false">Represents an image view in the item</string>
+    <string name="menu_home" translatable="false">Home</string>
+    <string name="menu_gallery" translatable="false">Gallery</string>
+    <string name="UserName">User Name</string>
+    <string name="Password">Password</string>
+    <string name="Login">Login</string>
+    <string name="Receiving">Receiving</string>
+    <string name="Preparing_for_shipment">Preparing for shipment</string>
+    <string name="Inventory">Inventory</string>
+    <string name="Reporting">Reporting</string>
+    <string name="Setting">Setting</string>
+    <string name="todo">TODO</string>
+    <string name="logout">logout</string>
+    <string name="Logout">Logout</string>
 </resources>

@@ -8,8 +8,8 @@ data class AppUser(
     val userName: String,
     val name: String,
     val lastName: String,
-    val password: String,
-    //val createUserDate: LocalDateTime,  // Podría ser String o un tipo de fecha
+    val passwordHash: String,
+    val salt: String,
     val createUserDate: String,  // Podría ser String o un tipo de fecha
     val isAdmin: Boolean,
     val enable: Boolean

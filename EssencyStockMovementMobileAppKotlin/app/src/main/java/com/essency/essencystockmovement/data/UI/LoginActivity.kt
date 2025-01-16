@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etUserName: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
-
+    
     // Repositorio de usuarios
     private lateinit var userRepository: AppUserRepository
 
@@ -37,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 1. Instanciar el DBHelper
         val dbHelper = MyDatabaseHelper(this)
+
         // 2. Crear el repositorio con el DBHelper
         userRepository = AppUserRepository(dbHelper)
 
@@ -53,23 +54,20 @@ class LoginActivity : AppCompatActivity() {
             if (userName.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
             } else {
-                // Buscar al usuario en la DB (ejemplo simple)
-                val userList = userRepository.getAll() // o un getByUserName si lo implementas
-                val userFound = userList.find {
-                    it.userName.equals(userName, ignoreCase = true) &&
-                            it.password == password
-                }
 
-                if (userFound != null) {
+                // Buscar al usuario en la DB (ejemplo simple)
+                val LoginUser = userRepository.login(userName, password)
+
+                if (LoginUser) {
                     // Login exitoso
-                    Toast.makeText(this, "Bienvenido ${userFound.name}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Bienvenido $userName", Toast.LENGTH_SHORT).show()
                     // Opcional: navegar a MainActivity
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                     finish() // cerrar la pantalla de login
                 } else {
                     // Usuario o password incorrecto
-                    Toast.makeText(this, "Credenciales inválidas", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
                 }
             }
         }
