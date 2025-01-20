@@ -1,0 +1,19 @@
+<resources>
+    <!--UI-->
+    <string name="settings_section_name">Settings</string>
+
+
+    <!-- Drawer -->
+    <!--Users -->
+    <string name="settings_users">Users</string>
+
+    <!--Email -->
+    <string name="settings_change_sending_email">Change sending email</string>
+    <string name="settings_email">Email</string>
+
+    <!--Regex -->
+    <string name = "settings_change_regex">Change regex</string>
+
+    <!--Lenguaje -->
+    <string name = "settings_change_language">Change language</string>
+</resources>

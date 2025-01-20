@@ -8,50 +8,49 @@
     <fragment
         android:id="@+id/nav_Home"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.home.HomeFragment"
-        android:label="@string/Home"
+        android:label="@string/home_section_name"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_Receiving"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingFragment"
-        android:label="@string/Receiving"
+        android:label="@string/receiving_section_name"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_Preparing_for_shipment"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.preparingforshipment.PreparingForShipmentFragment"
-        android:label="@string/Preparing_for_shipment"
+        android:label="@string/preparing_for_shipment_section_name"
         tools:layout="@layout/fragment_preparing_for_shipment" />
 
     <fragment
         android:id="@+id/nav_Inventory"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.inventory.InventoryFragment"
-        android:label="@string/Inventory"
+        android:label="@string/inventory_section_name"
         tools:layout="@layout/fragment_inventory" />
 
     <fragment
         android:id="@+id/nav_Reporting"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.reporting.ReportingFragment"
-        android:label="@string/Reporting"
+        android:label="@string/reporting_section_name"
         tools:layout="@layout/fragment_reporting"/>
 
     <fragment
         android:id="@+id/nav_Setting"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsFragment"
-        android:label="@string/Setting"
+        android:label="@string/settings_section_name"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_Info"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.others.InfoFragment"
-        android:label="@string/Info"
+        android:label="@string/inventory_section_name"
         tools:layout="@layout/fragment_info" />
 
     <fragment
         android:id="@+id/nav_Help"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.others.HelpFragment"
-        android:label="@string/Help"
+        android:label="@string/help_section_name"
         tools:layout="@layout/fragment_help" />
-
 
 </navigation>

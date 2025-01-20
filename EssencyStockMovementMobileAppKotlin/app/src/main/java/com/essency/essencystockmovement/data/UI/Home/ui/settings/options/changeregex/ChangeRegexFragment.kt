@@ -1,4 +1,4 @@
-package com.essency.essencystockmovement.data.UI.Home.ui.settings
+package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changeregex
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.essency.essencystockmovement.databinding.FragmentSettingsBinding
+import com.essency.essencystockmovement.databinding.FragmentSettingsRegexBinding
 
-class SettingsFragment : Fragment() {
+class ChangeRegexFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentSettingsRegexBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[SettingsViewModel::class.java]
+        val inventoryViewModel =
+            ViewModelProvider(this)[ChangeRegexViewModel::class.java]
 
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsRegexBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSettings
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textHome
+        inventoryViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

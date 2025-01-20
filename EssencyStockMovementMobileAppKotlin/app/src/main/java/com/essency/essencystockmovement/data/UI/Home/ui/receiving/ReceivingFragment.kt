@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.essency.essencystockmovement.data.UI.Home.ui.home.HomeViewModel
 import com.essency.essencystockmovement.databinding.FragmentReceivingBinding
 
 class ReceivingFragment : Fragment() {

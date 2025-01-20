@@ -1,37 +1,36 @@
-package com.essency.essencystockmovement.data.UI.Home
+package com.essency.essencystockmovement.data.UI.Home.ui.settings
 
-import android.app.AlertDialog
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
-import com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsActivity
-import com.essency.essencystockmovement.data.UI.LoginActivity
-import com.essency.essencystockmovement.databinding.ActivityHomeBinding
+import com.essency.essencystockmovement.data.UI.Home.HomeActivity
+import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 
-class HomeActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityHomeBinding
+    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarHome.toolbar)
+        setSupportActionBar(binding.appBarSettings.toolbar)
 
-        binding.appBarHome.fab.setOnClickListener { view ->
+        binding.appBarSettings.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab).show()
@@ -39,19 +38,16 @@ class HomeActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_home)
+        val navController = findNavController(R.id.nav_host_fragment_content_settings)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_Home,
-                R.id.nav_Receiving,
-                R.id.nav_Preparing_for_shipment,
-                R.id.nav_Inventory,
-                R.id.nav_Reporting,
-                R.id.nav_Setting,
-                R.id.nav_Info,
-                R.id.nav_Help
+                R.id.nav_settings_main,
+                R.id.nav_settings_users,
+                R.id.nav_settings_change_sending_email,
+                R.id.nav_settings_change_regex,
+                R.id.nav_settings_change_language
             ), drawerLayout
         )
 
@@ -60,14 +56,10 @@ class HomeActivity : AppCompatActivity() {
 
         // Agrega un listener para manejar el clic en Logout y Settings
         navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_Logout -> {
-                    handleLogout() // Llama al método para manejar el logout
-                    drawerLayout.closeDrawers()
-                    true
-                }
-                R.id.nav_Setting -> {
-                    val intent = Intent(this, SettingsActivity::class.java)
+            when (menuItem.itemId)
+            {
+                R.id.nav_settings_main->{
+                    val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true
@@ -83,19 +75,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    private fun handleLogout() {
-        AlertDialog.Builder(this)
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Yes") { _, _ ->
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,7 +84,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_home)
+        val navController = findNavController(R.id.nav_host_fragment_content_settings)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

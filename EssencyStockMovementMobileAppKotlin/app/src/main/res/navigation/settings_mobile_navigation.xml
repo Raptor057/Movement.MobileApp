@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_mobile_navigation"
+    app:startDestination="@id/nav_settings_main">
+
+    <fragment
+        android:id="@+id/nav_settings_main"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsFragment"
+        android:label="@string/settings_section_name"
+        tools:layout="@layout/fragment_settings_main">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_settings_users"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingFragment"
+        android:label="@string/receiving_section_name"
+        tools:layout="@layout/fragment_settings_users" />
+
+    <fragment
+        android:id="@+id/nav_settings_change_sending_email"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.preparingforshipment.PreparingForShipmentFragment"
+        android:label="@string/settings_change_sending_email"
+        tools:layout="@layout/fragment_settings_email" />
+
+    <fragment
+        android:id="@+id/nav_settings_change_regex"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.inventory.InventoryFragment"
+        android:label="@string/settings_change_regex"
+        tools:layout="@layout/fragment_settings_regex" />
+
+    <fragment
+        android:id="@+id/nav_settings_change_language"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsFragment"
+        android:label="@string/settings_change_language"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

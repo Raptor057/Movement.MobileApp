@@ -7,43 +7,43 @@
         <item
             android:id="@+id/nav_Home"
             android:icon="@drawable/home_24px"
-            android:title="@string/Home" />
+            android:title="@string/home_section_name" />
 
         <item
             android:id="@+id/nav_Receiving"
             android:icon="@drawable/deployed_code_update_24px"
-            android:title="@string/Receiving" />
+            android:title="@string/receiving_section_name" />
         <item
             android:id="@+id/nav_Preparing_for_shipment"
             android:icon="@drawable/local_shipping_24px"
-            android:title="@string/Preparing_for_shipment" />
+            android:title="@string/preparing_for_shipment_section_name" />
         <item
             android:id="@+id/nav_Inventory"
             android:icon="@drawable/inventory_24px"
-            android:title="@string/Inventory" />
+            android:title="@string/inventory_section_name" />
         <item
             android:id="@+id/nav_Reporting"
             android:icon="@drawable/monitoring_24px"
-            android:title="@string/Reporting" />
+            android:title="@string/reporting_section_name" />
         <item
             android:id="@+id/nav_Setting"
             android:icon="@drawable/settings_24px"
-            android:title="@string/Setting" />
+            android:title="@string/settings_section_name" />
 
         <item
             android:id="@+id/nav_Logout"
             android:icon="@drawable/logout_24px"
-            android:title="@string/Logout" />
+            android:title="@string/home_logout" />
 
         <item
             android:id="@+id/nav_Info"
             android:icon="@drawable/info_24px"
-            android:title="@string/Info" />
+            android:title="@string/info_section_name" />
 
         <item
             android:id="@+id/nav_Help"
             android:icon="@drawable/help_24px"
-            android:title="@string/Help" />
+            android:title="@string/help_section_name" />
 
     </group>
 </menu>

@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if (LoginUser) {
                     // Login exitoso
-                    Toast.makeText(this, "Bienvenido $userName", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Welcome $userName", Toast.LENGTH_SHORT).show()
                     // Opcional: navegar a MainActivity
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)

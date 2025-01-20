@@ -1,26 +1,12 @@
 <resources>
+    <!--general UI and buttons Common -->
     <string name="app_name">Essency Stock Movement</string>
     <string name="welcome">Welcome!</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be 8 characters</string>
-    <string name="login_failed">Login failed</string>
-    <string name="nav_header_title">Header Title</string>
-    <string name="nav_header_subtitle">Header Subtitle</string>
-    <string name="nav_header_desc">Header Desc</string>
-    <string name="login_Image">Login Image</string>
-    <string name="UserName">User Name</string>
-    <string name="Password">Password</string>
-    <string name="Login">Login</string>
-    <string name="Receiving">Receiving</string>
-    <string name="Preparing_for_shipment">Preparing for shipment</string>
-    <string name="Inventory">Inventory</string>
-    <string name="Reporting">Reporting</string>
-    <string name="Setting">Setting</string>
-    <string name="todo">TODO</string>
-    <string name="logout">logout</string>
-    <string name="Logout">Logout</string>
-    <string name="Home">Home</string>
-    <string name="Reciving">Receiving</string>
-    <string name="Info">Info</string>
-    <string name="Help">Help</string>
+
+    <string name="ok_button">OK</string>
+    <string name="update_button">Update</string>
+    <string name="delete_button">Delete</string>
+    <string name="add_button">Add</string>
+    <string name="nav_header_desc">Description</string>
+
 </resources>

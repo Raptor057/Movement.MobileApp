@@ -1,0 +1,10 @@
+<resources>
+    <!--general UI and buttons Common -->
+    <string name="login_invalid_username">Not a valid username</string>
+    <string name="login_invalid_password">Password must be 8 characters</string>
+    <string name="login_login_failed">Login failed</string>
+    <string name="login_login_Image">Login Image</string>
+    <string name="login_UserName">User Name</string>
+    <string name="login_Password">Password</string>
+    <string name="login_Login">Login</string>
+</resources>
