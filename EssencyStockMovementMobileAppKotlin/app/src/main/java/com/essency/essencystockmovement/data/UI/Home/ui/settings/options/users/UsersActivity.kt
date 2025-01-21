@@ -3,30 +3,31 @@ package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
+import com.google.android.material.tabs.TabLayoutMediator
+import androidx.viewpager2.widget.ViewPager2
 
 class UsersActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_users) // Asegúrate de usar el layout correcto
+        setContentView(R.layout.activity_users)
 
-        // Verifica si ya existe el fragmento, para evitar cargarlo dos veces
-        if (savedInstanceState == null) {
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
+        val tabLayout: com.google.android.material.tabs.TabLayout = findViewById(R.id.tabLayout)
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_settings_users_add, AddUserFragment())
-                .commit()
+        // Configura el adaptador del ViewPager
+        val adapter = UsersPagerAdapter(this)
+        viewPager.adapter = adapter
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_settings_users_get, GetUsersFragment())
-                .commit()
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_settings_users_update, UpdateUserFragment())
-                .commit()
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_settings_users_delete, DeleteUserFragment())
-                .commit()
-        }
+        // Configura las pestañas con títulos
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.tab_add_user)
+                1 -> getString(R.string.tab_get_user)
+                2 -> getString(R.string.tab_update_user)
+                3 -> getString(R.string.tab_delete_user)
+                else -> null
+            }
+        }.attach()
     }
 }

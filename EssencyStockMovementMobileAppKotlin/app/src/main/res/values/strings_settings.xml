@@ -29,6 +29,11 @@
     <string name="settings_users_user_save_user">Save User</string>"
     <string name="settings_users_user_new_password">New Password</string>
 
+    <string name="tab_add_user">Add User</string>
+    <string name="tab_get_user">Get Users</string>
+    <string name="tab_update_user">Update User</string>
+    <string name="tab_delete_user">Delete User</string>
+
     <string name="settings_users_delete_label">Delete User</string>
     <string name="settings_users_user_delete_user">Delete User</string>
 
