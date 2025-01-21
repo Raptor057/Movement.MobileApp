@@ -17,7 +17,8 @@
         android:id="@+id/nav_settings_users"
         android:name="com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingFragment"
         android:label="@string/receiving_section_name"
-        tools:layout="@layout/fragment_settings_users" />
+        tools:layout="@layout/activity_users" />
+    <!-- fragment_settings_users_add -->
 
     <fragment
         android:id="@+id/nav_settings_change_sending_email"

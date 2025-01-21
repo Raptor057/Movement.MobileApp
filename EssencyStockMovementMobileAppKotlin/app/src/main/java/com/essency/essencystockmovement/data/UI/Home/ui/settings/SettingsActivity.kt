@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.Home.HomeActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users.UsersActivity
 import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -60,6 +61,12 @@ class SettingsActivity : AppCompatActivity() {
             {
                 R.id.nav_settings_main->{
                     val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+                R.id.nav_settings_users -> {
+                    val intent = Intent(this, UsersActivity::class.java)
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true

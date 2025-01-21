@@ -15,7 +15,7 @@ import com.essency.essencystockmovement.databinding.FragmentSettingsUsersAddBind
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class UsersFragment : Fragment() {
+class AddUserFragment : Fragment() {
 
     private var _binding: FragmentSettingsUsersAddBinding? = null
     private val binding get() = _binding!!

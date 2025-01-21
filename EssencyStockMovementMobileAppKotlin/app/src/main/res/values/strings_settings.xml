@@ -6,6 +6,34 @@
     <!-- Drawer -->
     <!--Users -->
     <string name="settings_users">Users</string>
+    <string name="settings_users_label">Add User</string>"
+    <string name="settings_users_update_label">Update User</string>"
+    <string name="settings_users_user_update_user">Update User</string>"
+    <string name="settings_users_load_user">Load User</string>"
+    <string name="settings_users_user_id">ID User</string>"
+    <string name="settings_users_user_delete">Delete User</string>"
+
+
+    <string name="settings_users_user_get">Get Users</string>"
+    <string name="settings_users_user_filter">Filter by Name or ID</string>"
+    <string name="settings_users_user">User</string>"
+    <string name="settings_users_user_name">User Name</string>"
+    <string name="settings_users_user_lastname">Last Name</string>"
+    <string name="settings_users_user_password">Password</string>"
+    <string name="settings_users_user_admin_status">Is Admin</string>"
+    <string name="settings_users_user_active">Active User</string>"
+    <string name="administrator">Administrator</string>
+    <string name="user">User</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+    <string name="settings_users_user_save_user">Save User</string>"
+    <string name="settings_users_user_new_password">New Password</string>
+
+    <string name="settings_users_delete_label">Delete User</string>
+    <string name="settings_users_user_delete_user">Delete User</string>
+
+
+
 
     <!--Email -->
     <string name="settings_change_sending_email">Change sending email</string>

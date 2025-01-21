@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Nombre de Usuario -->
+    <TextView
+        android:id="@+id/textViewUserID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Nombre de Usuario -->
+    <TextView
+        android:id="@+id/textViewUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewUserID"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Nombre -->
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewUserName"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Apellido -->
+    <TextView
+        android:id="@+id/textViewLastName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_lastname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewName"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Estado de Administrador -->
+    <TextView
+        android:id="@+id/textViewIsAdmin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_admin_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewLastName"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Estado de Usuario Activo -->
+    <TextView
+        android:id="@+id/textViewEnable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_active"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewIsAdmin"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

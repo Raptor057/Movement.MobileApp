@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".data.UI.Home.ui.settings.options.users.UpdateUserFragment">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_update_label"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Campo para buscar usuario por ID -->
+    <EditText
+        android:id="@+id/editTextUserId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/settings_users_user_id"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/text_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Botón para cargar datos -->
+    <Button
+        android:id="@+id/buttonLoadUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_load_user"
+        app:layout_constraintTop_toBottomOf="@id/editTextUserId"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Campos para actualizar información -->
+    <EditText
+        android:id="@+id/editTextUpdatedUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/settings_users_user"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/buttonLoadUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <EditText
+        android:id="@+id/editTextUpdatedName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/settings_users_user_name"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@id/editTextUpdatedUserName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <EditText
+        android:id="@+id/editTextUpdatedLastName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/settings_users_user_lastname"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@id/editTextUpdatedName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <EditText
+        android:id="@+id/editTextNewPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/settings_users_user_new_password"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/editTextUpdatedLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+
+    <!-- Switch para IsAdmin -->
+    <Switch
+        android:id="@+id/switchUpdatedIsAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_admin_status"
+        app:layout_constraintTop_toBottomOf="@id/editTextNewPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <!-- Switch para Enable -->
+    <Switch
+        android:id="@+id/switchUpdatedEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_active"
+        android:checked="true"
+        app:layout_constraintTop_toBottomOf="@id/switchUpdatedIsAdmin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <!-- Botón para actualizar -->
+    <Button
+        android:id="@+id/buttonUpdateUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_users_user_update_user"
+        app:layout_constraintTop_toBottomOf="@id/switchUpdatedEnable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
