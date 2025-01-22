@@ -14,6 +14,27 @@
         android:theme="@style/Theme.EssencyStockMovement"
         tools:targetApi="31">
 
+        <!-- Declaración de Change Lenguage Activity Label -->
+        <activity
+            android:name=".data.UI.Home.ui.settings.options.changelanguage.ChangeLanguageActivity"
+            android:exported="true"
+            android:label="@string/settings_change_language"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <!-- Declaración de Change Regex Activity Label -->
+        <activity
+            android:name=".data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity"
+            android:exported="true"
+            android:label="@string/settings_change_regex"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <!-- Declaración de Change Email Activity Label -->
+        <activity
+            android:name=".data.UI.Home.ui.settings.options.changesendingemail.ChangeSendingEmailActivity"
+            android:exported="true"
+            android:label="@string/settings_change_sending_email"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
         <!-- Declaración de Users Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.users.UsersActivity"
@@ -27,13 +48,14 @@
             android:name=".data.UI.Home.ui.settings.SettingsActivity"
             android:exported="true"
             android:label="SettingsActivity"
-            android:theme="@style/Theme.EssencyStockMovement.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <activity
             android:name=".data.UI.Home.HomeActivity"
             android:exported="true"
             android:label="@string/home_todo"
-            android:theme="@style/Theme.EssencyStockMovement.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
         <activity
             android:name=".data.UI.LoginActivity"
             android:exported="true"

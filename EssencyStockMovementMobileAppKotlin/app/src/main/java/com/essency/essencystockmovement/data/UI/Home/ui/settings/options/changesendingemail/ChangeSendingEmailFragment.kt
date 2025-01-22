@@ -4,36 +4,60 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-
+import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.local.MyDatabaseHelper
+import com.essency.essencystockmovement.data.repository.EmailRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsEmailBinding
 
 class ChangeSendingEmailFragment : Fragment() {
 
     private var _binding: FragmentSettingsEmailBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var emailRepository: EmailRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val inventoryViewModel =
-            ViewModelProvider(this)[ChangeSendingEmailViewModel::class.java]
-
         _binding = FragmentSettingsEmailBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        inventoryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        // Inicializa la base de datos y el repositorio
+        val dbHelper = MyDatabaseHelper(requireContext())
+        emailRepository = EmailRepository(dbHelper)
+
+        setupUI()
+
         return root
+    }
+
+    private fun setupUI() {
+        // Cargar el correo electrónico actual al iniciar
+        val currentEmail = emailRepository.getEmail()?.email
+        binding.editTextEmail.setText(currentEmail)
+
+        // Configurar el botón para actualizar el correo electrónico
+        binding.buttonUpdateEmail.setOnClickListener {
+            val newEmail = binding.editTextEmail.text.toString()
+
+            if (newEmail.isBlank()) {
+                Toast.makeText(requireContext(),
+                    context?.getString(R.string.settings_email_mail_not_empty) ?: "", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val isUpdated = emailRepository.updateEmail(newEmail)
+
+            if (isUpdated) {
+                Toast.makeText(requireContext(), context?.getString(R.string.settings_email_updated_successfully) ?: "", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), context?.getString(R.string.settings_email_mail_error) ?: "", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

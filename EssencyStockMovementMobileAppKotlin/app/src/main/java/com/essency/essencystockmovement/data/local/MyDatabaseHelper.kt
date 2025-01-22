@@ -47,11 +47,24 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         """.trimIndent()
         db.execSQL(createTableQueryAppConfigurationRegularExpression)
 
+        val defaultRegularExpression = """
+        INSERT INTO AppConfigurationRegularExpression (NameRegularExpression, RegularExpression)
+        VALUES ('Pallet', '[a-z]+'),('Individual', '[a-z]+');
+    """.trimIndent()
+        db.execSQL(defaultRegularExpression)
+
+
         val createTableQueryAppConfigurationEmail = """
             CREATE TABLE AppConfigurationEmail (
             Email TEXT NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryAppConfigurationEmail)
+
+        val defaultEmailInsert = """
+        INSERT INTO AppConfigurationEmail (Email)
+        VALUES ('r.arriaga@generaltransmisions.com');
+    """.trimIndent()
+        db.execSQL(defaultEmailInsert)
 
         val createTableQueryLogEntry = """
             CREATE TABLE LogEntry (
@@ -85,27 +98,42 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val createTableQueryTraceabilityStockList = """
             CREATE TABLE TraceabilityStockList (
-            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            IDStock INTEGER NOT NULL,
-            Saved BOOLEAN NOT NULL,
-            SendByEmail BOOLEAN NOT NULL,
-            TimeStamp DATETIME NOT NULL);
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, -- Identificador único
+            IDStock INTEGER NOT NULL,                     -- Relación con StockList
+            BatchNumber TEXT,                             -- Número de lote o batch para identificar el grupo
+            MovementType TEXT,                            -- Tipo de movimiento asociado (ejemplo: RECEIVING, SHIPMENT, INVENTORY)
+            Saved BOOLEAN NOT NULL,                       -- Indica si el movimiento ha sido guardado en StockList
+            SendByEmail BOOLEAN NOT NULL,                 -- Indica si el movimiento se envió por correo electrónico
+            CreatedBy TEXT,                               -- Usuario que creó el registro
+            TimeStamp DATETIME NOT NULL,                  -- Marca de tiempo del registro
+            Notes TEXT);                                    -- Notas adicionales o comentarios
         """.trimIndent()
         db.execSQL(createTableQueryTraceabilityStockList)
 
         val createTableQueryMovementType = """
-            CREATE TABLE 
-            MovementType (
+            CREATE TABLE MovementType (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            UserType TEXT NOT NULL,
             Type TEXT NOT NULL,
             Source TEXT NOT NULL,
             Destination TEXT NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryMovementType)
 
+        // *** Agregar movementType predeterminado  ***
+        val insertMovementType = """
+            INSERT INTO MovementType (UserType, Type, Source, Destination)
+            VALUES 
+            ('Diligent', 'RECEIVING', 'TRANSIT', 'DILIGEN'),
+            ('Diligent', 'PREPARATION SHIPMENT', 'DILIGEN', 'PRT'),
+            ('Diligent', 'INVENTARIO', 'DILIGEN', 'N/A'),
+            ('GTFR', 'PREPARATION SHIPMENT', 'N/A', 'N/A'),
+            ('GTFR', 'INVENTARIO', 'N/A', 'N/A');
+        """.trimIndent()
+        db.execSQL(insertMovementType)
+
         val createTableQueryLanguage = """
-            CREATE TABLE
-            Language(
+            CREATE TABLE Language(
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             LanguageName TEXT NOT NULL,
             ActiveLanguage BOOLEAN NOT NULL);
@@ -113,14 +141,11 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL(createTableQueryLanguage)
 
         // *** Agregar lenguaje predeterminado  ***
-        val InsertLanguage = """
+        val insertLanguage = """
         INSERT INTO Language (LanguageName,ActiveLanguage)
         VALUES ('Français',0),('Español',0),('English',1);
         """.trimIndent()
-        db.execSQL(InsertLanguage)
-
-
-
+        db.execSQL(insertLanguage)
 
     }
 

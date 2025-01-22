@@ -13,6 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.Home.HomeActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changelanguage.ChangeLanguageActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesendingemail.ChangeSendingEmailActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users.UsersActivity
 import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
 import com.google.android.material.navigation.NavigationView
@@ -71,6 +74,21 @@ class SettingsActivity : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     true
                 }
+                R.id.nav_settings_change_sending_email -> {
+                    val intent = Intent(this, ChangeSendingEmailActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
+                R.id.nav_settings_change_regex -> {
+                    val intent = Intent(this, ChangeRegexActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
+                R.id.nav_settings_change_language -> {
+                    val intent = Intent(this, ChangeLanguageActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
                 else -> {
                     menuItem.isChecked = true
                     navController.navigate(menuItem.itemId)

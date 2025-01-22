@@ -52,7 +52,12 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString().trim()
 
             if (userName.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
+                // Mostrar mensaje de campos vacíos
+                Toast.makeText(
+                    this,
+                    getString(R.string.error_empty_fields), // Reemplazado con recurso de cadena
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
 
                 // Buscar al usuario en la DB (ejemplo simple)
@@ -60,14 +65,23 @@ class LoginActivity : AppCompatActivity() {
 
                 if (LoginUser) {
                     // Login exitoso
-                    Toast.makeText(this, "Welcome $userName", Toast.LENGTH_SHORT).show()
+                    // Login exitoso
+                    Toast.makeText(
+                        this,
+                        getString(R.string.login_success, userName), // Usando cadena con formato
+                        Toast.LENGTH_SHORT
+                    ).show()
                     // Opcional: navegar a MainActivity
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                     finish() // cerrar la pantalla de login
                 } else {
                     // Usuario o password incorrecto
-                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.login_failed), // Reemplazado con recurso de cadena
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

@@ -43,10 +43,26 @@
     <!--Email -->
     <string name="settings_change_sending_email">Change sending email</string>
     <string name="settings_email">Email</string>
+    <string name="settings_email_update_label">Change sending email</string>
+    <string name="settings_email_hint">Email</string>
+    <string name="settings_email_update_button">Update</string>
+    <string name="settings_email_mail_not_empty">Mail can not be empty</string>
+    <string name="settings_email_updated_successfully">Mail updated successfully</string>
+    <string name="settings_email_mail_error">Error updating mail</string>
+
 
     <!--Regex -->
     <string name = "settings_change_regex">Change regex</string>
+    <string name="settings_regex_label">Update Regular Expression</string>
+    <string name="settings_regex_name">Regular Expression Name</string>
+    <string name="settings_regex_value">Regular Expression</string>
+    <string name="settings_regex_update">Update</string>
+    <!--<string name="error_empty_fields">Please fill in all fields.</string>-->
+    <string name="regex_update_success">Regular expression successfully updated.</string>
+    <string name="regex_update_failed">Error updating regular expression.</string>
+
 
     <!--Lenguaje -->
     <string name = "settings_change_language">Change language</string>
+    <string name = "settings_select_language">Select language</string>
 </resources>
