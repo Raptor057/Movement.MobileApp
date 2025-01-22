@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.AppUser
 import com.essency.essencystockmovement.data.repository.AppUserRepository
@@ -15,7 +16,7 @@ import com.essency.essencystockmovement.databinding.FragmentSettingsUsersAddBind
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class AddUserFragment : Fragment() {
+class AddUserFragment : BaseFragment() { //Fragment() {
 
     private var _binding: FragmentSettingsUsersAddBinding? = null
     private val binding get() = _binding!!

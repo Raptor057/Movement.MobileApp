@@ -1,11 +1,10 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changelanguage
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.UI.BaseActivity
 
-class ChangeLanguageActivity : AppCompatActivity() {
-
+class ChangeLanguageActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_language)
@@ -18,3 +17,4 @@ class ChangeLanguageActivity : AppCompatActivity() {
         }
     }
 }
+

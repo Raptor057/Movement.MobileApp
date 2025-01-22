@@ -14,11 +14,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.UI.BaseActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsActivity
 import com.essency.essencystockmovement.data.UI.LoginActivity
 import com.essency.essencystockmovement.databinding.ActivityHomeBinding
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() { //AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding

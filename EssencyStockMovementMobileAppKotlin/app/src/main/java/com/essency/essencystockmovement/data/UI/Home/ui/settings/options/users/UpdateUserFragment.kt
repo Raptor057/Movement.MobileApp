@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.UtilClass.PBKDF2Helper
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.AppUser
 import com.essency.essencystockmovement.data.repository.AppUserRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsUsersUpdateBinding
 
-class UpdateUserFragment : Fragment() {
+class UpdateUserFragment : BaseFragment() { //Fragment() {
 
     private var _binding: FragmentSettingsUsersUpdateBinding? = null
     private val binding get() = _binding!!

@@ -8,12 +8,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.AppConfigurationRegularExpression
 import com.essency.essencystockmovement.data.repository.RegularExpressionRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsRegexBinding
 
-class ChangeRegexFragment : Fragment() {
+class ChangeRegexFragment :  BaseFragment() { //Fragment() {
 
     private var _binding: FragmentSettingsRegexBinding? = null
     private val binding get() = _binding!!

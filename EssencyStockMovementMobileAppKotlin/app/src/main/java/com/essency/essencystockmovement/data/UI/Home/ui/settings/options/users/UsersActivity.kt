@@ -1,12 +1,15 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+
 import com.essency.essencystockmovement.R
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.widget.ViewPager2
+import com.essency.essencystockmovement.data.UI.BaseActivity
 
-class UsersActivity : AppCompatActivity() {
+//class UsersActivity : AppCompatActivity() {
+class UsersActivity : BaseActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -12,6 +12,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.UI.BaseActivity
 import com.essency.essencystockmovement.data.UI.Home.HomeActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changelanguage.ChangeLanguageActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity
@@ -21,7 +22,8 @@ import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class SettingsActivity : AppCompatActivity() {
+//class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySettingsBinding

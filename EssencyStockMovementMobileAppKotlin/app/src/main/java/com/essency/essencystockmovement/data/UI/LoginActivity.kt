@@ -14,8 +14,9 @@ import com.essency.essencystockmovement.data.UI.Home.HomeActivity
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.repository.AppUserRepository
 
-class LoginActivity : AppCompatActivity() {
+//class LoginActivity : AppCompatActivity() {
 
+class LoginActivity : BaseActivity() {
     private lateinit var etUserName: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button

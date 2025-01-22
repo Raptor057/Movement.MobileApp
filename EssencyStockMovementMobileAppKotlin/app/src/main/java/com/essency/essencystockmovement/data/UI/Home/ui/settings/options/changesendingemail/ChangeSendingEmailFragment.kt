@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.repository.EmailRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsEmailBinding
 
-class ChangeSendingEmailFragment : Fragment() {
+class ChangeSendingEmailFragment : BaseFragment() {//Fragment() {
 
     private var _binding: FragmentSettingsEmailBinding? = null
     private val binding get() = _binding!!

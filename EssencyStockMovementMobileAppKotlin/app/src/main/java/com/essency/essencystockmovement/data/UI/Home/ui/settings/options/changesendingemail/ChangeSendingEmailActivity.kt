@@ -3,8 +3,9 @@ package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.change
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
+import com.essency.essencystockmovement.data.UI.BaseActivity
 
-class ChangeSendingEmailActivity : AppCompatActivity() {
+class ChangeSendingEmailActivity : BaseActivity() {//AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_sending_email)

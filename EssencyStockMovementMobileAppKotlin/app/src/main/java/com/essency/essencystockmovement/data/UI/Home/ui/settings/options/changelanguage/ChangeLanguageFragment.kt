@@ -1,6 +1,6 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changelanguage
 
-import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.Language
 import com.essency.essencystockmovement.data.repository.LanguageRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsLanguageBinding
 import java.util.*
 
-class ChangeLanguageFragment : Fragment() {
+class ChangeLanguageFragment : BaseFragment() {
 
     private var _binding: FragmentSettingsLanguageBinding? = null
     private val binding get() = _binding!!
@@ -71,21 +71,29 @@ class ChangeLanguageFragment : Fragment() {
         }
     }
 
-    private fun changeAppLanguage(languageName: String) {
-        val locale = when (languageName) {
-            "Français" -> Locale.FRENCH
-            "Español" -> Locale("es")
-            "English" -> Locale.ENGLISH
-            else -> Locale.ENGLISH
+        private fun changeAppLanguage(languageName: String) {
+            val locale = when (languageName) {
+                "Français" -> Locale.FRENCH
+                "Español" -> Locale("es")
+                "English" -> Locale.ENGLISH
+                else -> Locale.ENGLISH
+            }
+
+            val config = Configuration(resources.configuration)
+            Locale.setDefault(locale)
+            config.setLocale(locale)
+
+            requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
+
+            // Reiniciar todas las actividades
+            val intent = requireActivity().packageManager.getLaunchIntentForPackage(requireActivity().packageName)?.apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            requireActivity().startActivity(intent)
+            requireActivity().finish() // Finaliza la actividad actual por seguridad
+            Runtime.getRuntime().exit(0) // Opcional: Asegura que todo el proceso se reinicie
         }
 
-        val config = Configuration(resources.configuration)
-        Locale.setDefault(locale)
-        config.setLocale(locale)
-
-        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
-        requireActivity().recreate() // Recargar la actividad actual para aplicar el cambio
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

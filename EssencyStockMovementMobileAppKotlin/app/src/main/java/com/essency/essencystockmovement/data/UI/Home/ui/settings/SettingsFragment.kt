@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.databinding.FragmentSettingsBinding
 
-class SettingsFragment : Fragment() {
+//class SettingsFragment : Fragment() {
 
+class SettingsFragment : BaseFragment() {
     private var _binding: FragmentSettingsBinding? = null
 
     // This property is only valid between onCreateView and

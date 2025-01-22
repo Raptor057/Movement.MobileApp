@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.repository.AppUserRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsUsersGetBinding
 
-class GetUsersFragment : Fragment() {
+class GetUsersFragment : BaseFragment() { //Fragment() {
 
     private var _binding: FragmentSettingsUsersGetBinding? = null
     private val binding get() = _binding!!
