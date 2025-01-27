@@ -62,7 +62,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val defaultEmailInsert = """
         INSERT INTO AppConfigurationEmail (Email)
-        VALUES ('r.arriaga@generaltransmisions.com');
+        VALUES ('r.arriaga@generaltransmissions.com');
     """.trimIndent()
         db.execSQL(defaultEmailInsert)
 
@@ -172,7 +172,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         // *** Agregar lenguaje predeterminado  ***
         val insertEmailSender = """
         INSERT INTO EmailSender (Email,Password)
-        VALUES ('essency.diligent@gmail.com','Z2N&gR+7zFHc');
+        VALUES ('essency.diligent@gmail.com','mpsb kyvu wocg bjjf');
         """.trimIndent()
         db.execSQL(insertEmailSender)
 

@@ -3,22 +3,26 @@ import javax.mail.Authenticator
 import javax.mail.Message
 import javax.mail.PasswordAuthentication
 import javax.mail.Session
-import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
+import com.sun.mail.smtp.SMTPTransport
 
-class EmailSender(
+class EmailSenderService(
     private val username: String, // Correo emisor
     private val password: String  // Contraseña o App Password
 ) {
 
-    // Configura las propiedades necesarias para SMTP
+    // Configura las propiedades necesarias para SMTP usando STARTTLS
     private fun getMailProperties(): Properties {
         return Properties().apply {
-            put("mail.smtp.auth", "true")                  // Requiere autenticación
-            put("mail.smtp.starttls.enable", "true")       // TLS habilitado
-            put("mail.smtp.host", "smtp.gmail.com")        // Servidor SMTP de Gmail
-            put("mail.smtp.port", "587")                  // Puerto para TLS
+            put("mail.transport.protocol", "smtp")
+            put("mail.smtp.auth", "true")
+            put("mail.smtp.starttls.enable", "true")        // Habilitar STARTTLS
+            put("mail.smtp.host", "smtp.gmail.com")         // Servidor SMTP de Gmail
+            put("mail.smtp.port", "587")                   // Puerto STARTTLS
+            put("mail.smtp.ssl.protocols", "TLSv1.1 TLSv1.2") // Protocolos seguros TLS
+            put("mail.smtp.ssl.trust", "smtp.gmail.com")    // Confiar en el host
+            put("mail.debug", "true")                      // Habilitar depuración para rastreo
         }
     }
 
@@ -36,12 +40,18 @@ class EmailSender(
         try {
             val session = createSession()
             val message = MimeMessage(session).apply {
-                setFrom(InternetAddress(username))         // Dirección emisor
+                setFrom(InternetAddress(username))            // Dirección emisor
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(to)) // Dirección destinatario
-                setSubject(subject)                        // Asunto del correo
-                setText(body)                              // Cuerpo del correo
+                setSubject(subject)                           // Asunto del correo
+                setText(body)                                 // Cuerpo del correo
             }
-            Transport.send(message)
+
+            // Enviar el correo usando el transporte SMTP
+            val transport: SMTPTransport = session.getTransport("smtp") as SMTPTransport
+            transport.connect("smtp.gmail.com", username, password)
+            transport.sendMessage(message, message.allRecipients)
+            transport.close()
+
             println("Correo enviado exitosamente a $to")
         } catch (e: Exception) {
             e.printStackTrace()
