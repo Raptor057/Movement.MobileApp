@@ -1,0 +1,5 @@
+<resources>
+    <string name="home_section_name">Hogar</string>
+    <string name="home_todo">Todo</string>
+    <string name="home_logout">Finalizar la sesión</string>
+</resources>

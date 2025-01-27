@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.essency.essencystockmovement">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EssencyStockMovement"
         tools:targetApi="31">
+
+        <!-- Declaración de Change Sender Activity Label -->
+        <activity
+            android:name=".data.UI.Home.ui.settings.options.changesenderemail.ChangeSenderEmailActivity"
+            android:exported="true"
+            android:label="@string/settings_change_sender_email"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <!-- Declaración de Warehouse Activity Label -->
+        <activity
+            android:name=".data.UI.Home.ui.settings.options.warehouse.WarehouseActivity"
+            android:exported="true"
+            android:label="@string/settings_warehouse_label"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <!-- Declaración de Change Lenguage Activity Label -->
         <activity

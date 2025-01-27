@@ -1,0 +1,16 @@
+<resources>
+    <!--general UI and buttons Common -->
+    <string name="login_invalid_username">Pas un nom d\'utilisateur valide</string>
+    <string name="login_invalid_password">Le mot de passe doit comporter 8 caractères</string>
+    <string name="login_login_failed">La connexion a échoué</string>
+    <string name="login_login_Image">Image de connexion</string>
+    <string name="login_UserName">Nom d\'utilisateur</string>
+    <string name="login_Password">Mot de passe</string>
+    <string name="login_Login">Se connecter</string>
+
+    <!-- Message-->
+    <string name="error_empty_fields">Veuillez remplir tous les champs.</string>
+    <string name="login_success">Bienvenue, %1$s.</string>
+    <string name="login_failed">La connexion a échoué.</string>
+
+</resources>

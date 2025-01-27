@@ -1,0 +1,78 @@
+<resources>
+    <!--UI-->
+    <string name="settings_section_name">Paramètres</string>
+
+
+    <!-- Drawer -->
+    <!--Users -->
+    <string name="settings_users">Utilisateurs</string>
+    <string name="settings_users_label">Ajouter un utilisateur</string>"
+    <string name="settings_users_update_label">Mettre à jour l\'utilisateur</string>"
+    <string name="settings_users_user_update_user">Mettre à jour l\'utilisateur</string>"
+    <string name="settings_users_load_user">Charger l\'utilisateur</string>"
+    <string name="settings_users_user_id">ID utilisateur</string>"
+    <string name="settings_users_user_delete">Supprimer l\'utilisateur</string>"
+
+
+    <string name="settings_users_user_get">Obtenir des utilisateurs</string>"
+    <string name="settings_users_user_filter">Filtre par nom ou ID</string>"
+    <string name="settings_users_user">Utilisateur</string>"
+    <string name="settings_users_user_name">Nom d\'utilisateur</string>"
+    <string name="settings_users_user_lastname">Nom de famille</string>"
+    <string name="settings_users_user_password">Mot de passe</string>"
+    <string name="settings_users_user_admin_status">Est l\'administrateur</string>"
+    <string name="settings_users_user_active">Utilisateur actif</string>"
+    <string name="administrator">Administrateur</string>
+    <string name="user">Utilisateur</string>
+    <string name="active">Actif</string>
+    <string name="inactive">Inactif</string>
+    <string name="settings_users_user_save_user">Enregistrer l\'utilisateur</string>"
+    <string name="settings_users_user_new_password">Nouveau mot de passe</string>
+
+    <string name="tab_add_user">Ajouter un utilisateur</string>
+    <string name="tab_get_user">Obtenir des utilisateurs</string>
+    <string name="tab_update_user">Mettre à jour l\'utilisateur</string>
+    <string name="tab_delete_user">Supprimer l\'utilisateur</string>
+
+    <string name="settings_users_delete_label">Supprimer l\'utilisateur</string>
+    <string name="settings_users_user_delete_user">Supprimer l\'utilisateur</string>
+
+
+
+
+    <!--Email -->
+    <string name="settings_change_sending_email">Modifier l\'envoi e-mail</string>
+    <string name="settings_change_sender_email">Modifier l\'e-mail de l\'expéditeur</string>
+
+    <string name="settings_email_update_label">Mettre à jour l\'envoi e-mail</string>
+    <string name="settings_email_hint">Entrer le courrier électronique</string>
+    <string name="settings_password_hint">Entrez le mot de passe</string>
+    <string name="settings_email_update_button">Mise à jour</string>
+
+    <string name="settings_email">E-mail</string>
+    <string name="settings_email_mail_not_empty">Le courrier ne peut pas être vide</string>
+    <string name="settings_email_updated_successfully">Mail mis à jour avec succès</string>
+    <string name="settings_email_mail_error">Erreur lors de la mise à jour du courrier</string>
+
+
+    <!--Regex -->
+    <string name = "settings_change_regex">Changer Regex</string>
+    <string name="settings_regex_label">Mettre à jour l\'expression régulière</string>
+    <string name="settings_regex_name">Nom d\'expression régulière</string>
+    <string name="settings_regex_value">Expression régulière</string>
+    <string name="settings_regex_update">Mise à jour</string>
+    <!--<string name="error_empty_fields">Please fill in all fields.</string>-->
+    <string name="regex_update_success">Expression régulière mise à jour avec succès.</string>
+    <string name="regex_update_failed">Erreur mise à jour de l\'expression régulière.</string>
+
+    <!--Warehouse -->
+    <string name = "settings_warehouse_label">Entrepôt</string>
+    <string name = "settings_warehouse_name">Nom de l\'entrepôt</string>
+    <string name = "settings_change_warehouse">Changer d\'entrepôt</string>
+    <string name = "settings_warehouse_update">Mettre à jour l\'entrepôt</string>
+    <string name = "settings_warehouse_add">Ajout d\'entrepôt</string>
+
+    <!--Lenguaje -->
+    <string name = "settings_change_language">Changer de langue</string>
+    <string name = "settings_select_language">Sélectionnez la langue</string>
+</resources>

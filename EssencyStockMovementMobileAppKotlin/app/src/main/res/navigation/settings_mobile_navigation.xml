@@ -15,26 +15,38 @@
 
     <fragment
         android:id="@+id/nav_settings_users"
-        android:name="com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingFragment"
-        android:label="@string/receiving_section_name"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users.AddUserFragment"
+        android:label="@string/settings_users"
         tools:layout="@layout/activity_users" />
     <!-- fragment_settings_users_add -->
 
     <fragment
         android:id="@+id/nav_settings_change_sending_email"
-        android:name="com.essency.essencystockmovement.data.UI.Home.ui.preparingforshipment.PreparingForShipmentFragment"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesendingemail.ChangeSendingEmailFragment"
         android:label="@string/settings_change_sending_email"
         tools:layout="@layout/fragment_settings_email" />
 
     <fragment
+        android:id="@+id/nav_settings_change_sender_email"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesenderemail.ChangeSenderEmailFragment"
+        android:label="@string/settings_change_sender_email"
+        tools:layout="@layout/fragment_settings_email_sender" />
+
+    <fragment
         android:id="@+id/nav_settings_change_regex"
-        android:name="com.essency.essencystockmovement.data.UI.Home.ui.inventory.InventoryFragment"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changeregex.ChangeRegexFragment"
         android:label="@string/settings_change_regex"
         tools:layout="@layout/fragment_settings_regex" />
 
     <fragment
+        android:id="@+id/nav_settings_warehouse"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.options.warehouse.WarehouseFragment"
+        android:label="@string/settings_warehouse_label"
+        tools:layout="@layout/activity_warehouse" />
+
+    <fragment
         android:id="@+id/nav_settings_change_language"
-        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsFragment"
+        android:name="com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changelanguage.ChangeLanguageFragment"
         android:label="@string/settings_change_language"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings_language" />
 </navigation>

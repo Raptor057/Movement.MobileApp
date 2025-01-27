@@ -42,10 +42,14 @@
 
     <!--Email -->
     <string name="settings_change_sending_email">Change sending email</string>
-    <string name="settings_email">Email</string>
-    <string name="settings_email_update_label">Change sending email</string>
-    <string name="settings_email_hint">Email</string>
+    <string name="settings_change_sender_email">Change sender email</string>
+
+    <string name="settings_email_update_label">Update Sending Email</string>
+    <string name="settings_email_hint">Enter email</string>
+    <string name="settings_password_hint">Enter password</string>
     <string name="settings_email_update_button">Update</string>
+
+    <string name="settings_email">Email</string>
     <string name="settings_email_mail_not_empty">Mail can not be empty</string>
     <string name="settings_email_updated_successfully">Mail updated successfully</string>
     <string name="settings_email_mail_error">Error updating mail</string>
@@ -61,6 +65,12 @@
     <string name="regex_update_success">Regular expression successfully updated.</string>
     <string name="regex_update_failed">Error updating regular expression.</string>
 
+    <!--Warehouse -->
+    <string name = "settings_warehouse_label">Warehouse</string>
+    <string name = "settings_warehouse_name">Warehouse Name</string>
+    <string name = "settings_change_warehouse">Change warehouse</string>
+    <string name = "settings_warehouse_update">Update Warehouse</string>
+    <string name = "settings_warehouse_add">Added Warehouse</string>
 
     <!--Lenguaje -->
     <string name = "settings_change_language">Change language</string>

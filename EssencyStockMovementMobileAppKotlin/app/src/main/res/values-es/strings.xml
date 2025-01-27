@@ -1,0 +1,12 @@
+<resources>
+    <!--general UI and buttons Common -->
+    <string name="app_name">Movimiento de stock de esencia</string>
+    <string name="welcome">¡Bienvenido!</string>
+
+    <string name="ok_button">DE ACUERDO</string>
+    <string name="update_button">Actualizar</string>
+    <string name="delete_button">Borrar</string>
+    <string name="add_button">Agregar</string>
+    <string name="nav_header_desc">Descripción</string>
+
+</resources>

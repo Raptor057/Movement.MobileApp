@@ -38,6 +38,16 @@ android {
         compose = true
         viewBinding = true
     }
+
+    packaging {
+        resources {
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE.txt")
+            excludes.add("META-INF/NOTICE.md")
+            excludes.add("META-INF/NOTICE.txt")
+        }
+    }
+
 }
 
 dependencies {
@@ -70,4 +80,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dependencias para enviar correos con JavaMail
+    dependencies {
+        implementation("com.sun.mail:android-mail:1.6.7")
+        implementation("com.sun.mail:android-activation:1.6.7")
+    }
+
 }

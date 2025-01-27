@@ -1,0 +1,16 @@
+<resources>
+    <!--general UI and buttons Common -->
+    <string name="login_invalid_username">No es un nombre de usuario válido</string>
+    <string name="login_invalid_password">La contraseña debe ser 8 caracteres</string>
+    <string name="login_login_failed">error de inicio de sesion</string>
+    <string name="login_login_Image">Imagen de inicio de sesión</string>
+    <string name="login_UserName">Nombre de usuario</string>
+    <string name="login_Password">Contraseña</string>
+    <string name="login_Login">Acceso</string>
+
+    <!-- Message-->
+    <string name="error_empty_fields">Complete todos los campos.</string>
+    <string name="login_success">Bienvenido, %1$s.</string>
+    <string name="login_failed">Error de inicio de sesion.</string>
+
+</resources>

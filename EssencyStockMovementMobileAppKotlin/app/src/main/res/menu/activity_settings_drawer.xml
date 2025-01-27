@@ -18,10 +18,20 @@
             android:id="@+id/nav_settings_change_sending_email"
             android:icon="@drawable/contact_mail_24px"
             android:title="@string/settings_change_sending_email" />
+
+        <item
+            android:id="@+id/nav_settings_change_sender_email"
+            android:icon="@drawable/outbox_alt_24px"
+            android:title="@string/settings_change_sender_email" />
+
         <item
             android:id="@+id/nav_settings_change_regex"
             android:icon="@drawable/qr_code_scanner_24px"
             android:title="@string/settings_change_regex" />
+        <item
+            android:id="@+id/nav_settings_warehouse"
+            android:icon="@drawable/factory_24px"
+            android:title="@string/settings_warehouse_label" />
         <item
             android:id="@+id/nav_settings_change_language"
             android:icon="@drawable/public_24px"

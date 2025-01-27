@@ -1,7 +1,6 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesendingemail
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.BaseActivity
 

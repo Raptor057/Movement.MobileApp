@@ -16,8 +16,10 @@ import com.essency.essencystockmovement.data.UI.BaseActivity
 import com.essency.essencystockmovement.data.UI.Home.HomeActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changelanguage.ChangeLanguageActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesenderemail.ChangeSenderEmailActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesendingemail.ChangeSendingEmailActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users.UsersActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.warehouse.WarehouseActivity
 import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -52,7 +54,9 @@ class SettingsActivity : BaseActivity() {
                 R.id.nav_settings_main,
                 R.id.nav_settings_users,
                 R.id.nav_settings_change_sending_email,
+                R.id.nav_settings_change_sender_email,
                 R.id.nav_settings_change_regex,
+                R.id.nav_settings_warehouse,
                 R.id.nav_settings_change_language
             ), drawerLayout
         )
@@ -81,8 +85,18 @@ class SettingsActivity : BaseActivity() {
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true}
+                R.id.nav_settings_change_sender_email -> {
+                    val intent = Intent(this, ChangeSenderEmailActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
                 R.id.nav_settings_change_regex -> {
                     val intent = Intent(this, ChangeRegexActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
+                R.id.nav_settings_warehouse -> {
+                    val intent = Intent(this, WarehouseActivity::class.java)
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true}

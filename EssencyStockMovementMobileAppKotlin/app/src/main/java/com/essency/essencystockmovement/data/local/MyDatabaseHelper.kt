@@ -147,6 +147,35 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         """.trimIndent()
         db.execSQL(insertLanguage)
 
+        val createTableQueryWarehouseList = """
+            CREATE TABLE WarehouseList(
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            Warehouse TEXT NOT NULL);
+        """.trimIndent()
+        db.execSQL(createTableQueryWarehouseList)
+
+        // *** Agregar lenguaje predeterminado  ***
+        val insertWarehouseList = """
+        INSERT INTO WarehouseList (Warehouse)
+        VALUES ('Diligent'),('GTFR');
+        """.trimIndent()
+        db.execSQL(insertWarehouseList)
+
+        val createTableQueryEmailSender = """
+            CREATE TABLE EmailSender(
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            Email TEXT NOT NULL,
+            Password TEXT NOT NULL);
+        """.trimIndent()
+        db.execSQL(createTableQueryEmailSender)
+
+        // *** Agregar lenguaje predeterminado  ***
+        val insertEmailSender = """
+        INSERT INTO EmailSender (Email,Password)
+        VALUES ('essency.diligent@gmail.com','Z2N&gR+7zFHc');
+        """.trimIndent()
+        db.execSQL(insertEmailSender)
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -160,6 +189,8 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL("DROP TABLE IF EXISTS TraceabilityStockList")
         db.execSQL("DROP TABLE IF EXISTS MovementType")
         db.execSQL("DROP TABLE IF EXISTS Language")
+        db.execSQL("DROP TABLE IF EXISTS WarehouseList")
+        db.execSQL("DROP TABLE IF EXISTS EmailSender")
         onCreate(db)
     }
 

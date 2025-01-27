@@ -1,0 +1,78 @@
+<resources>
+    <!--UI-->
+    <string name="settings_section_name">Ajustes</string>
+
+
+    <!-- Drawer -->
+    <!--Users -->
+    <string name="settings_users">Usuarios</string>
+    <string name="settings_users_label">Agregar usuario</string>"
+    <string name="settings_users_update_label">Actualizar el usuario</string>"
+    <string name="settings_users_user_update_user">Actualizar el usuario</string>"
+    <string name="settings_users_load_user">Cargar usuario</string>"
+    <string name="settings_users_user_id">Usuario de identificación</string>"
+    <string name="settings_users_user_delete">Eliminar usuario</string>"
+
+
+    <string name="settings_users_user_get">Obtener usuarios</string>"
+    <string name="settings_users_user_filter">Filtrar por nombre o ID</string>"
+    <string name="settings_users_user">Usuario</string>"
+    <string name="settings_users_user_name">Nombre de usuario</string>"
+    <string name="settings_users_user_lastname">Apellido</string>"
+    <string name="settings_users_user_password">Contraseña</string>"
+    <string name="settings_users_user_admin_status">es administrador</string>"
+    <string name="settings_users_user_active">Usuario activo</string>"
+    <string name="administrator">Administrador</string>
+    <string name="user">Usuario</string>
+    <string name="active">Activo</string>
+    <string name="inactive">Inactivo</string>
+    <string name="settings_users_user_save_user">Guardar usuario</string>"
+    <string name="settings_users_user_new_password">Nueva contraseña</string>
+
+    <string name="tab_add_user">Agregar usuario</string>
+    <string name="tab_get_user">Obtener usuarios</string>
+    <string name="tab_update_user">Actualizar el usuario</string>
+    <string name="tab_delete_user">Eliminar usuario</string>
+
+    <string name="settings_users_delete_label">Eliminar usuario</string>
+    <string name="settings_users_user_delete_user">Eliminar usuario</string>
+
+
+
+
+    <!--Email -->
+    <string name="settings_change_sending_email">Cambiar enviando correo electrónico</string>
+    <string name="settings_change_sender_email">Change sender email</string>
+
+    <string name="settings_email_update_label">Update Sending Email</string>
+    <string name="settings_email_hint">Enter email</string>
+    <string name="settings_password_hint">Enter password</string>
+    <string name="settings_email_update_button">Actualizar</string>
+
+    <string name="settings_email">Email</string>
+    <string name="settings_email_mail_not_empty">Mail can not be empty</string>
+    <string name="settings_email_updated_successfully">Mail updated successfully</string>
+    <string name="settings_email_mail_error">Error updating mail</string>
+
+
+    <!--Regex -->
+    <string name = "settings_change_regex">Change regex</string>
+    <string name="settings_regex_label">Update Regular Expression</string>
+    <string name="settings_regex_name">Regular Expression Name</string>
+    <string name="settings_regex_value">Regular Expression</string>
+    <string name="settings_regex_update">Actualizar</string>
+    <!--<string name="error_empty_fields">Please fill in all fields.</string>-->
+    <string name="regex_update_success">Regular expression successfully updated.</string>
+    <string name="regex_update_failed">Error updating regular expression.</string>
+
+    <!--Warehouse -->
+    <string name = "settings_warehouse_label">Warehouse</string>
+    <string name = "settings_warehouse_name">Warehouse Name</string>
+    <string name = "settings_change_warehouse">Change warehouse</string>
+    <string name = "settings_warehouse_update">Update Warehouse</string>
+    <string name = "settings_warehouse_add">Added Warehouse</string>
+
+    <!--Lenguaje -->
+    <string name = "settings_change_language">Change language</string>
+    <string name = "settings_select_language">Select language</string>
+</resources>

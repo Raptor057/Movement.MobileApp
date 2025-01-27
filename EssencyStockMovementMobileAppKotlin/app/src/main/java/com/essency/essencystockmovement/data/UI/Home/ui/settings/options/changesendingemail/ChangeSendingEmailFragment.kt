@@ -1,5 +1,6 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesendingemail
 
+import EmailSender
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,14 @@ class ChangeSendingEmailFragment : BaseFragment() {//Fragment() {
     private fun setupUI() {
         // Cargar el correo electrónico actual al iniciar
         val currentEmail = emailRepository.getEmail()?.email
+
+        // Configura tu correo y contraseña o App Password
+        val senderEmail = "essency.diligent@gmail.com"
+        val senderPassword = "Z2N&gR+7zFHc" // Usa un App Password para mayor seguridad Z2N&gR+7zFHc
+
+        // Crea una instancia de EmailSender
+        val emailSender = EmailSender(senderEmail, senderPassword)
+
         binding.editTextEmail.setText(currentEmail)
 
         // Configurar el botón para actualizar el correo electrónico
@@ -55,6 +64,13 @@ class ChangeSendingEmailFragment : BaseFragment() {//Fragment() {
 
             if (isUpdated) {
                 Toast.makeText(requireContext(), context?.getString(R.string.settings_email_updated_successfully) ?: "", Toast.LENGTH_SHORT).show()
+                // Envía un correo
+                emailSender.sendEmail(
+                    to = "destinatario@example.com",   // Dirección de destino
+                    subject = "Correo de prueba",      // Asunto
+                    body = "Este es un correo enviado desde una app Android usando Gmail." // Cuerpo
+                )
+
             } else {
                 Toast.makeText(requireContext(), context?.getString(R.string.settings_email_mail_error) ?: "", Toast.LENGTH_SHORT).show()
             }
