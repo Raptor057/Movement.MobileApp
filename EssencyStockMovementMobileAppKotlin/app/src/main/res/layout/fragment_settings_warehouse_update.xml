@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".data.UI.Home.ui.settings.options.warehouse.UpdateWarehouseFragment">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/text_title_warehouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/update_warehouse_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Filter Field -->
+    <EditText
+        android:id="@+id/editTextWarehouseFilter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/update_warehouse_filter_hint"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/text_title_warehouse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- RecyclerView to display warehouses -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewWarehouses"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextWarehouseFilter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Dialog for editing warehouse -->
+    <LinearLayout
+        android:id="@+id/layoutEditWarehouse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Input field to edit warehouse name -->
+        <EditText
+            android:id="@+id/editTextWarehouseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/update_warehouse_name_hint"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Save button -->
+        <Button
+            android:id="@+id/buttonUpdateWarehouse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_warehouse_button_save"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

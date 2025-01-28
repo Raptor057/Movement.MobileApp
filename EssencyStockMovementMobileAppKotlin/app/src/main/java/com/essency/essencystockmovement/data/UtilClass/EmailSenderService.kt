@@ -43,7 +43,8 @@ class EmailSenderService(
                 setFrom(InternetAddress(username))            // Dirección emisor
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(to)) // Dirección destinatario
                 setSubject(subject)                           // Asunto del correo
-                setText(body)                                 // Cuerpo del correo
+                //setText(body)                                 // Cuerpo del correo Texto
+                setContent(body, "text/html; charset=utf-8") // Establecer el cuerpo como HTML
             }
 
             // Enviar el correo usando el transporte SMTP

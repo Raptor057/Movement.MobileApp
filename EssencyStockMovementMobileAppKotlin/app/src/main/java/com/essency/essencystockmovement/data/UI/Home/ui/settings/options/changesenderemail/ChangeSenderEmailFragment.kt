@@ -116,11 +116,31 @@ class ChangeSenderEmailFragment : BaseFragment() {
             try {
                 val emailSender = EmailSenderService(senderEmail, senderPassword)
 
+                val htmlBody = """
+                    <html>
+                        <body>
+                            <h1 style="color: #6cccf4;">Essency Stock Movement
+                            </h1>
+                            <!-- <p>Este es un <strong>correo de prueba </strong></p> -->
+                             <p>
+                                Actualizacion de correo remitente.
+                             </p>
+
+                            <footer>
+                                <p>
+                                — Enviado Desde Essency Stock Movement Android App.
+                                </p>
+                            </footer>
+                        </body>
+                        </html>
+            """.trimIndent()
+
                 // Enviar correo
                 emailSender.sendEmail(
                     to = recipientEmail,
-                    subject = "Correo de prueba",
-                    body = "Este es un correo enviado desde la configuración actualizada."
+                    subject = "Essency Stock Movement Android App",
+                    body = htmlBody
+                    //body = "Este es un correo enviado desde la configuración actualizada."
                 )
 
                 // Mostrar éxito en el hilo principal

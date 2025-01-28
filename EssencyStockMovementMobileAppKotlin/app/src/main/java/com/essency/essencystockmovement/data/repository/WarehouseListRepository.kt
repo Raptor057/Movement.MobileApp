@@ -58,17 +58,15 @@ class WarehouseListRepository(private val dbHelper: MyDatabaseHelper) : IWarehou
 
     // Validar si un warehouse con el mismo nombre ya existe
     private fun isWarehouseExists(warehouseName: String, database: SQLiteDatabase): Boolean {
-        val cursor = database.rawQuery(
-            "SELECT COUNT(*) FROM WarehouseList WHERE Warehouse = ?",
-            arrayOf(warehouseName)
-        )
-        cursor.use {
-            if (it.moveToFirst()) {
-                return it.getInt(0) > 0
+        val query = "SELECT EXISTS (SELECT 1 FROM WarehouseList WHERE Warehouse = ?)"
+        database.rawQuery(query, arrayOf(warehouseName)).use { cursor ->
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0) == 1
             }
         }
         return false
     }
+
 
     // Validar si un warehouse existe por su ID
     private fun isWarehouseExistsById(warehouseId: Int, database: SQLiteDatabase): Boolean {

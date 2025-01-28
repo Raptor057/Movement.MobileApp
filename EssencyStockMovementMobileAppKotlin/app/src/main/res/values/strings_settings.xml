@@ -78,6 +78,24 @@
     <string name = "settings_change_warehouse">Change warehouse</string>
     <string name = "settings_warehouse_update">Update Warehouse</string>
     <string name = "settings_warehouse_add">Added Warehouse</string>
+    <string name="tab_add_warehouse">Add Warehouse</string>
+    <string name="tab_get_warehouse">Get Warehouse</string>
+    <string name="tab_update_warehouse">Update Warehouse</string>
+    <string name="tab_delete_warehouse">Delete Warehouse</string>
+    <string name="add_warehouse_title">Add Warehouse</string>
+    <string name="add_warehouse_hint">Warehouse Name</string>
+    <string name="add_warehouse_button_save">Save Warehouse</string>
+    <string name="get_warehouse_title">Warehouse List</string>
+    <string name="get_warehouse_filter_hint">Filter warehouses</string>
+    <string name="update_warehouse_title">Update Warehouses</string>
+    <string name="update_warehouse_filter_hint">Filter warehouses</string>
+    <string name="update_warehouse_name_hint">Edit warehouse name</string>
+    <string name="update_warehouse_button_save">Save</string>
+    <string name="update_warehouse_edit_warehouse">Edit Warehouse</string>
+
+
+
+
 
     <!--Lenguaje -->
     <string name = "settings_change_language">Change language</string>

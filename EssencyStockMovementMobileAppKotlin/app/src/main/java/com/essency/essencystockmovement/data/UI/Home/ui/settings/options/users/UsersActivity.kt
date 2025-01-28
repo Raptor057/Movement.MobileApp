@@ -13,7 +13,7 @@ class UsersActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_users)
+        setContentView(R.layout.activity_warehouse)
 
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         val tabLayout: com.google.android.material.tabs.TabLayout = findViewById(R.id.tabLayout)
@@ -25,10 +25,9 @@ class UsersActivity : BaseActivity() {
         // Configura las pestañas con títulos
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> getString(R.string.tab_add_user)
-                1 -> getString(R.string.tab_get_user)
+                0 -> getString(R.string.tab_get_warehouse)
+                1 -> getString(R.string.tab_add_user)
                 2 -> getString(R.string.tab_update_user)
-                3 -> getString(R.string.tab_delete_user)
                 else -> null
             }
         }.attach()
