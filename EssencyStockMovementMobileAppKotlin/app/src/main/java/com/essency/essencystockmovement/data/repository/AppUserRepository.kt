@@ -1,6 +1,5 @@
 package com.essency.essencystockmovement.data.repository
 
-
 import android.content.ContentValues
 import android.database.Cursor
 import android.util.Base64
@@ -21,14 +20,14 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         val hashBytes = PBKDF2Helper.hashPassword(appUser.passwordHash, salt)
 
         // 3. Convertir ambos a Base64 (u otro formato, p. ej. hex) para guardarlos en la DB
-        val saltBase64 = android.util.Base64.encodeToString(salt, android.util.Base64.NO_WRAP)
-        val hashBase64 = android.util.Base64.encodeToString(hashBytes, android.util.Base64.NO_WRAP)
+        val saltBase64 = Base64.encodeToString(salt, Base64.NO_WRAP)
+        val hashBase64 = Base64.encodeToString(hashBytes, Base64.NO_WRAP)
 
         val values = ContentValues().apply {
             put("UserName", appUser.userName)
             put("Name", appUser.name)
             put("LastName", appUser.lastName)
-            // Guardamos el hash y el salt en columnas separadas
+            put("UserType", appUser.userType) // Nuevo campo agregado
             put("PasswordHash", hashBase64)
             put("Salt", saltBase64)
             put("CreateUserDate", appUser.createUserDate)
@@ -40,7 +39,6 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         db.close()
         return idInserted
     }
-
 
     override fun getAll(): List<AppUser> {
         val db = dbHelper.readableDatabase
@@ -70,6 +68,33 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         return appUser
     }
 
+    /*
+    Cómo recuperar los datos del usuario en otra actividad
+Si necesitas acceder a los datos del usuario en otra parte de la app, por ejemplo en HomeActivity, usa:
+
+
+val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+val userID = sharedPreferences.getInt("userID", -1) // -1 indica que no hay usuario logueado
+val userName = sharedPreferences.getString("userName", "")
+val userType = sharedPreferences.getString("userType", "")
+val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
+println("Usuario logueado: $userName, Tipo: $userType, Admin: $isAdmin")
+
+    */
+    override fun getByUserName(userName: String): AppUser? {
+        val db = dbHelper.readableDatabase
+        val query = "SELECT * FROM AppUsers WHERE UserName = ?"
+        val cursor = db.rawQuery(query, arrayOf(userName))
+
+        var appUser: AppUser? = null
+        if (cursor.moveToFirst()) {
+            appUser = cursorToAppUser(cursor)
+        }
+
+        cursor.close()
+        db.close()
+        return appUser
+    }
 
 
     override fun update(appUser: AppUser): Int {
@@ -78,7 +103,7 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
             put("UserName", appUser.userName)
             put("Name", appUser.name)
             put("LastName", appUser.lastName)
-            // Ajusta los nombres de las columnas para reflejar tu nuevo schema
+            put("UserType", appUser.userType) // Nuevo campo agregado
             put("PasswordHash", appUser.passwordHash)
             put("Salt", appUser.salt)
             put("CreateUserDate", appUser.createUserDate)
@@ -94,7 +119,6 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         db.close()
         return rowsAffected
     }
-
 
     override fun deleteById(id: Int): Int {
         val db = dbHelper.writableDatabase
@@ -139,7 +163,7 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         val userName = cursor.getString(cursor.getColumnIndexOrThrow("UserName"))
         val name = cursor.getString(cursor.getColumnIndexOrThrow("Name"))
         val lastName = cursor.getString(cursor.getColumnIndexOrThrow("LastName"))
-        // En vez de "Password", obtén las columnas "PasswordHash" y "Salt"
+        val userType = cursor.getString(cursor.getColumnIndexOrThrow("UserType")) // Nuevo campo agregado
         val passwordHash = cursor.getString(cursor.getColumnIndexOrThrow("PasswordHash"))
         val salt = cursor.getString(cursor.getColumnIndexOrThrow("Salt"))
         val createUserDate = cursor.getString(cursor.getColumnIndexOrThrow("CreateUserDate"))
@@ -151,12 +175,12 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
             userName = userName,
             name = name,
             lastName = lastName,
-            passwordHash = passwordHash, // Ojo: reemplaza el campo password
+            userType = userType, // Nuevo campo agregado
+            passwordHash = passwordHash,
             salt = salt,
             createUserDate = createUserDate,
             isAdmin = isAdmin,
             enable = enable
         )
     }
-
 }

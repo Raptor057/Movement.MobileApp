@@ -89,6 +89,7 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
             .setTitle("Logout")
             .setMessage("Are you sure you want to logout?")
             .setPositiveButton("Yes") { _, _ ->
+                logoutUser() // Llamamos a la función que borra SharedPreferences
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
@@ -96,6 +97,14 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun logoutUser() {
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            clear() // Elimina todos los datos guardados
+            apply()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

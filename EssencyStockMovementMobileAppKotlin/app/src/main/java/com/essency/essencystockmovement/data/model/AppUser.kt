@@ -8,6 +8,7 @@ data class AppUser(
     val userName: String,
     val name: String,
     val lastName: String,
+    val userType: String,
     val passwordHash: String,
     val salt: String,
     val createUserDate: String,  // Podría ser String o un tipo de fecha

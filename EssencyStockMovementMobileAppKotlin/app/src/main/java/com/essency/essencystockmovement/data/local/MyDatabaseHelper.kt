@@ -20,6 +20,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             UserName TEXT NOT NULL,
             Name TEXT NOT NULL,
             LastName TEXT NOT NULL,
+            UserType TEXT NOT NULL,
             PasswordHash TEXT NOT NULL,
             Salt TEXT NOT NULL,
             CreateUserDate DATETIME NOT NULL,
@@ -34,8 +35,8 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         * Password: Admin123*
         */
         val defaultUserInsert = """
-        INSERT INTO AppUsers (UserName, Name, LastName, PasswordHash, Salt,CreateUserDate, IsAdmin, Enable)
-        VALUES ('Admin', 'System', 'Admin', 'OPeT4bF/+q1SLsjOaiAILe2aYGJDIzWwnbqL2W7XhEU=','hXzGR5D26k8de0CHXzp4kA==', datetime('now'), 1, 1);
+        INSERT INTO AppUsers (UserName, Name, LastName,UserType, PasswordHash, Salt,CreateUserDate, IsAdmin, Enable)
+        VALUES ('Admin', 'System', 'Admin','Diligent', 'OPeT4bF/+q1SLsjOaiAILe2aYGJDIzWwnbqL2W7XhEU=','hXzGR5D26k8de0CHXzp4kA==', datetime('now'), 1, 1);
     """.trimIndent()
         db.execSQL(defaultUserInsert)
 
@@ -79,7 +80,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val createTableQueryStockList = """
             CREATE TABLE StockList (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            IDStock INTEGER NOT NULL,
+            --IDStock INTEGER NOT NULL,
             Company TEXT NOT NULL,
             Source TEXT NOT NULL,
             SoucreLoc TEXT,
@@ -99,10 +100,12 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val createTableQueryTraceabilityStockList = """
             CREATE TABLE TraceabilityStockList (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, -- Identificador único
-            IDStock INTEGER NOT NULL,                     -- Relación con StockList
-            BatchNumber TEXT,                             -- Número de lote o batch para identificar el grupo
-            MovementType TEXT,                            -- Tipo de movimiento asociado (ejemplo: RECEIVING, SHIPMENT, INVENTORY)
-            Saved BOOLEAN NOT NULL,                       -- Indica si el movimiento ha sido guardado en StockList
+            --IDStock INTEGER NOT NULL,                     -- Relación con StockList BOL #
+            BatchNumber TEXT NOT NULL,                             -- Número de lote o batch para identificar el grupo
+            MovementType TEXT NOT NULL,                            -- Tipo de movimiento asociado (ejemplo: RECEIVING, SHIPMENT, INVENTORY)
+            NumberOfHeaters INTEGER NOT NULL, 
+            NumberOfHeatersFinished  INTEGER NOT NULL,
+            Finish BOOLEAN NOT NULL,                    -- Indica si el movimiento ha sido guardado en StockList
             SendByEmail BOOLEAN NOT NULL,                 -- Indica si el movimiento se envió por correo electrónico
             CreatedBy TEXT,                               -- Usuario que creó el registro
             TimeStamp DATETIME NOT NULL,                  -- Marca de tiempo del registro

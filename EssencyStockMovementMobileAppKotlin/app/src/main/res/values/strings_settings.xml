@@ -19,6 +19,7 @@
     <string name="settings_users_user">User</string>"
     <string name="settings_users_user_name">User Name</string>"
     <string name="settings_users_user_lastname">Last Name</string>"
+    <string name="settings_users_user_type_hint">User Type</string>"
     <string name="settings_users_user_password">Password</string>"
     <string name="settings_users_user_admin_status">Is Admin</string>"
     <string name="settings_users_user_active">Active User</string>"

@@ -80,13 +80,27 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
+    <!-- Spinner para UserType -->
+    <Spinner
+        android:id="@+id/spinnerUserType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:prompt="@string/settings_users_user_type_hint"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
     <!-- Switch para IsAdmin -->
     <Switch
         android:id="@+id/switchIsAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/settings_users_user_admin_status"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@id/spinnerUserType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"

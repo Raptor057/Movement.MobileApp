@@ -5,21 +5,24 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.UtilClass.PBKDF2Helper
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.AppUser
 import com.essency.essencystockmovement.data.repository.AppUserRepository
+import com.essency.essencystockmovement.data.repository.WarehouseListRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsUsersUpdateBinding
 
-class UpdateUserFragment : BaseFragment() { //Fragment() {
+class UpdateUserFragment : BaseFragment() {
 
     private var _binding: FragmentSettingsUsersUpdateBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var userRepository: AppUserRepository
+    private lateinit var warehouseRepository: WarehouseListRepository
+    private lateinit var userTypeList: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,13 +32,38 @@ class UpdateUserFragment : BaseFragment() { //Fragment() {
         _binding = FragmentSettingsUsersUpdateBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Inicializa la base de datos y el repositorio
+        // Inicializa la base de datos y los repositorios
         val dbHelper = MyDatabaseHelper(requireContext())
         userRepository = AppUserRepository(dbHelper)
+        warehouseRepository = WarehouseListRepository(dbHelper)
+
+        // Cargar lista dinámica de almacenes para el Spinner
+        loadUserTypes()
 
         setupListeners()
 
         return root
+    }
+
+    private fun loadUserTypes() {
+        // Obtener la lista de almacenes desde la base de datos
+        val warehouses = warehouseRepository.getAllWarehouses()
+
+        // Si no hay almacenes, usa una lista de respaldo
+        userTypeList = if (warehouses.isNotEmpty()) {
+            warehouses.map { it.warehouse } // Extraer solo los nombres de los almacenes
+        } else {
+            listOf("No warehouses available") // Mensaje de respaldo si la lista está vacía
+        }
+
+        setupSpinner()
+    }
+
+    private fun setupSpinner() {
+        // Configurar el adaptador para el Spinner con la lista de almacenes obtenida
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, userTypeList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerUserType.adapter = adapter
     }
 
     private fun setupListeners() {
@@ -65,12 +93,14 @@ class UpdateUserFragment : BaseFragment() { //Fragment() {
 
             val salt = PBKDF2Helper.generateSalt()
             val passwordHash = PBKDF2Helper.hashPassword(binding.editTextNewPassword.text.toString(), salt)
+            val userType = binding.spinnerUserType.selectedItem.toString() // Obtener el valor seleccionado del Spinner
 
             val updatedUser = AppUser(
                 id = userId,
                 userName = binding.editTextUpdatedUserName.text.toString(),
                 name = binding.editTextUpdatedName.text.toString(),
                 lastName = binding.editTextUpdatedLastName.text.toString(),
+                userType = userType, // Nuevo campo UserType (obtenido del Spinner)
                 passwordHash = Base64.encodeToString(passwordHash, Base64.NO_WRAP),
                 salt = Base64.encodeToString(salt, Base64.NO_WRAP),
                 createUserDate = "", // La fecha de creación no cambia
@@ -94,6 +124,12 @@ class UpdateUserFragment : BaseFragment() { //Fragment() {
         binding.editTextUpdatedLastName.setText(user.lastName)
         binding.switchUpdatedIsAdmin.isChecked = user.isAdmin
         binding.switchUpdatedEnable.isChecked = user.enable
+
+        // Establecer el valor del Spinner en función del userType guardado
+        val position = userTypeList.indexOf(user.userType)
+        if (position >= 0) {
+            binding.spinnerUserType.setSelection(position)
+        }
     }
 
     private fun clearForm() {
@@ -103,6 +139,7 @@ class UpdateUserFragment : BaseFragment() { //Fragment() {
         binding.editTextUpdatedLastName.text.clear()
         binding.switchUpdatedIsAdmin.isChecked = false
         binding.switchUpdatedEnable.isChecked = true
+        binding.spinnerUserType.setSelection(0) // Reinicia el Spinner a la primera opción
     }
 
     override fun onDestroyView() {

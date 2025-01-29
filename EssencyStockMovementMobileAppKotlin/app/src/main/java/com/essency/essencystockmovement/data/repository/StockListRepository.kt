@@ -1,5 +1,4 @@
 package com.essency.essencystockmovement.data.repository
-
 import android.content.ContentValues
 import android.database.Cursor
 import com.essency.essencystockmovement.data.interfaces.IStockListRepository
@@ -8,125 +7,100 @@ import com.essency.essencystockmovement.data.model.StockList
 
 class StockListRepository(private val dbHelper: MyDatabaseHelper) : IStockListRepository {
 
-    override fun getAllStockList(): List<StockList> {
+    override fun insert(stock: StockList): Long {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put("Company", stock.company)
+            put("Source", stock.source)
+            put("SoucreLoc", stock.sourceLoc)
+            put("Destination", stock.destination)
+            put("DestinationLoc", stock.destinationLoc)
+            put("PartNo", stock.partNo)
+            put("Rev", stock.rev)
+            put("Lot", stock.lot)
+            put("Qty", stock.qty)
+            put("Date", stock.date)
+            put("TimeStamp", stock.timeStamp)
+            put("User", stock.user)
+            put("ContBolNum", stock.contBolNum)
+        }
+        val id = db.insert("StockList", null, values)
+        db.close()
+        return id
+    }
+
+    override fun getAll(): List<StockList> {
         val db = dbHelper.readableDatabase
         val stockList = mutableListOf<StockList>()
+        val cursor = db.rawQuery("SELECT * FROM StockList", null)
 
-        val query = "SELECT * FROM StockList"
-        val cursor: Cursor = db.rawQuery(query, null)
-
-        if (cursor.moveToFirst()) {
-            do {
-                stockList.add(cursorToStockList(cursor))
-            } while (cursor.moveToNext())
+        cursor.use {
+            while (it.moveToNext()) {
+                stockList.add(cursorToStock(it))
+            }
         }
 
-        cursor.close()
         db.close()
         return stockList
     }
 
-    override fun getStockListById(id: Int): StockList? {
+    override fun getById(id: Int): StockList? {
         val db = dbHelper.readableDatabase
         val query = "SELECT * FROM StockList WHERE ID = ?"
         val cursor = db.rawQuery(query, arrayOf(id.toString()))
+        var stock: StockList? = null
 
-        var stockList: StockList? = null
-        if (cursor.moveToFirst()) {
-            stockList = cursorToStockList(cursor)
+        cursor.use {
+            if (it.moveToFirst()) {
+                stock = cursorToStock(it)
+            }
         }
 
-        cursor.close()
         db.close()
-        return stockList
+        return stock
     }
 
-    override fun insertStockList(stockList: StockList): Long {
+    override fun update(stock: StockList): Int {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
-            put("IDStock", stockList.idStock)
-            put("Company", stockList.company)
-            put("Source", stockList.source)
-            put("SoucreLoc", stockList.sourceloc)
-            put("Destination", stockList.destination)
-            put("DestinationLoc", stockList.destinationLoc)
-            put("PartNo", stockList.partNo)
-            put("Rev", stockList.rev)
-            put("Lot", stockList.lot)
-            put("Qty", stockList.qty)
-            put("Date", stockList.date)
-            put("TimeStamp", stockList.timeStamp)
-            put("User", stockList.user)
-            put("ContBolNum", stockList.contBolNum)
+            put("Company", stock.company)
+            put("Source", stock.source)
+            put("SoucreLoc", stock.sourceLoc)
+            put("Destination", stock.destination)
+            put("DestinationLoc", stock.destinationLoc)
+            put("PartNo", stock.partNo)
+            put("Rev", stock.rev)
+            put("Lot", stock.lot)
+            put("Qty", stock.qty)
+            put("Date", stock.date)
+            put("TimeStamp", stock.timeStamp)
+            put("User", stock.user)
+            put("ContBolNum", stock.contBolNum)
         }
 
-        val result = db.insert("StockList", null, values)
-        db.close()
-        return result
-    }
-
-    override fun updateStockList(stockList: StockList): Boolean {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put("IDStock", stockList.idStock)
-            put("Company", stockList.company)
-            put("Source", stockList.source)
-            put("SoucreLoc", stockList.sourceloc)
-            put("Destination", stockList.destination)
-            put("DestinationLoc", stockList.destinationLoc)
-            put("PartNo", stockList.partNo)
-            put("Rev", stockList.rev)
-            put("Lot", stockList.lot)
-            put("Qty", stockList.qty)
-            put("Date", stockList.date)
-            put("TimeStamp", stockList.timeStamp)
-            put("User", stockList.user)
-            put("ContBolNum", stockList.contBolNum)
-        }
-
-        val rowsUpdated = db.update(
+        val rowsAffected = db.update(
             "StockList",
             values,
             "ID = ?",
-            arrayOf(stockList.id.toString())
+            arrayOf(stock.id.toString())
         )
-
         db.close()
-        return rowsUpdated > 0
+        return rowsAffected
     }
 
-    override fun deleteStockListById(id: Int): Boolean {
+    override fun deleteById(id: Int): Int {
         val db = dbHelper.writableDatabase
         val rowsDeleted = db.delete("StockList", "ID = ?", arrayOf(id.toString()))
         db.close()
-        return rowsDeleted > 0
+        return rowsDeleted
     }
 
-    override fun getStockListByDateRange(startDate: String, endDate: String): List<StockList> {
-        val db = dbHelper.readableDatabase
-        val stockList = mutableListOf<StockList>()
-
-        val query = "SELECT * FROM StockList WHERE Date BETWEEN ? AND ?"
-        val cursor = db.rawQuery(query, arrayOf(startDate, endDate))
-
-        if (cursor.moveToFirst()) {
-            do {
-                stockList.add(cursorToStockList(cursor))
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        db.close()
-        return stockList
-    }
-
-    private fun cursorToStockList(cursor: Cursor): StockList {
+    private fun cursorToStock(cursor: Cursor): StockList {
         return StockList(
             id = cursor.getInt(cursor.getColumnIndexOrThrow("ID")),
-            idStock = cursor.getInt(cursor.getColumnIndexOrThrow("IDStock")),
             company = cursor.getString(cursor.getColumnIndexOrThrow("Company")),
             source = cursor.getString(cursor.getColumnIndexOrThrow("Source")),
-            sourceloc = cursor.getString(cursor.getColumnIndexOrThrow("SoucreLoc")),
+            sourceLoc = cursor.getString(cursor.getColumnIndexOrThrow("SoucreLoc")),
             destination = cursor.getString(cursor.getColumnIndexOrThrow("Destination")),
             destinationLoc = cursor.getString(cursor.getColumnIndexOrThrow("DestinationLoc")),
             partNo = cursor.getString(cursor.getColumnIndexOrThrow("PartNo")),
