@@ -1,6 +1,8 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.receiving
 
 import android.content.ContentValues
+import android.content.Context
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.graphics.Color
 import android.os.Bundle
@@ -16,6 +18,7 @@ import com.essency.essencystockmovement.data.UtilClass.BarcodeParser
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
+import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
 
 
@@ -27,10 +30,34 @@ class ReceivingFragment : BaseFragment() {
     private lateinit var adapter: ReceivingAdapter
     private val stockList = mutableListOf<StockList>()
     private lateinit var barcodeParser: BarcodeParser
+    private lateinit var repository: TraceabilityStockListRepository
+    private lateinit var sharedPreferences: SharedPreferences
 
 
     private lateinit var dbHelper: MyDatabaseHelper
     private var palletRegex: Regex? = null // Expresión regular cargada desde la base de datos
+
+    //OK
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+//    ): View {
+//        barcodeParser = BarcodeParser()
+//        _binding = FragmentStockListBinding.inflate(inflater, container, false)
+//        dbHelper = MyDatabaseHelper(requireContext())
+//        repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
+//        sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+//
+//        val lastStock = getLastInserted()
+//        if (lastStock != null) {
+//            stockList.add(lastStock)
+//        }
+//
+//        binding.editTextNewStockItem.setBackgroundColor(Color.DKGRAY)
+//        setupRecyclerView()
+//        setupTextInputValidation() // 🔹 AHORA SÍ SE EJECUTA
+//
+//        return binding.root
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -38,19 +65,19 @@ class ReceivingFragment : BaseFragment() {
         barcodeParser = BarcodeParser()
         _binding = FragmentStockListBinding.inflate(inflater, container, false)
         dbHelper = MyDatabaseHelper(requireContext())
+        repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
+        sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
-        // 🔹 Obtener el último registro insertado en StockList
-        val lastStock = getLastInserted()
+        // 🔹 Obtener todos los registros de StockList que coincidan con el último TraceabilityStockList
+        stockList.addAll(getStockListForLastTraceability())
 
-        if (lastStock != null) {
-            // 🔹 Muestra los datos en el RecyclerView o en la UI
-            stockList.add(lastStock)
-        }
         binding.editTextNewStockItem.setBackgroundColor(Color.DKGRAY)
         setupRecyclerView()
+        setupTextInputValidation()
 
         return binding.root
     }
+
 
     private fun getLastInserted(): StockList? {
         val db = dbHelper.readableDatabase
@@ -130,30 +157,52 @@ class ReceivingFragment : BaseFragment() {
         return id
     }
 
+    private fun getStockListForLastTraceability(): List<StockList> {
+        val db = dbHelper.readableDatabase
+        val stockList = mutableListOf<StockList>()
+
+        // 🔹 Obtener el último `IDTraceabilityStockList`
+        val lastTraceabilityStock = repository.getLastInserted()
+        val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
+
+        val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
+        val cursor = db.rawQuery(query, arrayOf(traceabilityId.toString()))
+
+        cursor.use {
+            while (it.moveToNext()) {
+                stockList.add(cursorToStock(it))
+            }
+        }
+
+        return stockList
+    }
+
+
 
     private fun convertToStockList(parsedData: BarcodeData): StockList {
         val lastStock = getLastInserted() // Obtener la última entrada para completar datos
-
+        val lastTraceabilityStock = repository.getLastInserted()
         return StockList(
             id = 0, // Se autogenerará en la BD
-            idTraceabilityStockList = lastStock?.idTraceabilityStockList ?: 0, // Usar el último o 0 si no hay
-            company = lastStock?.company ?: "Default Company",
-            source = lastStock?.source ?: "Unknown Source",
-            sourceLoc = lastStock?.sourceLoc,
-            destination = lastStock?.destination ?: "Unknown Destination",
-            destinationLoc = lastStock?.destinationLoc,
+            idTraceabilityStockList = lastTraceabilityStock?.id ?: 0, // Usar el último o 0 si no hay
+            company = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "001", // 🔹 AHORA viene de `CountryOfProduction`
+            source = lastTraceabilityStock?.source ?: "Unknown Source",
+            sourceLoc = "Unknown Source",
+            destination = lastTraceabilityStock?.destination ?: "Unknown Destination",
+            destinationLoc = "Unknown Source",
             pallet = parsedData.pallet,
             partNo = parsedData.partNumber ?: parsedData.partNumberWH1 ?: "",
             rev = parsedData.rev ?: parsedData.revWH1 ?: "",
-            lot = "N/A", // No se extrae de la regex
+            lot = lastTraceabilityStock?.batchNumber ?: "N/A", // 🔹 Ahora `lot` viene de `BatchNumber` de `TraceabilityStockList`
             qty = parsedData.countOfTradeItems ?: parsedData.countOfTradeItemsWH1 ?: 1,
             productionDate = parsedData.productionDate ?: parsedData.productionDateWH1 ?: "",
             countryOfProduction = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "",
             serialNumber = parsedData.serialNumber ?: parsedData.serialNumberWH1 ?: "",
             date = "2024-02-06", // Fecha actual o extraída
             timeStamp = System.currentTimeMillis().toString(), // Timestamp actual
-            user = lastStock?.user ?: "Unknown User",
-            contBolNum = lastStock?.contBolNum ?: "N/A"
+            //user = sharedPreferences?.getString("userName", "Unknown User") ?: "Unknown User",
+            user = sharedPreferences.getString("userName", "Unknown User") ?: "Unknown User",
+            contBolNum = "${lastTraceabilityStock?.batchNumber ?: "N/A"}-${(lastStock?.id ?: 0) + 1}"
         )
     }
 

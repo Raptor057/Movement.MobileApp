@@ -78,26 +78,26 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val createTableQueryStockList = """
             CREATE TABLE StockList (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    IDTraceabilityStockList INTEGER NOT NULL,
-    Company TEXT NOT NULL,
-    Source TEXT NOT NULL,
-    SourceLoc TEXT,
-    Destination TEXT NOT NULL,
-    DestinationLoc TEXT,
-    Pallet TEXT,  -- 🔹 Nuevo campo agregado
-    PartNo TEXT NOT NULL,
-    Rev TEXT NOT NULL,
-    Lot TEXT NOT NULL,
-    Qty INTEGER NOT NULL,
-    ProductionDate TEXT,  -- 🔹 Nuevo campo agregado
-    CountryOfProduction TEXT,  -- 🔹 Nuevo campo agregado
-    SerialNumber TEXT,  -- 🔹 Nuevo campo agregado
-    Date TEXT NOT NULL,
-    TimeStamp DATETIME NOT NULL,
-    User TEXT NOT NULL,
-    ContBolNum TEXT NOT NULL
-);
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            IDTraceabilityStockList INTEGER NOT NULL,
+            Company TEXT NOT NULL,
+            Source TEXT NOT NULL,
+            SourceLoc TEXT,
+            Destination TEXT NOT NULL,
+            DestinationLoc TEXT,
+            Pallet TEXT,  -- 🔹 Nuevo campo agregado
+            PartNo TEXT NOT NULL,
+            Rev TEXT NOT NULL,
+            Lot TEXT NOT NULL,
+            Qty INTEGER NOT NULL,
+            ProductionDate TEXT,  -- 🔹 Nuevo campo agregado
+            CountryOfProduction TEXT,  -- 🔹 Nuevo campo agregado
+            SerialNumber TEXT,  -- 🔹 Nuevo campo agregado
+            Date TEXT NOT NULL,
+            TimeStamp DATETIME NOT NULL,
+            User TEXT NOT NULL,
+            ContBolNum TEXT NOT NULL
+        );
         """.trimIndent()
         db.execSQL(createTableQueryStockList)
 
