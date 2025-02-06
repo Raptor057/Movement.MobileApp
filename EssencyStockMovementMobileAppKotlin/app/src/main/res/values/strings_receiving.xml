@@ -22,4 +22,9 @@
     <string name="tab_receiving_data">Receiving Data</string>
     <string name="tab_receiving">Scan Item Receiving</string>
     <string name="enter_stock_item">Scan New Item</string>
+    <string name="production_date"> Production Date</string>
+    <string name="country_of_production">Country of Production</string>
+    <string name="serial_number">Serial Number</string>
+    <string name="traceability_stock_id">Traceability Stock ID</string>
+    <string name="pallet">Pallet</string>
 </resources>
