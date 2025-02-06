@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.BaseActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsActivity
 import com.essency.essencystockmovement.data.UI.LoginActivity
 import com.essency.essencystockmovement.databinding.ActivityHomeBinding
@@ -62,6 +63,11 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
         // Agrega un listener para manejar el clic en Logout y Settings
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.nav_Receiving -> {
+                    val intent = Intent(this, ReceivingActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
                 R.id.nav_Logout -> {
                     handleLogout() // Llama al método para manejar el logout
                     drawerLayout.closeDrawers()

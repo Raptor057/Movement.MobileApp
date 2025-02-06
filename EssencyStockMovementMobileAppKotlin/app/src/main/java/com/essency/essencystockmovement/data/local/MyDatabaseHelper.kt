@@ -8,7 +8,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 {
     companion object {
         private const val DATABASE_NAME = "EssencyStockMovement.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 8
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -54,7 +54,6 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
     """.trimIndent()
         db.execSQL(defaultRegularExpression)
 
-
         val createTableQueryAppConfigurationEmail = """
             CREATE TABLE AppConfigurationEmail (
             Email TEXT NOT NULL);
@@ -99,17 +98,19 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val createTableQueryTraceabilityStockList = """
             CREATE TABLE TraceabilityStockList (
-            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, -- Identificador único
-            --IDStock INTEGER NOT NULL,                     -- Relación con StockList BOL #
-            BatchNumber TEXT NOT NULL,                             -- Número de lote o batch para identificar el grupo
-            MovementType TEXT NOT NULL,                            -- Tipo de movimiento asociado (ejemplo: RECEIVING, SHIPMENT, INVENTORY)
-            NumberOfHeaters INTEGER NOT NULL, 
-            NumberOfHeatersFinished  INTEGER NOT NULL,
-            Finish BOOLEAN NOT NULL,                    -- Indica si el movimiento ha sido guardado en StockList
-            SendByEmail BOOLEAN NOT NULL,                 -- Indica si el movimiento se envió por correo electrónico
-            CreatedBy TEXT,                               -- Usuario que creó el registro
-            TimeStamp DATETIME NOT NULL,                  -- Marca de tiempo del registro
-            Notes TEXT);                                    -- Notas adicionales o comentarios
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            BatchNumber TEXT NOT NULL,
+            MovementType TEXT NOT NULL,
+            NumberOfHeaters INTEGER NOT NULL,
+            NumberOfHeatersFinished INTEGER NOT NULL,
+            Finish INTEGER NOT NULL DEFAULT 0,
+            SendByEmail INTEGER NOT NULL DEFAULT 0,
+            CreatedBy TEXT,
+            Source TEXT NOT NULL,   -- 🔹 Asegúrate de que esta línea existe
+            Destination TEXT NOT NULL,
+            TimeStamp DATETIME NOT NULL,
+            Notes TEXT
+            );
         """.trimIndent()
         db.execSQL(createTableQueryTraceabilityStockList)
 
@@ -157,7 +158,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         """.trimIndent()
         db.execSQL(createTableQueryWarehouseList)
 
-        // *** Agregar lenguaje predeterminado  ***
+        // *** Agregar WarehouseList predeterminado  ***
         val insertWarehouseList = """
         INSERT INTO WarehouseList (Warehouse)
         VALUES ('Diligent'),('GTFR');
@@ -179,7 +180,19 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         """.trimIndent()
         db.execSQL(insertEmailSender)
 
+        val createUserMovementsView = """
+        CREATE VIEW UserMovementsView AS
+        SELECT 
+        Au.UserName, Au.Name, Au.LastName, Au.IsAdmin, 
+        MT.Type, WL.Warehouse, MT.Source, MT.Destination
+        FROM AppUsers Au
+        INNER JOIN WarehouseList WL ON Au.UserType = WL.Warehouse
+        INNER JOIN MovementType MT ON MT.UserType = WL.Warehouse;
+        """.trimIndent()
+        db.execSQL(createUserMovementsView)
+
     }
+
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Se llama al actualizar la versión de la DB.
@@ -194,6 +207,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL("DROP TABLE IF EXISTS Language")
         db.execSQL("DROP TABLE IF EXISTS WarehouseList")
         db.execSQL("DROP TABLE IF EXISTS EmailSender")
+        db.execSQL("DROP VIEW IF EXISTS UserMovementsView")
         onCreate(db)
     }
 

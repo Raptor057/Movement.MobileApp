@@ -7,6 +7,7 @@ import com.essency.essencystockmovement.data.UtilClass.PBKDF2Helper
 import com.essency.essencystockmovement.data.interfaces.IAppUserRepository
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.AppUser
+import com.essency.essencystockmovement.data.model.UserMovementData
 
 class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserRepository {
 
@@ -96,6 +97,30 @@ println("Usuario logueado: $userName, Tipo: $userType, Admin: $isAdmin")
         return appUser
     }
 
+    override fun getUserMovementData(username: String, type: String): UserMovementData? {
+        val db = dbHelper.readableDatabase
+        val query = """
+            SELECT 
+            Au.UserName, Au.Name, Au.LastName, Au.IsAdmin, 
+            MT.Type AS MovementType, WL.Warehouse, MT.Source, MT.Destination
+            FROM AppUsers Au
+            INNER JOIN WarehouseList WL ON Au.UserType = WL.Warehouse
+            INNER JOIN MovementType MT ON MT.UserType = WL.Warehouse AND MT.Type = ?
+            WHERE Au.UserName = ?;
+        """.trimIndent()
+
+        val cursor = db.rawQuery(query, arrayOf(type, username))
+        var userMovementData: UserMovementData? = null
+
+        if (cursor.moveToFirst()) {
+            userMovementData = cursorToUserMovementData(cursor)
+        }
+
+        cursor.close()
+        db.close()
+        return userMovementData
+    }
+
 
     override fun update(appUser: AppUser): Int {
         val db = dbHelper.writableDatabase
@@ -183,4 +208,49 @@ println("Usuario logueado: $userName, Tipo: $userType, Admin: $isAdmin")
             enable = enable
         )
     }
+
+//    private fun cursorToUserMovementData(cursor: Cursor): UserMovementData {
+//        val username = cursor.getString(cursor.getColumnIndexOrThrow("username"))
+//        val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+//        val lastName = cursor.getString(cursor.getColumnIndexOrThrow("lastname"))
+//        val isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow("isadmin")) == 1
+//        val type = cursor.getString(cursor.getColumnIndexOrThrow("Type"))
+//        val warehouse = cursor.getString(cursor.getColumnIndexOrThrow("Warehouse"))
+//        val source = cursor.getString(cursor.getColumnIndexOrThrow("Source"))
+//        val destination = cursor.getString(cursor.getColumnIndexOrThrow("Destination"))
+//
+//        return UserMovementData(
+//            username = username,
+//            name = name,
+//            lastName = lastName,
+//            isAdmin = isAdmin,
+//            type = type, // El tipo se obtiene como parámetro, pero lo fijo para claridad
+//            warehouse = warehouse,
+//            source = source,
+//            destination = destination
+//        )
+//    }
+
+private fun cursorToUserMovementData(cursor: Cursor): UserMovementData {
+    val username = cursor.getString(cursor.getColumnIndexOrThrow("UserName")) // <- Cambiar a "UserName"
+    val name = cursor.getString(cursor.getColumnIndexOrThrow("Name"))
+    val lastName = cursor.getString(cursor.getColumnIndexOrThrow("LastName"))
+    val isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow("IsAdmin")) == 1
+    val type = cursor.getString(cursor.getColumnIndexOrThrow("MovementType"))
+    val warehouse = cursor.getString(cursor.getColumnIndexOrThrow("Warehouse"))
+    val source = cursor.getString(cursor.getColumnIndexOrThrow("Source"))
+    val destination = cursor.getString(cursor.getColumnIndexOrThrow("Destination"))
+
+    return UserMovementData(
+        username = username,
+        name = name,
+        lastName = lastName,
+        isAdmin = isAdmin,
+        type = type,
+        warehouse = warehouse,
+        source = source,
+        destination = destination
+    )
+}
+
 }

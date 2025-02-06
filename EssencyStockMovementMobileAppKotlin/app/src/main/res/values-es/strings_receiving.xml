@@ -1,3 +1,23 @@
 <resources>
     <string name="receiving_section_name">Recepción</string>
+    <string name="movement_type">Tipo de movimiento</string>
+    <string name="number_of_heaters">Número de calentadores para recibir</string>
+    <string name="source_container_bol">Contenedor de origen / bol</string>
+    <string name="source">Fuente</string>
+    <string name="destination">Destino</string>
+    <string name="save">Ahorrar</string>
+    <string name="edit">Editar</string>
+    <string name="stock_id">ID de stock</string>
+    <string name="company">Compañía</string>
+    <string name="source_location">Ubicación de origen</string>
+    <string name="destination_location">Ubicación de destino</string>
+    <string name="part_no">Número de parte</string>
+    <string name="revision">Revisión</string>
+    <string name="lot">Lote</string>
+    <string name="quantity">Cantidad</string>
+    <string name="date">Fecha</string>
+    <string name="timestamp">Marca de tiempo</string>
+    <string name="user">Usuario</string>
+    <string name="container_bol">Contenedor / bol</string>
+    <string name="enter_stock_item">Escanear un nuevo elemento</string>
 </resources>

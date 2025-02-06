@@ -19,15 +19,15 @@
     <string name="settings_users_user">Usuario</string>"
     <string name="settings_users_user_name">Nombre de usuario</string>"
     <string name="settings_users_user_lastname">Apellido</string>"
+    <string name="settings_users_user_type_hint">Tipo de usuario</string>"
     <string name="settings_users_user_password">Contraseña</string>"
-    <string name="settings_users_user_admin_status">es administrador</string>"
-    <string name="settings_users_user_active">Usuario activo</string>"
-    <string name="administrator">Administrador</string>
-    <string name="user">Usuario</string>
-    <string name="active">Activo</string>
-    <string name="inactive">Inactivo</string>
-    <string name="settings_users_user_save_user">Guardar usuario</string>"
-    <string name="settings_users_user_new_password">Nueva contraseña</string>
+    <string name="settings_users_user_admin_status">Is Admin</string>"
+    <string name="settings_users_user_active">Active User</string>"
+    <string name="administrator">Administrator</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+    <string name="settings_users_user_save_user">Save User</string>"
+    <string name="settings_users_user_new_password">New Password</string>
 
     <string name="tab_add_user">Agregar usuario</string>
     <string name="tab_get_user">Obtener usuarios</string>
@@ -41,18 +41,25 @@
 
 
     <!--Email -->
-    <string name="settings_change_sending_email">Cambiar enviando correo electrónico</string>
+    <string name="settings_change_sending_email">Change sending email</string>
     <string name="settings_change_sender_email">Change sender email</string>
 
     <string name="settings_email_update_label">Update Sending Email</string>
     <string name="settings_email_hint">Enter email</string>
     <string name="settings_password_hint">Enter password</string>
-    <string name="settings_email_update_button">Actualizar</string>
+    <string name="settings_email_update_button">Update</string>
 
     <string name="settings_email">Email</string>
-    <string name="settings_email_mail_not_empty">Mail can not be empty</string>
-    <string name="settings_email_updated_successfully">Mail updated successfully</string>
-    <string name="settings_email_mail_error">Error updating mail</string>
+
+    <string name="settings_email_no_sender_config">No sender email configured.</string>
+    <string name="settings_email_no_recipient_config">No recipient email configured.</string>
+    <string name="settings_email_mail_not_empty">Email and password cannot be empty.</string>
+    <string name="settings_email_updated_successfully">Sender email updated successfully.</string>
+    <string name="settings_email_mail_error">Error updating sender email.</string>
+    <string name="settings_email_test_sent">Test email sent successfully.</string>
+    <string name="settings_email_test_failed">Failed to send test email.</string>
+
+
 
 
     <!--Regex -->
@@ -60,7 +67,7 @@
     <string name="settings_regex_label">Update Regular Expression</string>
     <string name="settings_regex_name">Regular Expression Name</string>
     <string name="settings_regex_value">Regular Expression</string>
-    <string name="settings_regex_update">Actualizar</string>
+    <string name="settings_regex_update">Update</string>
     <!--<string name="error_empty_fields">Please fill in all fields.</string>-->
     <string name="regex_update_success">Regular expression successfully updated.</string>
     <string name="regex_update_failed">Error updating regular expression.</string>
@@ -71,6 +78,24 @@
     <string name = "settings_change_warehouse">Change warehouse</string>
     <string name = "settings_warehouse_update">Update Warehouse</string>
     <string name = "settings_warehouse_add">Added Warehouse</string>
+    <string name="tab_add_warehouse">Add Warehouse</string>
+    <string name="tab_get_warehouse">Get Warehouse</string>
+    <string name="tab_update_warehouse">Update Warehouse</string>
+    <string name="tab_delete_warehouse">Delete Warehouse</string>
+    <string name="add_warehouse_title">Add Warehouse</string>
+    <string name="add_warehouse_hint">Warehouse Name</string>
+    <string name="add_warehouse_button_save">Save Warehouse</string>
+    <string name="get_warehouse_title">Warehouse List</string>
+    <string name="get_warehouse_filter_hint">Filter warehouses</string>
+    <string name="update_warehouse_title">Update Warehouses</string>
+    <string name="update_warehouse_filter_hint">Filter warehouses</string>
+    <string name="update_warehouse_name_hint">Edit warehouse name</string>
+    <string name="update_warehouse_button_save">Ahorrar</string>
+    <string name="update_warehouse_edit_warehouse">Edit Warehouse</string>
+
+
+
+
 
     <!--Lenguaje -->
     <string name = "settings_change_language">Change language</string>
