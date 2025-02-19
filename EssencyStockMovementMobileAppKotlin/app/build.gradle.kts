@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.firebase.inappmessaging)
     implementation(libs.androidx.swiperefreshlayout)
+    //implementation(libs.androidx.security.crypto.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,12 +83,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
     // Dependencias para enviar correos con JavaMail
     dependencies {
         implementation("com.sun.mail:android-mail:1.6.7")
         implementation("com.sun.mail:android-activation:1.6.7")
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
+        implementation("androidx.security:security-crypto:1.1.0-alpha06")
     }
 
 }
