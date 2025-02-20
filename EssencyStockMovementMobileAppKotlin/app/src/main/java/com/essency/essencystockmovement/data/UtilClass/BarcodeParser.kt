@@ -8,6 +8,8 @@ class BarcodeParser {
         "^(00(?<Pallet>\\d+)[|]8010(?<PartNumberWH1>[A-Za-z]\\d+)[_]92(?<RevWH1>[A-Za-z])[_]37(?<CountOfTradeItemsWH1>\\d+)[_]11(?<ProductionDateWH1>\\d+)[_]424(?<CountryOfPoductionWH1>\\d+)[_]91(?<SerialNumberOfTheProductWH1>\\d+[A-Za-z]\\d+)[|]8010(?<PartNumberWH2>[A-Za-z]\\d+)[_]92(?<RevWH2>[A-Za-z])[_]37(?<CountOfTradeItemsWH2>\\d+)[_]11(?<ProductionDateWH2>\\d+)[_]424(?<CountryOfPoductionWH2>\\d+)[_]91(?<SerialNumberOfTheProductWH2>\\d+[A-Za-z]\\d+)\$)|^(8010(?<PartNumber>[A-Za-z]\\d+)[_]92(?<Rev>[A-Za-z])[_]37(?<CountOfTradeItems>\\d+)[_]11(?<ProductionDate>\\d+)[_]424(?<CountryOfPoduction>\\d+)[_]91(?<SerialNumberOfTheProduct>\\d+[A-Za-z]\\d+))\$"
     )
 
+
+
     fun parseBarcode(barcode: String): BarcodeData? {
         val match = regex.matchEntire(barcode) ?: return null
 

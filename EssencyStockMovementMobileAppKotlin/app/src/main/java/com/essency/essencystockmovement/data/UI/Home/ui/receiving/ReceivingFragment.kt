@@ -5,14 +5,19 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.UtilClass.BarcodeParser
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
@@ -20,7 +25,6 @@ import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
 import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
-
 
 class ReceivingFragment : BaseFragment() {
 
@@ -35,29 +39,20 @@ class ReceivingFragment : BaseFragment() {
 
 
     private lateinit var dbHelper: MyDatabaseHelper
-    private var palletRegex: Regex? = null // Expresión regular cargada desde la base de datos
+    //private var palletRegex: Regex? = null // Expresión regular cargada desde la base de datos
 
-    //OK
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-//    ): View {
-//        barcodeParser = BarcodeParser()
-//        _binding = FragmentStockListBinding.inflate(inflater, container, false)
-//        dbHelper = MyDatabaseHelper(requireContext())
-//        repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
-//        sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+//    val masterKey = MasterKey.Builder(requireContext())
+//        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+//        .build()
 //
-//        val lastStock = getLastInserted()
-//        if (lastStock != null) {
-//            stockList.add(lastStock)
-//        }
-//
-//        binding.editTextNewStockItem.setBackgroundColor(Color.DKGRAY)
-//        setupRecyclerView()
-//        setupTextInputValidation() // 🔹 AHORA SÍ SE EJECUTA
-//
-//        return binding.root
-//    }
+//    // Usa exactamente el mismo nombre "EncryptedUserPrefs"
+//    val encryptedPrefs = EncryptedSharedPreferences.create(
+//        requireContext(),
+//        "EncryptedUserPrefs",
+//        masterKey,
+//        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+//        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+//    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -71,11 +66,30 @@ class ReceivingFragment : BaseFragment() {
         // 🔹 Obtener todos los registros de StockList que coincidan con el último TraceabilityStockList
         stockList.addAll(getStockListForLastTraceability())
 
-        binding.editTextNewStockItem.setBackgroundColor(Color.DKGRAY)
+        binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
+
+        // Asegura que el EditText tenga el foco
+        binding.editTextNewStockItem.requestFocus()
         setupRecyclerView()
         setupTextInputValidation()
 
+        stockList.addAll(getStockListForLastTraceability())
+
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
+
+        // Ahora puedes leer datos como si fuera un SharedPreferences normal
+        //val userName = encryptedPrefs.getString("userName", "Unknown")
+        //val source = encryptedPrefs.getString("source", "Desconocido")
+        //val destination = encryptedPrefs.getString("destination", "Desconocido")
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Al volver de otra pantalla, recupera el foco
+        binding.editTextNewStockItem.requestFocus()
     }
 
 
@@ -107,17 +121,28 @@ class ReceivingFragment : BaseFragment() {
                     val parsedData = barcodeParser.parseBarcode(input)
 
                     if (parsedData != null) {
-                        // 🔹 Convertir los datos extraídos a StockList
-                        val newStockItem = convertToStockList(parsedData)
+                        // convertToStockList puede retornar 1 o 2 StockList
+                        val stockItems = convertToStockList(parsedData)
 
-                        // 🔹 Insertar en la base de datos
-                        val insertedId = insertNewStockItem(newStockItem)
-
-                        if (insertedId != -1L) {
-                            stockList.add(newStockItem)
-                            adapter.notifyDataSetChanged()
-                            binding.editTextNewStockItem.text.clear() // 🔹 Limpiar el input después de la inserción
+                        for (item in stockItems) {
+                            val insertedId = insertNewStockItem(item)
+                            if (insertedId != -1L) {
+                                // Copiar el item con el nuevo ID
+                                val itemWithId = item.copy(id = insertedId.toInt())
+                                stockList.add(itemWithId)
+                                adapter.notifyDataSetChanged()
+                            } else {
+                                binding.editTextNewStockItem.error = "Error inserting item"
+                            }
+//                            val insertedId = insertNewStockItem(item)
+//                            if (insertedId != -1L) {
+//                                stockList.add(item)
+//                            } else {
+//                                binding.editTextNewStockItem.error = "Error inserting item"
+//                            }
                         }
+                        adapter.notifyDataSetChanged()
+                        binding.editTextNewStockItem.text.clear()
                     } else {
                         binding.editTextNewStockItem.error = "Invalid barcode format!"
                     }
@@ -152,9 +177,12 @@ class ReceivingFragment : BaseFragment() {
             put("ContBolNum", stockItem.contBolNum)
         }
 
-        val id = db.insert("StockList", null, values)
+        val insertedId = db.insert("StockList", null, values)
         db.close()
-        return id
+        return insertedId
+//        val id = db.insert("StockList", null, values)
+//        db.close()
+//        return id
     }
 
     private fun getStockListForLastTraceability(): List<StockList> {
@@ -179,46 +207,160 @@ class ReceivingFragment : BaseFragment() {
 
 
 
-    private fun convertToStockList(parsedData: BarcodeData): StockList {
-        val lastStock = getLastInserted() // Obtener la última entrada para completar datos
-        val lastTraceabilityStock = repository.getLastInserted()
-        return StockList(
-            id = 0, // Se autogenerará en la BD
-            idTraceabilityStockList = lastTraceabilityStock?.id ?: 0, // Usar el último o 0 si no hay
-            company = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "001", // 🔹 AHORA viene de `CountryOfProduction`
-            source = lastTraceabilityStock?.source ?: "Unknown Source",
-            sourceLoc = "Unknown Source",
-            destination = lastTraceabilityStock?.destination ?: "Unknown Destination",
-            destinationLoc = "Unknown Source",
-            pallet = parsedData.pallet,
-            partNo = parsedData.partNumber ?: parsedData.partNumberWH1 ?: "",
-            rev = parsedData.rev ?: parsedData.revWH1 ?: "",
-            lot = lastTraceabilityStock?.batchNumber ?: "N/A", // 🔹 Ahora `lot` viene de `BatchNumber` de `TraceabilityStockList`
-            qty = parsedData.countOfTradeItems ?: parsedData.countOfTradeItemsWH1 ?: 1,
-            productionDate = parsedData.productionDate ?: parsedData.productionDateWH1 ?: "",
-            countryOfProduction = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "",
-            serialNumber = parsedData.serialNumber ?: parsedData.serialNumberWH1 ?: "",
-            date = "2024-02-06", // Fecha actual o extraída
-            timeStamp = System.currentTimeMillis().toString(), // Timestamp actual
-            //user = sharedPreferences?.getString("userName", "Unknown User") ?: "Unknown User",
-            user = sharedPreferences.getString("userName", "Unknown User") ?: "Unknown User",
-            contBolNum = "${lastTraceabilityStock?.batchNumber ?: "N/A"}-${(lastStock?.id ?: 0) + 1}"
-        )
+//    private fun convertToStockList(parsedData: BarcodeData): StockList {
+//        val lastStock = getLastInserted() // Obtener la última entrada para completar datos
+//        val lastTraceabilityStock = repository.getLastInserted()
+//        return StockList(
+//            id = 0, // Se autogenerará en la BD
+//            idTraceabilityStockList = lastTraceabilityStock?.id ?: 0, // Usar el último o 0 si no hay
+//            company = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "001", // 🔹 AHORA viene de `CountryOfProduction`
+//            source = lastTraceabilityStock?.source ?: "Unknown Source",
+//            sourceLoc = "Unknown Source",
+//            destination = lastTraceabilityStock?.destination ?: "Unknown Destination",
+//            destinationLoc = "Unknown Source",
+//            pallet = parsedData.pallet,
+//            partNo = parsedData.partNumber ?: parsedData.partNumberWH1 ?: "",
+//            rev = parsedData.rev ?: parsedData.revWH1 ?: "",
+//            lot = lastTraceabilityStock?.batchNumber ?: "N/A", // 🔹 Ahora `lot` viene de `BatchNumber` de `TraceabilityStockList`
+//            qty = parsedData.countOfTradeItems ?: parsedData.countOfTradeItemsWH1 ?: 1,
+//            productionDate = parsedData.productionDate ?: parsedData.productionDateWH1 ?: "",
+//            countryOfProduction = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "",
+//            serialNumber = parsedData.serialNumber ?: parsedData.serialNumberWH1 ?: "",
+//            date = "2024-02-06", // Fecha actual o extraída
+//            timeStamp = System.currentTimeMillis().toString(), // Timestamp actual
+//            //user = sharedPreferences?.getString("userName", "Unknown User") ?: "Unknown User",
+//            user = sharedPreferences.getString("userName", "Unknown User") ?: "Unknown User",
+//            contBolNum = "${lastTraceabilityStock?.batchNumber ?: "N/A"}-${(lastStock?.id ?: 0) + 1}"
+//        )
+//    }
+
+    private fun convertToStockList(parsedData: BarcodeData): List<StockList> {
+        val lastTraceability = repository.getLastInserted()
+        val traceId = lastTraceability?.id ?: 0
+
+        // Función para crear un StockList individual según los parámetros
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun buildStock(
+            partNumber: String?,
+            rev: String?,
+            count: Int?,
+            pallet: String?,
+            productionDate: String?,
+            country: String?,
+            serial: String?
+        ): StockList {
+            return StockList(
+                id = 0,
+                idTraceabilityStockList = traceId,
+                // Por simplicidad, omito el resto de campos, llénalos como necesites
+                company = country ?: "001",
+                source = lastTraceability?.source ?: "Unknown",
+                sourceLoc = "Unknown Source",
+                destination = lastTraceability?.destination ?: "Unknown Destination",
+                destinationLoc = "Unknown",
+                pallet = pallet,
+                partNo = partNumber ?: "",
+                rev = rev ?: "",
+                lot = lastTraceability?.batchNumber ?: "N/A",
+                qty = count ?: 1,
+                productionDate = productionDate ?: "",
+                countryOfProduction = country ?: "",
+                serialNumber = serial ?: "",
+                date = "2024-02-06",//Localdatetime.now().toString(),
+                timeStamp = System.currentTimeMillis().toString(),
+                user = sharedPreferences.getString("userName", "Unknown") ?: "Unknown", //encryptedPrefs.getString("userName", "Unknown").toString(),//sharedPreferences.getString("userName", "Unknown") ?: "Unknown",
+                contBolNum = "${lastTraceability?.batchNumber ?: "N/A"}-XYZ" // Ajusta la lógica
+            )
+        }
+
+        return when {
+            // Caso 1: Dos calentadores (pallet + partNumberWH2 != null)
+            parsedData.pallet != null && parsedData.partNumberWH2 != null -> {
+                val item1 = buildStock(
+                    parsedData.partNumberWH1,
+                    parsedData.revWH1,
+                    parsedData.countOfTradeItemsWH1,
+                    parsedData.pallet,
+                    parsedData.productionDateWH1,
+                    parsedData.countryOfProductionWH1,
+                    parsedData.serialNumberWH1
+                )
+                val item2 = buildStock(
+                    parsedData.partNumberWH2,
+                    parsedData.revWH2,
+                    parsedData.countOfTradeItemsWH2,
+                    parsedData.pallet,
+                    parsedData.productionDateWH2,
+                    parsedData.countryOfProductionWH2,
+                    parsedData.serialNumberWH2
+                )
+                listOf(item1, item2)
+            }
+
+            // Caso 2: un solo calentador sin pallet (pallet == null), usando “partNumber” normal
+            parsedData.pallet == null && parsedData.partNumber != null -> {
+                val singleItem = buildStock(
+                    parsedData.partNumber,
+                    parsedData.rev,
+                    parsedData.countOfTradeItems,
+                    null,
+                    parsedData.productionDate,
+                    parsedData.countryOfProduction,
+                    parsedData.serialNumber
+                )
+                listOf(singleItem)
+            }
+
+            // Caso 3: un solo calentador con pallet pero sin partNumberWH2 (ej. un “WH1”)
+            parsedData.pallet != null && parsedData.partNumberWH2 == null -> {
+                val singleItem = buildStock(
+                    parsedData.partNumberWH1,
+                    parsedData.revWH1,
+                    parsedData.countOfTradeItemsWH1,
+                    parsedData.pallet,
+                    parsedData.productionDateWH1,
+                    parsedData.countryOfProductionWH1,
+                    parsedData.serialNumberWH1
+                )
+                listOf(singleItem)
+            }
+
+            // Caso 4: otra variante o error
+            else -> emptyList() // Devuelve lista vacía si no hay datos
+        }
     }
+
 
 
     private fun setupRecyclerView() {
         adapter = ReceivingAdapter(stockList) { itemToDelete ->
-            removeStockItem(itemToDelete)
+            removeStockItem(itemToDelete)  // <- Aquí definimos la acción de borrar
         }
         binding.recyclerViewStockList.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewStockList.adapter = adapter
     }
 
-    private fun removeStockItem(stockItem: StockList) {
-        stockList.remove(stockItem)
+//    private fun removeStockItem(stockItem: StockList) {
+//        stockList.remove(stockItem)
+//        adapter.notifyDataSetChanged()
+//    }
+
+private fun removeStockItem(item: StockList) {
+    // 1) Eliminar de la BD usando tu repositorio
+    val rowsDeleted = dbHelper.writableDatabase.delete(
+        "StockList",
+        "ID = ?",
+        arrayOf(item.id.toString())
+    )
+
+    // 2) Si rowsDeleted > 0, lo quitas de la lista en memoria
+    if (rowsDeleted > 0) {
+        stockList.remove(item)
         adapter.notifyDataSetChanged()
+    } else {
+        // Muestra un error o algo si no se pudo borrar
     }
+}
 
     override fun onDestroyView() {
         super.onDestroyView()

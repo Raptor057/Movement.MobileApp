@@ -31,7 +31,7 @@ class ReceivingAdapter(
 
             // Acción de eliminar
             binding.buttonDelete.setOnClickListener {
-                onDeleteClick(stock) // Llama la función de eliminación con el item actual
+                onDeleteClick(stock)  // Llamamos al callback con el item actual
             }
         }
     }
