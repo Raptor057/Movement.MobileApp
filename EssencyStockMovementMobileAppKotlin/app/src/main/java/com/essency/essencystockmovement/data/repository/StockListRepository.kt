@@ -13,7 +13,7 @@ class StockListRepository(private val dbHelper: MyDatabaseHelper) : IStockListRe
 
         try {
             // 🔍 Verificar si ya existe un registro con el mismo `PartNo` y `Lot`
-            val query = "SELECT ID, Qty FROM StockList WHERE PartNo = ? AND Lot = ?"
+            val query = "SELECT ID, Qty FROM StockList WHERE PartNo = ? AND Lot = ? ORDER BY ID DESC"
             val cursor = db.rawQuery(query, arrayOf(stock.partNo, stock.lot))
 
             if (cursor.moveToFirst()) {
@@ -70,7 +70,7 @@ class StockListRepository(private val dbHelper: MyDatabaseHelper) : IStockListRe
     override fun getAll(): List<StockList> {
         val db = dbHelper.readableDatabase
         val stockList = mutableListOf<StockList>()
-        val cursor = db.rawQuery("SELECT * FROM StockList", null)
+        val cursor = db.rawQuery("SELECT * FROM StockList ORDER BY ID DESC", null)
 
         cursor.use {
             while (it.moveToNext()) {
@@ -84,7 +84,7 @@ class StockListRepository(private val dbHelper: MyDatabaseHelper) : IStockListRe
     override fun getById(id: Int): StockList? {
         val db = dbHelper.readableDatabase
         var stock: StockList? = null
-        val cursor = db.rawQuery("SELECT * FROM StockList WHERE ID = ?", arrayOf(id.toString()))
+        val cursor = db.rawQuery("SELECT * FROM StockList WHERE ID = ? ORDER BY ID DESC", arrayOf(id.toString()))
 
         cursor.use {
             if (it.moveToFirst()) {

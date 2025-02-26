@@ -16,8 +16,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.UtilClass.BarcodeParser
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
@@ -25,6 +23,8 @@ import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
 import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class ReceivingFragment : BaseFragment() {
 
@@ -39,20 +39,6 @@ class ReceivingFragment : BaseFragment() {
 
 
     private lateinit var dbHelper: MyDatabaseHelper
-    //private var palletRegex: Regex? = null // Expresión regular cargada desde la base de datos
-
-//    val masterKey = MasterKey.Builder(requireContext())
-//        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-//        .build()
-//
-//    // Usa exactamente el mismo nombre "EncryptedUserPrefs"
-//    val encryptedPrefs = EncryptedSharedPreferences.create(
-//        requireContext(),
-//        "EncryptedUserPrefs",
-//        masterKey,
-//        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-//        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-//    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -134,12 +120,6 @@ class ReceivingFragment : BaseFragment() {
                             } else {
                                 binding.editTextNewStockItem.error = "Error inserting item"
                             }
-//                            val insertedId = insertNewStockItem(item)
-//                            if (insertedId != -1L) {
-//                                stockList.add(item)
-//                            } else {
-//                                binding.editTextNewStockItem.error = "Error inserting item"
-//                            }
                         }
                         adapter.notifyDataSetChanged()
                         binding.editTextNewStockItem.text.clear()
@@ -180,9 +160,6 @@ class ReceivingFragment : BaseFragment() {
         val insertedId = db.insert("StockList", null, values)
         db.close()
         return insertedId
-//        val id = db.insert("StockList", null, values)
-//        db.close()
-//        return id
     }
 
     private fun getStockListForLastTraceability(): List<StockList> {
@@ -193,7 +170,12 @@ class ReceivingFragment : BaseFragment() {
         val lastTraceabilityStock = repository.getLastInserted()
         val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
 
-        val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
+        //val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
+        val query = "SELECT SL.* FROM StockList SL \n" +
+                "INNER JOIN TraceabilityStockList TSL \n" +
+                "ON SL.IDTraceabilityStockList = TSL.ID\n" +
+                "WHERE SL.IDTraceabilityStockList = ?\n" +
+                "ORDER BY SL.ID DESC"
         val cursor = db.rawQuery(query, arrayOf(traceabilityId.toString()))
 
         cursor.use {
@@ -205,38 +187,11 @@ class ReceivingFragment : BaseFragment() {
         return stockList
     }
 
-
-
-//    private fun convertToStockList(parsedData: BarcodeData): StockList {
-//        val lastStock = getLastInserted() // Obtener la última entrada para completar datos
-//        val lastTraceabilityStock = repository.getLastInserted()
-//        return StockList(
-//            id = 0, // Se autogenerará en la BD
-//            idTraceabilityStockList = lastTraceabilityStock?.id ?: 0, // Usar el último o 0 si no hay
-//            company = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "001", // 🔹 AHORA viene de `CountryOfProduction`
-//            source = lastTraceabilityStock?.source ?: "Unknown Source",
-//            sourceLoc = "Unknown Source",
-//            destination = lastTraceabilityStock?.destination ?: "Unknown Destination",
-//            destinationLoc = "Unknown Source",
-//            pallet = parsedData.pallet,
-//            partNo = parsedData.partNumber ?: parsedData.partNumberWH1 ?: "",
-//            rev = parsedData.rev ?: parsedData.revWH1 ?: "",
-//            lot = lastTraceabilityStock?.batchNumber ?: "N/A", // 🔹 Ahora `lot` viene de `BatchNumber` de `TraceabilityStockList`
-//            qty = parsedData.countOfTradeItems ?: parsedData.countOfTradeItemsWH1 ?: 1,
-//            productionDate = parsedData.productionDate ?: parsedData.productionDateWH1 ?: "",
-//            countryOfProduction = parsedData.countryOfProduction ?: parsedData.countryOfProductionWH1 ?: "",
-//            serialNumber = parsedData.serialNumber ?: parsedData.serialNumberWH1 ?: "",
-//            date = "2024-02-06", // Fecha actual o extraída
-//            timeStamp = System.currentTimeMillis().toString(), // Timestamp actual
-//            //user = sharedPreferences?.getString("userName", "Unknown User") ?: "Unknown User",
-//            user = sharedPreferences.getString("userName", "Unknown User") ?: "Unknown User",
-//            contBolNum = "${lastTraceabilityStock?.batchNumber ?: "N/A"}-${(lastStock?.id ?: 0) + 1}"
-//        )
-//    }
-
     private fun convertToStockList(parsedData: BarcodeData): List<StockList> {
         val lastTraceability = repository.getLastInserted()
         val traceId = lastTraceability?.id ?: 0
+        val sdf = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+        val currentDate = sdf.format(Date())
 
         // Función para crear un StockList individual según los parámetros
         @RequiresApi(Build.VERSION_CODES.O)
@@ -252,7 +207,6 @@ class ReceivingFragment : BaseFragment() {
             return StockList(
                 id = 0,
                 idTraceabilityStockList = traceId,
-                // Por simplicidad, omito el resto de campos, llénalos como necesites
                 company = country ?: "001",
                 source = lastTraceability?.source ?: "Unknown",
                 sourceLoc = "Unknown Source",
@@ -266,9 +220,10 @@ class ReceivingFragment : BaseFragment() {
                 productionDate = productionDate ?: "",
                 countryOfProduction = country ?: "",
                 serialNumber = serial ?: "",
-                date = "2024-02-06",//Localdatetime.now().toString(),
-                timeStamp = System.currentTimeMillis().toString(),
-                user = sharedPreferences.getString("userName", "Unknown") ?: "Unknown", //encryptedPrefs.getString("userName", "Unknown").toString(),//sharedPreferences.getString("userName", "Unknown") ?: "Unknown",
+                //date = "2024-02-06",//Localdatetime.now().toString(),
+                date = currentDate.toString(),
+                timeStamp = currentDate.toString(),//System.currentTimeMillis().toString(),
+                user = sharedPreferences.getString("userName", "Unknown") ?: "Unknown",
                 contBolNum = "${lastTraceability?.batchNumber ?: "N/A"}-XYZ" // Ajusta la lógica
             )
         }
@@ -340,11 +295,6 @@ class ReceivingFragment : BaseFragment() {
         binding.recyclerViewStockList.adapter = adapter
     }
 
-//    private fun removeStockItem(stockItem: StockList) {
-//        stockList.remove(stockItem)
-//        adapter.notifyDataSetChanged()
-//    }
-
 private fun removeStockItem(item: StockList) {
     // 1) Eliminar de la BD usando tu repositorio
     val rowsDeleted = dbHelper.writableDatabase.delete(
@@ -390,5 +340,4 @@ private fun removeStockItem(item: StockList) {
             contBolNum = cursor.getString(cursor.getColumnIndexOrThrow("ContBolNum"))
         )
     }
-
 }
