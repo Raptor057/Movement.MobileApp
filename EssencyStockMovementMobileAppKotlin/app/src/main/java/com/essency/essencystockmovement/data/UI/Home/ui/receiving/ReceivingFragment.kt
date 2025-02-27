@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.graphics.Color
+import android.graphics.Region
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
@@ -40,6 +41,41 @@ class ReceivingFragment : BaseFragment() {
 
     private lateinit var dbHelper: MyDatabaseHelper
 
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+//    ): View {
+//        barcodeParser = BarcodeParser()
+//        _binding = FragmentStockListBinding.inflate(inflater, container, false)
+//        dbHelper = MyDatabaseHelper(requireContext())
+//        repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
+//        sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+//
+//        // 🔹 Obtener todos los registros de StockList que coincidan con el último TraceabilityStockList
+//        //stockList.addAll(getStockListForLastTraceability())
+//        stockList.clear()
+//        stockList.addAll(getStockListForLastTraceability())
+//        adapter.notifyDataSetChanged()
+//
+//        binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
+//
+//        // Asegura que el EditText tenga el foco
+//        binding.editTextNewStockItem.requestFocus()
+//        setupRecyclerView()
+//        setupTextInputValidation()
+//
+//        //stockList.addAll(getStockListForLastTraceability())
+//
+//        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
+//
+//        // Ahora puedes leer datos como si fuera un SharedPreferences normal
+//        //val userName = encryptedPrefs.getString("userName", "Unknown")
+//        //val source = encryptedPrefs.getString("source", "Desconocido")
+//        //val destination = encryptedPrefs.getString("destination", "Desconocido")
+//
+//        return binding.root
+//    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -49,25 +85,16 @@ class ReceivingFragment : BaseFragment() {
         repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
         sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
-        // 🔹 Obtener todos los registros de StockList que coincidan con el último TraceabilityStockList
+        // 🔹 Inicializa el adapter antes de usar `stockList`
+        setupRecyclerView()
+
+        // 🔹 Ahora carga los datos en `stockList`
         stockList.addAll(getStockListForLastTraceability())
+        adapter.notifyDataSetChanged()
 
         binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
-
-        // Asegura que el EditText tenga el foco
         binding.editTextNewStockItem.requestFocus()
-        setupRecyclerView()
         setupTextInputValidation()
-
-        stockList.addAll(getStockListForLastTraceability())
-
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
-
-        // Ahora puedes leer datos como si fuera un SharedPreferences normal
-        //val userName = encryptedPrefs.getString("userName", "Unknown")
-        //val source = encryptedPrefs.getString("source", "Desconocido")
-        //val destination = encryptedPrefs.getString("destination", "Desconocido")
 
         return binding.root
     }
@@ -116,7 +143,8 @@ class ReceivingFragment : BaseFragment() {
                                 // Copiar el item con el nuevo ID
                                 val itemWithId = item.copy(id = insertedId.toInt())
                                 stockList.add(itemWithId)
-                                adapter.notifyDataSetChanged()
+                                //adapter.notifyDataSetChanged()
+                                adapter.notifyItemInserted(stockList.size - 1)
                             } else {
                                 binding.editTextNewStockItem.error = "Error inserting item"
                             }
@@ -190,11 +218,45 @@ class ReceivingFragment : BaseFragment() {
     private fun convertToStockList(parsedData: BarcodeData): List<StockList> {
         val lastTraceability = repository.getLastInserted()
         val traceId = lastTraceability?.id ?: 0
-        val sdf = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+        val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val currentDate = sdf.format(Date())
 
         // Función para crear un StockList individual según los parámetros
         @RequiresApi(Build.VERSION_CODES.O)
+//region Old
+//        fun buildStock(
+//            partNumber: String?,
+//            rev: String?,
+//            count: Int?,
+//            pallet: String?,
+//            productionDate: String?,
+//            country: String?,
+//            serial: String?
+//        ): StockList {
+//            return StockList(
+//                id = 0,
+//                idTraceabilityStockList = traceId,
+//                company = country ?: "001",
+//                source = lastTraceability?.source ?: "Unknown",
+//                sourceLoc = "Unknown Source",
+//                destination = lastTraceability?.destination ?: "Unknown Destination",
+//                destinationLoc = "Unknown",
+//                pallet = pallet,
+//                partNo = partNumber ?: "",
+//                rev = rev ?: "",
+//                lot = lastTraceability?.batchNumber ?: "N/A",
+//                qty = count ?: 1,
+//                productionDate = productionDate ?: "",
+//                countryOfProduction = country ?: "",
+//                serialNumber = serial ?: "",
+//                //date = "2024-02-06",//Localdatetime.now().toString(),
+//                date = currentDate.toString(),
+//                timeStamp = currentDate.toString(),//System.currentTimeMillis().toString(),
+//                user = sharedPreferences.getString("userName", "Unknown") ?: "Unknown",
+//                contBolNum = "${lastTraceability?.batchNumber ?: "N/A"}-XYZ" // Ajusta la lógica
+//            )
+//        }
+//endregion
         fun buildStock(
             partNumber: String?,
             rev: String?,
@@ -207,24 +269,25 @@ class ReceivingFragment : BaseFragment() {
             return StockList(
                 id = 0,
                 idTraceabilityStockList = traceId,
-                company = country ?: "001",
+                company = country ?: "001",  // 🔹 Si es null, usar "001"
                 source = lastTraceability?.source ?: "Unknown",
-                sourceLoc = "Unknown Source",
+                //sourceLoc = lastTraceability?.sourceLoc ?: "N/A", // 🔹 Evitar valores vacíos
+                sourceLoc = "Unknown Source", // 🔹 Evitar valores vacíos
                 destination = lastTraceability?.destination ?: "Unknown Destination",
-                destinationLoc = "Unknown",
-                pallet = pallet,
-                partNo = partNumber ?: "",
-                rev = rev ?: "",
+                //destinationLoc = lastTraceability?.destinationLoc ?: "N/A",
+                destinationLoc = "Unknown Destination",
+                pallet = pallet ?: "N/A",
+                partNo = partNumber ?: "Unknown",
+                rev = rev ?: "N/A",
                 lot = lastTraceability?.batchNumber ?: "N/A",
                 qty = count ?: 1,
-                productionDate = productionDate ?: "",
-                countryOfProduction = country ?: "",
-                serialNumber = serial ?: "",
-                //date = "2024-02-06",//Localdatetime.now().toString(),
+                productionDate = productionDate ?: "N/A",
+                countryOfProduction = country ?: "Unknown",
+                serialNumber = serial ?: "N/A",
                 date = currentDate.toString(),
-                timeStamp = currentDate.toString(),//System.currentTimeMillis().toString(),
+                timeStamp = currentDate.toString(),
                 user = sharedPreferences.getString("userName", "Unknown") ?: "Unknown",
-                contBolNum = "${lastTraceability?.batchNumber ?: "N/A"}-XYZ" // Ajusta la lógica
+                contBolNum = "${lastTraceability?.batchNumber ?: "N/A"}-XYZ"
             )
         }
 
