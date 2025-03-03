@@ -7,24 +7,16 @@
     android:padding="8dp">
 
     <!-- Contenedor de la información del stock -->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/layoutStockInfo"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/buttonDelete"-->
-<!--        android:layout_marginEnd="8dp">-->
     <LinearLayout
         android:id="@+id/layoutStockInfo"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonDelete"
         android:layout_marginEnd="8dp">
+
 
         <!-- ID de Stock -->
         <TextView

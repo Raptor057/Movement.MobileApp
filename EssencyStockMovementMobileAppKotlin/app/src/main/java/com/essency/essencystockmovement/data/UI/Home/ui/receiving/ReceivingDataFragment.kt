@@ -142,8 +142,8 @@ class ReceivingDataFragment : BaseFragment() {
         binding.editTextNumberOfHeaters.isEnabled = true
         binding.editTextSourceContainer.isEnabled = true
 
-        binding.editTextNumberOfHeaters.setBackgroundColor(Color.DKGRAY)
-        binding.editTextSourceContainer.setBackgroundColor(Color.DKGRAY)
+        binding.editTextNumberOfHeaters.setBackgroundColor(Color.WHITE)
+        binding.editTextSourceContainer.setBackgroundColor(Color.WHITE)
 
         binding.buttonSave.visibility = View.VISIBLE
         binding.buttonEdit.visibility = View.GONE
@@ -153,8 +153,8 @@ class ReceivingDataFragment : BaseFragment() {
         binding.editTextNumberOfHeaters.isEnabled = false
         binding.editTextSourceContainer.isEnabled = false
 
-        binding.editTextNumberOfHeaters.setBackgroundColor(Color.BLACK)
-        binding.editTextSourceContainer.setBackgroundColor(Color.BLACK)
+        binding.editTextNumberOfHeaters.setBackgroundColor(Color.WHITE)
+        binding.editTextSourceContainer.setBackgroundColor(Color.WHITE)
 
         binding.buttonSave.visibility = View.GONE
         binding.buttonEdit.visibility = View.VISIBLE
