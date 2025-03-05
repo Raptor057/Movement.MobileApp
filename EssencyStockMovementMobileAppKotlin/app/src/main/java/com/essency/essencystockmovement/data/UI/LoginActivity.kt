@@ -53,6 +53,8 @@ class LoginActivity : BaseActivity() {
 
             if (loggedInUser != null && userRepository.login(userName, password)) {
                 // Guardar los datos del usuario en SharedPreferences
+
+
                 saveUserToPreferences(loggedInUser)
 
                 Toast.makeText(this, getString(R.string.login_success, userName), Toast.LENGTH_SHORT).show()

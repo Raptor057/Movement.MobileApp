@@ -47,7 +47,7 @@ class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : 
     override fun getAll(): List<TraceabilityStockList> {
         val db = dbHelper.readableDatabase
         val stockList = mutableListOf<TraceabilityStockList>()
-        val cursor = db.rawQuery("SELECT * FROM TraceabilityStockList ORDER BY ID DESC", null)
+        val cursor = db.rawQuery("SELECT * FROM TraceabilityStockList", null)
 
         cursor.use {
             while (it.moveToNext()) {
@@ -61,7 +61,7 @@ class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : 
 
     override fun getById(id: Int): TraceabilityStockList? {
         val db = dbHelper.readableDatabase
-        val query = "SELECT * FROM TraceabilityStockList WHERE ID = ? ORDER BY ID DESC"
+        val query = "SELECT * FROM TraceabilityStockList WHERE ID = ?"
         val cursor = db.rawQuery(query, arrayOf(id.toString()))
         var stock: TraceabilityStockList? = null
 
@@ -81,8 +81,7 @@ class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : 
         var cursor: Cursor? = null
 
         try {
-            //cursor = db.rawQuery("SELECT * FROM TraceabilityStockList ORDER BY ID DESC LIMIT 1", null)
-            cursor = db.rawQuery("SELECT SL.* FROM StockList SL INNER JOIN TraceabilityStockList TSL ON SL.IDTraceabilityStockList = TSL.ID ORDER BY SL.ID DESC", null)
+            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList ORDER BY ID DESC LIMIT 1", null)
             if (cursor.moveToFirst()) {
                 lastStock = cursorToTraceabilityStock(cursor)
             }

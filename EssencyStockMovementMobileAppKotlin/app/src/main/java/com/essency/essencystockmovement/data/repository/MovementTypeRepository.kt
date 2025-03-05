@@ -71,4 +71,20 @@ class MovementTypeRepository(private val dbHelper: MyDatabaseHelper) : IMovement
         db.close()
         return rowsDeleted > 0
     }
+
+    override fun getDestinationInMovementTypesByTypeandUserType(
+        type: String,
+        userType: String
+    ): String {
+        val db = dbHelper.readableDatabase
+        val query = "SELECT Destination FROM MovementType WHERE Type = ? AND UserType = ?"
+        val cursor: Cursor = db.rawQuery(query, arrayOf(type, userType))
+        var destination = ""
+        if (cursor.moveToFirst()) {
+            destination = cursor.getString(cursor.getColumnIndexOrThrow("Destination"))
+        }
+        cursor.close()
+        db.close()
+        return destination
+    }
 }

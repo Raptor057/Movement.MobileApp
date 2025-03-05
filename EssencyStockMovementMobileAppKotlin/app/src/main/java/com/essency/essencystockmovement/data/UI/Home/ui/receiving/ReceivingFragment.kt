@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.essency.essencystockmovement.data.UI.BaseFragment
@@ -20,6 +21,7 @@ import com.essency.essencystockmovement.data.UtilClass.BarcodeParser
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
+import com.essency.essencystockmovement.data.repository.MovementTypeRepository
 import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
 import java.text.SimpleDateFormat
@@ -34,7 +36,9 @@ class ReceivingFragment : BaseFragment() {
     private val stockList = mutableListOf<StockList>()
     private lateinit var barcodeParser: BarcodeParser
     private lateinit var repository: TraceabilityStockListRepository
+    private lateinit var movementType: MovementTypeRepository
     private lateinit var sharedPreferences: SharedPreferences
+    private var moduleName = "PREPARATION SHIPMENT"
 
 
     private lateinit var dbHelper: MyDatabaseHelper
@@ -47,6 +51,7 @@ class ReceivingFragment : BaseFragment() {
         dbHelper = MyDatabaseHelper(requireContext())
         repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
         sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        movementType = MovementTypeRepository(MyDatabaseHelper(requireContext())) //Agregado para obtener el destino segun el modulo
 
         // 🔹 Inicializa el adapter antes de usar `stockList`
         setupRecyclerView()
@@ -58,7 +63,6 @@ class ReceivingFragment : BaseFragment() {
         binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
         binding.editTextNewStockItem.requestFocus()
         setupTextInputValidation()
-
         return binding.root
     }
 
@@ -97,7 +101,14 @@ class ReceivingFragment : BaseFragment() {
                     val parsedData = barcodeParser.parseBarcode(input)
 
                     if (parsedData != null) {
-                        // convertToStockList puede retornar 1 o 2 StockList
+
+                        val scannedSerial = parsedData.serialNumberWH1 ?: parsedData.serialNumberWH2 ?: parsedData.serialNumber
+                        val duplicate = stockList.any { it.serialNumber == scannedSerial }
+                        if (duplicate) {
+                            binding.editTextNewStockItem.error = "Este dato ya fue escaneado"
+                            return@OnEditorActionListener true // Evita la inserción
+                        }
+
                         val stockItems = convertToStockList(parsedData)
 
                         for (item in stockItems) {
@@ -113,12 +124,32 @@ class ReceivingFragment : BaseFragment() {
                             }
                         }
                         adapter.notifyDataSetChanged()
+                        // Después de insertar los ítems y limpiar el campo...
                         binding.editTextNewStockItem.text.clear()
+
+                        // Verificar si se completó el lote actual
+                        val lastTraceability = repository.getLastInserted()
+                        if (lastTraceability != null) {
+                            // Obtenemos la cantidad total de calentadores escaneados para este registro
+                            val scannedItems = getStockListForLastTraceability()
+                            val scannedCount = scannedItems.size
+
+                            if (scannedCount >= lastTraceability.numberOfHeaters) {
+                                // Si se han escaneado la cantidad esperada, marcamos el registro como finalizado
+                                val updatedTraceability = lastTraceability.copy(finish = true)
+                                repository.update(updatedTraceability)
+                                Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Si aún no se ha completado el lote, actualizamos el contador según la cantidad total escaneada
+                                val updatedTraceability = lastTraceability.copy(numberOfHeatersFinished = scannedCount)
+                                repository.update(updatedTraceability)
+                                Toast.makeText(requireContext(), "Calentador agregado: $scannedCount de ${lastTraceability.numberOfHeaters}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     } else {
                         binding.editTextNewStockItem.error = "Invalid barcode format!"
                     }
                 }
-
                 return@OnEditorActionListener true // Indicar que el evento fue manejado
             }
             false
@@ -175,6 +206,7 @@ class ReceivingFragment : BaseFragment() {
     }
 
     private fun convertToStockList(parsedData: BarcodeData): List<StockList> {
+        var destination = movementType.getDestinationInMovementTypesByTypeandUserType(moduleName, sharedPreferences.getString("userType", "Unknown") ?: "Unknown")
         val lastTraceability = repository.getLastInserted()
         val traceId = lastTraceability?.id ?: 0
         val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
@@ -196,10 +228,10 @@ class ReceivingFragment : BaseFragment() {
                 id = 0,
                 idTraceabilityStockList = traceId,
                 company = country ?: "001",  // 🔹 Si es null, usar "001"
-                source = lastTraceability?.source ?: "Unknown",
+                source = sharedPreferences.getString("userType", "Unknown") ?: "Unknown",//lastTraceability?.source ?: "Unknown",
                 //sourceLoc = lastTraceability?.sourceLoc ?: "N/A", // 🔹 Evitar valores vacíos
                 sourceLoc = "Unknown Source", // 🔹 Evitar valores vacíos
-                destination = lastTraceability?.destination ?: "Unknown Destination",
+                destination = destination,//lastTraceability?.destination ?: "Unknown Destination",
                 //destinationLoc = lastTraceability?.destinationLoc ?: "N/A",
                 destinationLoc = "Unknown Destination",
                 pallet = pallet ?: "N/A",

@@ -70,7 +70,8 @@ class StockListRepository(private val dbHelper: MyDatabaseHelper) : IStockListRe
     override fun getAll(): List<StockList> {
         val db = dbHelper.readableDatabase
         val stockList = mutableListOf<StockList>()
-        val cursor = db.rawQuery("SELECT * FROM StockList ORDER BY ID DESC", null)
+        var cursor = db.rawQuery("SELECT SL.* FROM StockList SL INNER JOIN TraceabilityStockList TSL ON SL.IDTraceabilityStockList = TSL.ID ORDER BY SL.ID DESC", null)
+        //val cursor = db.rawQuery("SELECT * FROM StockList ORDER BY ID DESC", null)
 
         cursor.use {
             while (it.moveToNext()) {

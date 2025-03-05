@@ -29,4 +29,6 @@ interface IMovementTypeRepository {
      * @return true si la eliminación fue exitosa, false en caso contrario.
      */
     fun deleteMovementTypeById(id: Int): Boolean
+
+    fun getDestinationInMovementTypesByTypeandUserType(Type: String, UserType: String): String
 }
