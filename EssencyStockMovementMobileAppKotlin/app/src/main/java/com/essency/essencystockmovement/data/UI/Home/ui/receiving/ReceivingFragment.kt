@@ -23,6 +23,7 @@ import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
 import com.essency.essencystockmovement.data.repository.MovementTypeRepository
 import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
+import com.essency.essencystockmovement.databinding.FragmentReceivingDataBinding
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -38,7 +39,7 @@ class ReceivingFragment : BaseFragment() {
     private lateinit var repository: TraceabilityStockListRepository
     private lateinit var movementType: MovementTypeRepository
     private lateinit var sharedPreferences: SharedPreferences
-    private var moduleName = "PREPARATION SHIPMENT"
+    private var moduleName = "RECEIVING"
 
 
     private lateinit var dbHelper: MyDatabaseHelper
@@ -95,8 +96,14 @@ class ReceivingFragment : BaseFragment() {
                 actionId == EditorInfo.IME_ACTION_NEXT ||
                 (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                val input = binding.editTextNewStockItem.text.toString().trim()
+                // Primero, obtener el registro de trazabilidad actual y validar que se hayan completado los campos de Datos de Recepción
+                val currentTraceability = repository.getLastInserted()
+                if (currentTraceability == null || currentTraceability.batchNumber.isEmpty() || currentTraceability.numberOfHeaters == 0) {
+                    Toast.makeText(requireContext(), "Por favor, complete los campos en Datos de Recepción.", Toast.LENGTH_SHORT).show()
+                    return@OnEditorActionListener true
+                }
 
+                val input = binding.editTextNewStockItem.text.toString().trim()
                 if (input.isNotEmpty()) {
                     val parsedData = barcodeParser.parseBarcode(input)
 
@@ -139,6 +146,8 @@ class ReceivingFragment : BaseFragment() {
                                 val updatedTraceability = lastTraceability.copy(finish = true)
                                 repository.update(updatedTraceability)
                                 Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
+                                // Limpiar la lista para iniciar un nuevo lote
+                                stockList.clear()
                             } else {
                                 // Si aún no se ha completado el lote, actualizamos el contador según la cantidad total escaneada
                                 val updatedTraceability = lastTraceability.copy(numberOfHeatersFinished = scannedCount)
@@ -316,22 +325,60 @@ class ReceivingFragment : BaseFragment() {
         binding.recyclerViewStockList.adapter = adapter
     }
 
-private fun removeStockItem(item: StockList) {
-    // 1) Eliminar de la BD usando tu repositorio
-    val rowsDeleted = dbHelper.writableDatabase.delete(
-        "StockList",
-        "ID = ?",
-        arrayOf(item.id.toString())
-    )
 
-    // 2) Si rowsDeleted > 0, lo quitas de la lista en memoria
-    if (rowsDeleted > 0) {
-        stockList.remove(item)
-        adapter.notifyDataSetChanged()
-    } else {
-        // Muestra un error o algo si no se pudo borrar
+    private fun removeStockItem(item: StockList) {
+        // Eliminar de la base de datos
+        val rowsDeleted = dbHelper.writableDatabase.delete(
+            "StockList",
+            "ID = ?",
+            arrayOf(item.id.toString())
+        )
+
+        if (rowsDeleted > 0) {
+            // Remover el ítem de la lista en memoria y notificar al adapter
+            stockList.remove(item)
+            adapter.notifyDataSetChanged()
+
+            // Actualizar el registro de trazabilidad según la nueva cantidad de piezas escaneadas
+            val lastTraceability = repository.getLastInserted()
+            if (lastTraceability != null) {
+                val scannedItems = getStockListForLastTraceability()
+                val scannedCount = scannedItems.size
+
+                // Si se elimina una pieza y el total es menor que el esperado, se desmarca la finalización.
+                val updatedTraceability = if (scannedCount < lastTraceability.numberOfHeaters) {
+                    lastTraceability.copy(
+                        finish = false,
+                        numberOfHeatersFinished = scannedCount
+                    )
+                } else {
+                    // Si aún se cumple o se supera, actualizamos solo el contador.
+                    lastTraceability.copy(numberOfHeatersFinished = scannedCount)
+                }
+                repository.update(updatedTraceability)
+            }
+        } else {
+            // Mostrar un mensaje de error si no se pudo borrar
+            Toast.makeText(requireContext(), "Error al borrar el ítem", Toast.LENGTH_SHORT).show()
+        }
     }
-}
+
+//private fun removeStockItem(item: StockList) {
+//    // 1) Eliminar de la BD usando tu repositorio
+//    val rowsDeleted = dbHelper.writableDatabase.delete(
+//        "StockList",
+//        "ID = ?",
+//        arrayOf(item.id.toString())
+//    )
+//
+//    // 2) Si rowsDeleted > 0, lo quitas de la lista en memoria
+//    if (rowsDeleted > 0) {
+//        stockList.remove(item)
+//        adapter.notifyDataSetChanged()
+//    } else {
+//        // Muestra un error o algo si no se pudo borrar
+//    }
+//}
 
     override fun onDestroyView() {
         super.onDestroyView()

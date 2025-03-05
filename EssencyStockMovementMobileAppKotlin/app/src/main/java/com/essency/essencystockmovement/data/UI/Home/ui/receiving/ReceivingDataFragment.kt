@@ -40,7 +40,6 @@ class ReceivingDataFragment : BaseFragment() {
 
         loadLastTraceabilityStock() // Auto-rellenar los campos
         setupListeners()
-
         return binding.root
     }
 
@@ -58,6 +57,11 @@ class ReceivingDataFragment : BaseFragment() {
         val userName = sharedPreferences.getString("userName", "Unknown") ?: "Unknown"
         val batchNumber = binding.editTextSourceContainer.text.toString()
         val numberOfHeaters = binding.editTextNumberOfHeaters.text.toString().toIntOrNull() ?: 0
+
+        if (batchNumber.isEmpty() || numberOfHeaters == 0) {
+            Toast.makeText(requireContext(), "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // Obtener fecha y hora actual en formato ISO 8601
         val timeStamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -121,12 +125,14 @@ class ReceivingDataFragment : BaseFragment() {
 
         if (lastStock != null ) {
             // Si hay un último registro en la base de datos, cargarlo
+            binding.editTextMovementType.setText(lastStock.movementType)
             binding.editTextSourceContainer.setText(lastStock.batchNumber)
             binding.editTextNumberOfHeaters.setText(lastStock.numberOfHeaters.toString())
             binding.editTextSource.setText(lastStock.source)
             binding.editTextDestination.setText(lastStock.destination)
         } else {
             // Si no hay datos previos, llenar con los datos del usuario logueado
+            binding.editTextMovementType.setText(defaultMovementType)
             binding.editTextSourceContainer.setText("")
             binding.editTextNumberOfHeaters.setText("")
             binding.editTextSource.setText(userData?.source ?: "Default Source")
