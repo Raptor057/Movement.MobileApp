@@ -12,7 +12,7 @@ import com.essency.essencystockmovement.data.model.EmailSender
 import com.essency.essencystockmovement.data.repository.EmailRepository
 import com.essency.essencystockmovement.data.repository.EmailSenderRepository
 import com.essency.essencystockmovement.databinding.FragmentSettingsEmailSenderBinding
-import EmailSenderService
+import com.essency.essencystockmovement.data.UtilClass.EmailSenderService
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

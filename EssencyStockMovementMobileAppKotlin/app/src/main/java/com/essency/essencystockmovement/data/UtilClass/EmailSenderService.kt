@@ -1,3 +1,5 @@
+package com.essency.essencystockmovement.data.UtilClass
+
 import java.util.Properties
 import javax.mail.Authenticator
 import javax.mail.Message
@@ -6,6 +8,10 @@ import javax.mail.Session
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 import com.sun.mail.smtp.SMTPTransport
+import javax.activation.DataHandler
+import javax.mail.internet.MimeBodyPart
+import javax.mail.internet.MimeMultipart
+import javax.mail.util.ByteArrayDataSource
 
 class EmailSenderService(
     private val username: String, // Correo emisor
@@ -57,6 +63,59 @@ class EmailSenderService(
         } catch (e: Exception) {
             e.printStackTrace()
             println("Error al enviar el correo: ${e.message}")
+        }
+    }
+
+    /**
+     * 2) Enviar correo con adjunto
+     * @param attachmentName   Nombre del archivo adjunto (por ej. "Reporte.txt")
+     * @param attachmentContent Contenido del archivo en texto (lo convertiremos internamente a ByteArray).
+     */
+    fun sendEmailWithAttachment(
+        to: String,
+        subject: String,
+        body: String,
+        attachmentName: String,
+        attachmentContent: String
+    ) {
+        try {
+            val session = createSession()
+            val message = MimeMessage(session).apply {
+                setFrom(InternetAddress(username))
+                setRecipients(Message.RecipientType.TO, InternetAddress.parse(to))
+                setSubject(subject)
+            }
+
+            // 1) Parte de texto (HTML)
+            val textBodyPart = MimeBodyPart()
+            textBodyPart.setContent(body, "text/html; charset=utf-8")
+
+            // 2) Parte adjunta (ByteArrayDataSource con MIME "text/plain", por ejemplo)
+            val attachmentBodyPart = MimeBodyPart()
+            val byteArray = attachmentContent.toByteArray()  // Convertimos el String a bytes
+            val dataSource = ByteArrayDataSource(byteArray, "text/plain")
+            attachmentBodyPart.dataHandler = DataHandler(dataSource)
+            attachmentBodyPart.fileName = attachmentName
+
+            // 3) Unir ambas partes en un MimeMultipart
+            val multipart = MimeMultipart().apply {
+                addBodyPart(textBodyPart)
+                addBodyPart(attachmentBodyPart)
+            }
+
+            // 4) Asignar el multipart al mensaje
+            message.setContent(multipart)
+
+            // 5) Conectar y enviar
+            val transport = session.getTransport("smtp") as SMTPTransport
+            transport.connect("smtp.gmail.com", username, password)
+            transport.sendMessage(message, message.allRecipients)
+            transport.close()
+
+            println("Correo con adjunto enviado exitosamente a $to")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("Error al enviar el correo con adjunto: ${e.message}")
         }
     }
 }

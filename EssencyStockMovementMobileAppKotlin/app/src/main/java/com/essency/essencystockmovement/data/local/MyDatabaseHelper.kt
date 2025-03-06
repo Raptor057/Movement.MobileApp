@@ -181,7 +181,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         // *** Agregar lenguaje predeterminado  ***
         val insertEmailSender = """
         INSERT INTO EmailSender (Email,Password)
-        VALUES ('essency.diligent@gmail.com','mpsb kyvu wocg bjjf');
+        VALUES ('essency.diligent@gmail.com','rkze uawr cxvs rxai');
         """.trimIndent()
         db.execSQL(insertEmailSender)
 

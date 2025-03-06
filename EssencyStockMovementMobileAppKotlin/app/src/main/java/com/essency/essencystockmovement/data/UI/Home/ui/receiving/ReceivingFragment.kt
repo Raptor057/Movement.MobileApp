@@ -23,7 +23,6 @@ import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
 import com.essency.essencystockmovement.data.repository.MovementTypeRepository
 import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
-import com.essency.essencystockmovement.databinding.FragmentReceivingDataBinding
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -146,8 +145,10 @@ class ReceivingFragment : BaseFragment() {
                                 val updatedTraceability = lastTraceability.copy(finish = true)
                                 repository.update(updatedTraceability)
                                 Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
+
                                 // Limpiar la lista para iniciar un nuevo lote
                                 stockList.clear()
+                                adapter.notifyDataSetChanged()
                             } else {
                                 // Si aún no se ha completado el lote, actualizamos el contador según la cantidad total escaneada
                                 val updatedTraceability = lastTraceability.copy(numberOfHeatersFinished = scannedCount)
