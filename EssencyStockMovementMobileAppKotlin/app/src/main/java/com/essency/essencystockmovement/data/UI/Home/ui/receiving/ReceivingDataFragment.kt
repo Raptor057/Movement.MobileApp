@@ -38,7 +38,7 @@ class ReceivingDataFragment : BaseFragment() {
         users = AppUserRepository(MyDatabaseHelper(requireContext()))
         repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
 
-        loadLastTraceabilityStock() // Auto-rellenar los campos
+        loadLastTraceabilityStock() // Auto-rellenar (si hay) o limpiar campos
         setupListeners()
         return binding.root
     }
@@ -63,14 +63,14 @@ class ReceivingDataFragment : BaseFragment() {
             return
         }
 
-        // Obtener fecha y hora actual en formato ISO 8601
+        // Obtener fecha/hora actual en formato ISO 8601
         val timeStamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         } else {
             TODO("VERSION.SDK_INT < O")
         }
 
-        // Obtener información del usuario
+        // Obtener datos de usuario (source/destination) según MovementType
         val userData = users.getUserMovementData(userName, defaultMovementType)
         val source = userData?.source ?: "Default Source"
         val destination = userData?.destination ?: "Default Destination"
@@ -78,7 +78,7 @@ class ReceivingDataFragment : BaseFragment() {
         val lastStock = repository.getLastInserted()
 
         if (lastStock != null && !lastStock.finish) {
-            // 🔹 Si la última fila no ha finalizado, la actualizamos en lugar de insertar una nueva
+            // 🔹 Actualizar la fila existente (todavía no terminada)
             val updatedStock = lastStock.copy(
                 batchNumber = batchNumber,
                 numberOfHeaters = numberOfHeaters,
@@ -89,11 +89,13 @@ class ReceivingDataFragment : BaseFragment() {
             val rowsUpdated = repository.update(updatedStock)
             if (rowsUpdated > 0) {
                 Toast.makeText(requireContext(), "Registro actualizado con éxito!", Toast.LENGTH_SHORT).show()
+                // 🔹 Recargar campos desde BD
+                loadLastTraceabilityStock()
             } else {
                 Toast.makeText(requireContext(), "Error al actualizar.", Toast.LENGTH_SHORT).show()
             }
         } else {
-            // 🔹 Si no hay fila o la última está finalizada, se crea una nueva
+            // 🔹 Crear una nueva fila si no hay o la última está finalizada
             val newStock = TraceabilityStockList(
                 batchNumber = batchNumber,
                 movementType = defaultMovementType,
@@ -114,33 +116,32 @@ class ReceivingDataFragment : BaseFragment() {
                 Toast.makeText(requireContext(), "No se puede insertar: Finaliza o completa los calentadores primero", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "Registro guardado con éxito!", Toast.LENGTH_SHORT).show()
+                // 🔹 Recargar campos desde BD
+                loadLastTraceabilityStock()
             }
         }
     }
 
     private fun loadLastTraceabilityStock() {
         val lastStock = repository.getLastInserted()
-        val userName = sharedPreferences.getString("userName", "Unknown") ?: "Unknown"
-        val userData = users.getUserMovementData(userName, defaultMovementType)
 
-        if (lastStock != null ) {
-            // Si hay un último registro en la base de datos, cargarlo
+        if (lastStock != null) {
+            // Hay un registro en la BD
             binding.editTextMovementType.setText(lastStock.movementType)
             binding.editTextSourceContainer.setText(lastStock.batchNumber)
             binding.editTextNumberOfHeaters.setText(lastStock.numberOfHeaters.toString())
             binding.editTextSource.setText(lastStock.source)
             binding.editTextDestination.setText(lastStock.destination)
         } else {
-            // Si no hay datos previos, llenar con los datos del usuario logueado
-            binding.editTextMovementType.setText(defaultMovementType)
+            // No hay datos previos: dejamos los campos en blanco
+            binding.editTextMovementType.setText("")
             binding.editTextSourceContainer.setText("")
             binding.editTextNumberOfHeaters.setText("")
-            binding.editTextSource.setText(userData?.source ?: "Default Source")
-            binding.editTextDestination.setText(userData?.destination ?: "Default Destination")
-            binding.editTextMovementType.setText(defaultMovementType)
+            binding.editTextSource.setText("")
+            binding.editTextDestination.setText("")
         }
 
-        // Bloquear los campos al inicio
+        // Bloquearlos por defecto
         disableFields()
     }
 

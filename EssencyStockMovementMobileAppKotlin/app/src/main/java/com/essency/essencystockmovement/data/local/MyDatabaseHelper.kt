@@ -8,7 +8,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 {
     companion object {
         private const val DATABASE_NAME = "EssencyStockMovement.db"
-        private const val DATABASE_VERSION = 8
+        private const val DATABASE_VERSION = 9
     }
 
     override fun onCreate(db: SQLiteDatabase) {

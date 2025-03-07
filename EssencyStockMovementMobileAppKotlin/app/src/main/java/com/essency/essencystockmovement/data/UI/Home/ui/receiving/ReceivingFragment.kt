@@ -1,5 +1,6 @@
 package com.essency.essencystockmovement.data.UI.Home.ui.receiving
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
@@ -43,6 +44,7 @@ class ReceivingFragment : BaseFragment() {
 
     private lateinit var dbHelper: MyDatabaseHelper
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -59,6 +61,9 @@ class ReceivingFragment : BaseFragment() {
         // 🔹 Ahora carga los datos en `stockList`
         stockList.addAll(getStockListForLastTraceability())
         adapter.notifyDataSetChanged()
+
+        // 🔹 Actualiza el contador de entrada
+        updateCounterUI()
 
         binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
         binding.editTextNewStockItem.requestFocus()
@@ -95,20 +100,32 @@ class ReceivingFragment : BaseFragment() {
                 actionId == EditorInfo.IME_ACTION_NEXT ||
                 (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                // Primero, obtener el registro de trazabilidad actual y validar que se hayan completado los campos de Datos de Recepción
+                // 1) Obtener el registro de trazabilidad actual
                 val currentTraceability = repository.getLastInserted()
-                if (currentTraceability == null || currentTraceability.batchNumber.isEmpty() || currentTraceability.numberOfHeaters == 0) {
+
+                // 2) Verificar si ya hay un lote finalizado o si no existe
+                if (currentTraceability == null || currentTraceability.finish) {
+                    Toast.makeText(requireContext(), "El lote actual ya está finalizado. Inicia un nuevo registro.", Toast.LENGTH_SHORT).show()
+                    return@OnEditorActionListener true
+                }
+
+                // 3) Verificar si faltan datos (batchNumber o numberOfHeaters)
+                if (currentTraceability.batchNumber.isEmpty() || currentTraceability.numberOfHeaters == 0) {
                     Toast.makeText(requireContext(), "Por favor, complete los campos en Datos de Recepción.", Toast.LENGTH_SHORT).show()
                     return@OnEditorActionListener true
                 }
 
+                // 4) Ya tenemos un lote abierto. Proceder a parsear el input
                 val input = binding.editTextNewStockItem.text.toString().trim()
                 if (input.isNotEmpty()) {
                     val parsedData = barcodeParser.parseBarcode(input)
 
                     if (parsedData != null) {
+                        val scannedSerial = parsedData.serialNumberWH1
+                            ?: parsedData.serialNumberWH2
+                            ?: parsedData.serialNumber
 
-                        val scannedSerial = parsedData.serialNumberWH1 ?: parsedData.serialNumberWH2 ?: parsedData.serialNumber
+                        // Evitar duplicados
                         val duplicate = stockList.any { it.serialNumber == scannedSerial }
                         if (duplicate) {
                             binding.editTextNewStockItem.error = "Este dato ya fue escaneado"
@@ -116,32 +133,54 @@ class ReceivingFragment : BaseFragment() {
                         }
 
                         val stockItems = convertToStockList(parsedData)
+                        // 1) Ver cuántos calentadores ya llevas
+                        val scannedCount = getStockListForLastTraceability().size
 
+                    // 2) Obtener el TraceabilityStockList actual (último insertado)
+                        val getlastTraceability = repository.getLastInserted()
+                        if (getlastTraceability == null) {
+                            // Si no hay lote, no puedes insertar. Regresas con error o como gustes.
+                            binding.editTextNewStockItem.error = "No hay lote activo. Por favor, registra datos de recepción."
+                            return@OnEditorActionListener true
+                        }
+
+                        // 3) totalHeaters será un valor Int, pero usamos el ?. para prevenir null y el operador ?: para un default
+                        val totalHeaters = getlastTraceability.numberOfHeaters
+                        val newItemsCount = stockItems.size
+
+                        // 4) Verificamos si al sumar rebasaríamos el límite
+                        if (scannedCount + newItemsCount > totalHeaters) {
+                            binding.editTextNewStockItem.error = "¡Excedes el límite de calentadores! " +
+                                    "Llevas $scannedCount de $totalHeaters, y esta etiqueta añade $newItemsCount."
+                            return@OnEditorActionListener true
+                        }
+
+                        // 5) Si no rebasas, ya insertas normalmente
                         for (item in stockItems) {
                             val insertedId = insertNewStockItem(item)
                             if (insertedId != -1L) {
-                                // Copiar el item con el nuevo ID
+                                // Agregar a la lista y notificar
                                 val itemWithId = item.copy(id = insertedId.toInt())
                                 stockList.add(itemWithId)
-                                //adapter.notifyDataSetChanged()
                                 adapter.notifyItemInserted(stockList.size - 1)
                             } else {
                                 binding.editTextNewStockItem.error = "Error inserting item"
                             }
                         }
                         adapter.notifyDataSetChanged()
-                        // Después de insertar los ítems y limpiar el campo...
+                        updateCounterUI()
+
+                        // Limpiar campo de texto
                         binding.editTextNewStockItem.text.clear()
 
                         // Verificar si se completó el lote actual
                         val lastTraceability = repository.getLastInserted()
                         if (lastTraceability != null) {
-                            // Obtenemos la cantidad total de calentadores escaneados para este registro
                             val scannedItems = getStockListForLastTraceability()
                             val scannedCount = scannedItems.size
 
                             if (scannedCount >= lastTraceability.numberOfHeaters) {
-                                // Si se han escaneado la cantidad esperada, marcamos el registro como finalizado
+                                // Lote finalizado
                                 val updatedTraceability = lastTraceability.copy(finish = true)
                                 repository.update(updatedTraceability)
                                 Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
@@ -149,8 +188,9 @@ class ReceivingFragment : BaseFragment() {
                                 // Limpiar la lista para iniciar un nuevo lote
                                 stockList.clear()
                                 adapter.notifyDataSetChanged()
+                                updateCounterUI()
                             } else {
-                                // Si aún no se ha completado el lote, actualizamos el contador según la cantidad total escaneada
+                                // Aún no se completa
                                 val updatedTraceability = lastTraceability.copy(numberOfHeatersFinished = scannedCount)
                                 repository.update(updatedTraceability)
                                 Toast.makeText(requireContext(), "Calentador agregado: $scannedCount de ${lastTraceability.numberOfHeaters}", Toast.LENGTH_SHORT).show()
@@ -165,6 +205,7 @@ class ReceivingFragment : BaseFragment() {
             false
         })
     }
+
 
     private fun insertNewStockItem(stockItem: StockList): Long {
         val db = dbHelper.writableDatabase
@@ -316,6 +357,27 @@ class ReceivingFragment : BaseFragment() {
         }
     }
 
+    private fun updateCounterUI() {
+        val lastTraceability = repository.getLastInserted()
+
+        if (lastTraceability == null) {
+            // Si no existe ningún registro, mostramos 0/0
+            binding.textViewCounter.text = "Calentadores: 0 / 0"
+            return
+        }
+
+        if (lastTraceability.finish) {
+            // Si el último lote ya está finalizado, también mostramos 0/0
+            binding.textViewCounter.text = "Calentadores: 0 / 0"
+            return
+        }
+
+        // Si el lote no está finalizado, calculamos cuántos lleva
+        val scannedCount = getStockListForLastTraceability().size
+        val totalHeaters = lastTraceability.numberOfHeaters
+        binding.textViewCounter.text = "Calentadores: $scannedCount / $totalHeaters"
+    }
+
 
 
     private fun setupRecyclerView() {
@@ -340,6 +402,9 @@ class ReceivingFragment : BaseFragment() {
             stockList.remove(item)
             adapter.notifyDataSetChanged()
 
+            // Actualizar contador
+            updateCounterUI()
+
             // Actualizar el registro de trazabilidad según la nueva cantidad de piezas escaneadas
             val lastTraceability = repository.getLastInserted()
             if (lastTraceability != null) {
@@ -363,23 +428,6 @@ class ReceivingFragment : BaseFragment() {
             Toast.makeText(requireContext(), "Error al borrar el ítem", Toast.LENGTH_SHORT).show()
         }
     }
-
-//private fun removeStockItem(item: StockList) {
-//    // 1) Eliminar de la BD usando tu repositorio
-//    val rowsDeleted = dbHelper.writableDatabase.delete(
-//        "StockList",
-//        "ID = ?",
-//        arrayOf(item.id.toString())
-//    )
-//
-//    // 2) Si rowsDeleted > 0, lo quitas de la lista en memoria
-//    if (rowsDeleted > 0) {
-//        stockList.remove(item)
-//        adapter.notifyDataSetChanged()
-//    } else {
-//        // Muestra un error o algo si no se pudo borrar
-//    }
-//}
 
     override fun onDestroyView() {
         super.onDestroyView()

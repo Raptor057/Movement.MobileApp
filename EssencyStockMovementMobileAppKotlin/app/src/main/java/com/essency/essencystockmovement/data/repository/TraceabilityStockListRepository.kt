@@ -81,7 +81,7 @@ class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : 
         var cursor: Cursor? = null
 
         try {
-            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList ORDER BY ID DESC LIMIT 1", null)
+            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList WHERE Finish = 0 ORDER BY ID DESC LIMIT 1", null)
             if (cursor.moveToFirst()) {
                 lastStock = cursorToTraceabilityStock(cursor)
             }
