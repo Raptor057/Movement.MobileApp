@@ -95,6 +95,26 @@ class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : 
         return lastStock
     }
 
+    override fun getLastInsertedFinished(): TraceabilityStockList? {
+        val db = dbHelper.readableDatabase
+        var lastStock: TraceabilityStockList? = null
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList WHERE Finish = 1 ORDER BY ID DESC LIMIT 1", null)
+            if (cursor.moveToFirst()) {
+                lastStock = cursorToTraceabilityStock(cursor)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            cursor?.close() // 🔹 Cerramos el cursor correctamente
+            // 🔹 NO cerramos `db` aquí, porque podría usarse después
+        }
+
+        return lastStock
+    }
+
     override fun update(traceabilityStock: TraceabilityStockList): Int {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {

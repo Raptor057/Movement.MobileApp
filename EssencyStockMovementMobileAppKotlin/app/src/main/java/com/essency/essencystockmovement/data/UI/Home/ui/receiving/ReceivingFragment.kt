@@ -16,15 +16,22 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.UtilClass.BarcodeParser
+import com.essency.essencystockmovement.data.UtilClass.EmailSenderService
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.BarcodeData
 import com.essency.essencystockmovement.data.model.StockList
+import com.essency.essencystockmovement.data.repository.EmailRepository
+import com.essency.essencystockmovement.data.repository.EmailSenderRepository
 import com.essency.essencystockmovement.data.repository.MovementTypeRepository
 import com.essency.essencystockmovement.data.repository.TraceabilityStockListRepository
 import com.essency.essencystockmovement.databinding.FragmentStockListBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -185,6 +192,9 @@ class ReceivingFragment : BaseFragment() {
                                 repository.update(updatedTraceability)
                                 Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
 
+                                // Enviar la información del último lote por correo
+                                sendLastBatchEmail()
+
                                 // Limpiar la lista para iniciar un nuevo lote
                                 stockList.clear()
                                 adapter.notifyDataSetChanged()
@@ -241,6 +251,27 @@ class ReceivingFragment : BaseFragment() {
 
         // 🔹 Obtener el último `IDTraceabilityStockList`
         val lastTraceabilityStock = repository.getLastInserted()
+        val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
+
+        //val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
+        val query = "SELECT SL.* FROM StockList SL INNER JOIN TraceabilityStockList TSL ON SL.IDTraceabilityStockList = TSL.ID WHERE SL.IDTraceabilityStockList = ? ORDER BY SL.ID DESC"
+        val cursor = db.rawQuery(query, arrayOf(traceabilityId.toString()))
+
+        cursor.use {
+            while (it.moveToNext()) {
+                stockList.add(cursorToStock(it))
+            }
+        }
+
+        return stockList
+    }
+
+    private fun getStockListForLastTraceabilityFinished(): List<StockList> {
+        val db = dbHelper.readableDatabase
+        val stockList = mutableListOf<StockList>()
+
+        // 🔹 Obtener el último `IDTraceabilityStockList`
+        val lastTraceabilityStock = repository.getLastInsertedFinished()
         val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
 
         //val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
@@ -356,6 +387,84 @@ class ReceivingFragment : BaseFragment() {
             else -> emptyList() // Devuelve lista vacía si no hay datos
         }
     }
+
+    // Función para enviar el correo con la información del último lote
+    private fun sendLastBatchEmail() {
+        // Obtener la información del último lote (la cabecera y los items)
+        val lastTraceability = repository.getLastInsertedFinished() ?: return
+        //val stockItems = getStockListForLastTraceability()
+        val stockItems = getStockListForLastTraceabilityFinished()
+        if (stockItems.isEmpty()) return
+
+        // Construir el contenido del archivo TXT
+        //val header = "ID;IDTraceabilityStockList;Company;Source;SourceLoc;Destination;DestinationLoc;Pallet;PartNo;Rev;Lot;Qty;ProductionDate;CountryOfProduction;SerialNumber;Date;TimeStamp;User;ContBolNum"
+        val rows = stockItems.map { stock ->
+            val productionDateFormatted = stock.productionDate?.let { dateStr ->
+                if (dateStr.length == 6) "20$dateStr" else dateStr
+            } ?: ""
+
+            listOf(
+                //stock.id.toString(),
+                "150",
+                //stock.idTraceabilityStockList.toString(),
+                //stock.company,
+                stock.source.trim(),
+                "",
+                //stock.sourceLoc ?: "",
+                stock.destination.trim(),
+                "",
+                //stock.destinationLoc ?: "",
+                //stock.pallet ?: "",
+                stock.partNo.trim(),
+                stock.rev.trim(),
+                stock.lot.trim(),
+                stock.qty.toString().trim(),
+                productionDateFormatted,
+                //stock.productionDate ?: "",
+                //stock.countryOfProduction ?: "",
+                //stock.serialNumber ?: "",
+                //stock.date,
+                //stock.timeStamp,
+                stock.user.trim(),
+                stock.contBolNum.trim(),
+                ""
+            ).joinToString(";")
+        }
+        //val fileContent = "$header\n${rows.joinToString("\n")}"
+        val fileContent = rows.joinToString("\n")
+
+        // Obtener el correo destinatario usando IEmailRepository
+        val emailRepository = EmailRepository(MyDatabaseHelper(requireContext()))
+        val recipientEmail = emailRepository.getEmail()?.email ?: return
+
+        // Obtener la configuración del remitente usando IEmailSenderRepository
+        val dbHelper = MyDatabaseHelper(requireContext())
+        val emailSenderRepository = EmailSenderRepository(dbHelper)
+        val senderData = emailSenderRepository.getEmailSender() ?: return
+        val emailSenderService = EmailSenderService(senderData.email, senderData.password)
+
+        // Enviar el correo con adjunto (ejecutando en un hilo secundario)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                emailSenderService.sendEmailWithAttachment(
+                    to = recipientEmail,
+                    subject = "Lote finalizado: ${lastTraceability.batchNumber}",
+                    body = "Adjunto se envía la información del último lote.",
+                    attachmentName = "lote_${lastTraceability.batchNumber}.txt",
+                    attachmentContent = fileContent
+                )
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Correo enviado con la información del lote", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Error al enviar correo: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 
     private fun updateCounterUI() {
         val lastTraceability = repository.getLastInserted()
