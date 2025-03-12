@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'default'
+  vmImage: 'Deployment'
 
 steps:
 - task: Gradle@2
