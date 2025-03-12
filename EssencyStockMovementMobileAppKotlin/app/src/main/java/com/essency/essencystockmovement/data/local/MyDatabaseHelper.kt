@@ -62,7 +62,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val defaultEmailInsert = """
         INSERT INTO AppConfigurationEmail (Email)
-        VALUES ('r.arriaga@generaltransmissions.com');
+        VALUES ('r.arriaga@generaltransmissions.com,f.guerrier@generaltransmissions.com');
     """.trimIndent()
         db.execSQL(defaultEmailInsert)
 
@@ -133,9 +133,9 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val insertMovementType = """
             INSERT INTO MovementType (UserType, Type, Source, Destination)
             VALUES 
-            ('Diligent', 'RECEIVING', 'TRANSIT', 'DILIGEN'),
-            ('Diligent', 'PREPARATION SHIPMENT', 'DILIGEN', 'PRT'),
-            ('Diligent', 'INVENTARIO', 'DILIGEN', 'N/A'),
+            ('Diligent', 'RECEIVING', 'TRANSI', 'DILIGE'),
+            ('Diligent', 'PREPARATION SHIPMENT', 'DILIGE', 'PRT'),
+            ('Diligent', 'INVENTARIO', 'DILIGE', 'N/A'),
             ('GTFR', 'PREPARATION SHIPMENT', 'N/A', 'N/A'),
             ('GTFR', 'INVENTARIO', 'N/A', 'N/A');
         """.trimIndent()

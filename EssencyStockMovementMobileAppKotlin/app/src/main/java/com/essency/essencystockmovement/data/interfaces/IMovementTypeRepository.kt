@@ -31,4 +31,5 @@ interface IMovementTypeRepository {
     fun deleteMovementTypeById(id: Int): Boolean
 
     fun getDestinationInMovementTypesByTypeandUserType(Type: String, UserType: String): String
+    fun getSourceInMovementTypesByTypeandUserType(Type: String, UserType: String): String
 }

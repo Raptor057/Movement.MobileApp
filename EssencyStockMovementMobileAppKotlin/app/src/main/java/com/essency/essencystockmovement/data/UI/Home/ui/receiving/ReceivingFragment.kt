@@ -288,7 +288,8 @@ class ReceivingFragment : BaseFragment() {
     }
 
     private fun convertToStockList(parsedData: BarcodeData): List<StockList> {
-        var destination = movementType.getDestinationInMovementTypesByTypeandUserType(moduleName, sharedPreferences.getString("userType", "Unknown") ?: "Unknown")
+        val destination = movementType.getDestinationInMovementTypesByTypeandUserType(moduleName, sharedPreferences.getString("userType", "Unknown") ?: "Unknown")
+        val source = movementType.getSourceInMovementTypesByTypeandUserType(moduleName, sharedPreferences.getString("userType", "Unknown") ?: "Unknown")
         val lastTraceability = repository.getLastInserted()
         val traceId = lastTraceability?.id ?: 0
         val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
@@ -310,7 +311,7 @@ class ReceivingFragment : BaseFragment() {
                 id = 0,
                 idTraceabilityStockList = traceId,
                 company = country ?: "001",  // 🔹 Si es null, usar "001"
-                source = sharedPreferences.getString("userType", "Unknown") ?: "Unknown",//lastTraceability?.source ?: "Unknown",
+                source = source,//sharedPreferences.getString("userType", "Unknown") ?: "Unknown",//lastTraceability?.source ?: "Unknown",
                 //sourceLoc = lastTraceability?.sourceLoc ?: "N/A", // 🔹 Evitar valores vacíos
                 sourceLoc = "Unknown Source", // 🔹 Evitar valores vacíos
                 destination = destination,//lastTraceability?.destination ?: "Unknown Destination",
@@ -417,7 +418,7 @@ class ReceivingFragment : BaseFragment() {
                 //stock.pallet ?: "",
                 stock.partNo.trim(),
                 stock.rev.trim(),
-                stock.lot.trim(),
+                stock.serialNumber.toString(),
                 stock.qty.toString().trim(),
                 productionDateFormatted,
                 //stock.productionDate ?: "",
@@ -426,7 +427,7 @@ class ReceivingFragment : BaseFragment() {
                 //stock.date,
                 //stock.timeStamp,
                 stock.user.trim(),
-                stock.contBolNum.trim(),
+                "${stock.contBolNum.trim()}-${stock.pallet ?: ""}",
                 ""
             ).joinToString(";")
         }

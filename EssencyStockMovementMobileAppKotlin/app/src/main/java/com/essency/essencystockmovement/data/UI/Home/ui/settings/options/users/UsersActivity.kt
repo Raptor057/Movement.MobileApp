@@ -25,8 +25,8 @@ class UsersActivity : BaseActivity() {
         // Configura las pestañas con títulos
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> getString(R.string.tab_get_warehouse)
-                1 -> getString(R.string.tab_add_user)
+                0 -> getString(R.string.tab_add_user)
+                1 -> getString(R.string.tab_get_warehouse)
                 2 -> getString(R.string.tab_update_user)
                 else -> null
             }

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="5dp" />
 
     <!-- Campo para UserName -->
     <EditText
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="05dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/editTextUserName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="05dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@id/editTextName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="05dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@id/editTextLastName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="05dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
@@ -90,44 +90,48 @@
         app:layout_constraintTop_toBottomOf="@id/editTextPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="05dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
     <!-- Switch para IsAdmin -->
+
+    <!-- Switch para Enable -->
+
+    <!-- Botón para Guardar -->
     <Switch
         android:id="@+id/switchIsAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/settings_users_user_admin_status"
-        app:layout_constraintTop_toBottomOf="@id/spinnerUserType"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerUserType"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <!-- Switch para Enable -->
     <Switch
         android:id="@+id/switchEnable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/settings_users_user_active"
+        android:layout_marginTop="05dp"
         android:checked="true"
-        app:layout_constraintTop_toBottomOf="@id/switchIsAdmin"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/settings_users_user_active"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerUserType"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <!-- Botón para Guardar -->
     <Button
         android:id="@+id/buttonSaveUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/settings_users_user_save_user"
-        app:layout_constraintTop_toBottomOf="@id/switchEnable"
+        app:layout_constraintTop_toBottomOf="@id/spinnerUserType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="05dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

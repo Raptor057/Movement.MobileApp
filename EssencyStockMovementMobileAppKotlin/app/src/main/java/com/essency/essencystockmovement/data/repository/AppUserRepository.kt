@@ -69,19 +69,6 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         return appUser
     }
 
-    /*
-    Cómo recuperar los datos del usuario en otra actividad
-Si necesitas acceder a los datos del usuario en otra parte de la app, por ejemplo en HomeActivity, usa:
-
-
-val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-val userID = sharedPreferences.getInt("userID", -1) // -1 indica que no hay usuario logueado
-val userName = sharedPreferences.getString("userName", "")
-val userType = sharedPreferences.getString("userType", "")
-val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
-println("Usuario logueado: $userName, Tipo: $userType, Admin: $isAdmin")
-
-    */
     override fun getByUserName(userName: String): AppUser? {
         val db = dbHelper.readableDatabase
         val query = "SELECT * FROM AppUsers WHERE UserName = ?"

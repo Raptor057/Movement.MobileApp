@@ -87,4 +87,19 @@ class MovementTypeRepository(private val dbHelper: MyDatabaseHelper) : IMovement
         db.close()
         return destination
     }
+    override fun getSourceInMovementTypesByTypeandUserType(
+        type: String,
+        userType: String
+    ): String {
+        val db = dbHelper.readableDatabase
+        val query = "SELECT Source FROM MovementType WHERE Type = ? AND UserType = ?"
+        val cursor: Cursor = db.rawQuery(query, arrayOf(type, userType))
+        var source = ""
+        if (cursor.moveToFirst()) {
+            source = cursor.getString(cursor.getColumnIndexOrThrow("Source"))
+        }
+        cursor.close()
+        db.close()
+        return source
+    }
 }
