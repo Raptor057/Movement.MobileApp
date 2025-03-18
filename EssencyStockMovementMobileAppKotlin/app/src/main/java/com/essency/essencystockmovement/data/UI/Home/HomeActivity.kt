@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.BaseActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.preparingforshipment.PreparingForShipmentActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsActivity
 import com.essency.essencystockmovement.data.UI.LoginActivity
@@ -65,6 +66,11 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_Receiving -> {
                     val intent = Intent(this, ReceivingActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
+                R.id.nav_Preparing_for_shipment -> {
+                    val intent = Intent(this, PreparingForShipmentActivity::class.java)
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true}

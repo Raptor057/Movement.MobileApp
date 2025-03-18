@@ -26,6 +26,13 @@
 
         <!-- Declaración de Change Sender Activity Label -->
         <activity
+            android:name=".data.UI.Home.ui.preparingforshipment.PreparingForShipmentActivity"
+            android:exported="true"
+            android:label="@string/receiving_section_name"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <!-- Declaración de Change Sender Activity Label -->
+        <activity
             android:name=".data.UI.Home.ui.settings.options.changesenderemail.ChangeSenderEmailActivity"
             android:exported="true"
             android:label="@string/settings_change_sender_email"

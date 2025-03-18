@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.essency.essencystockmovement.data.model.StockList
-import com.essency.essencystockmovement.databinding.ItemReceivingBinding
+import com.essency.essencystockmovement.databinding.ItemReceivingPreparingForShipmentBinding
 
 class PreparingForShipmentAdapter (
     private val stockList: List<StockList>,
     private val onDeleteClick: (StockList) -> Unit
 ) : RecyclerView.Adapter<PreparingForShipmentAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: ItemReceivingBinding) :
+    inner class ViewHolder(private val binding: ItemReceivingPreparingForShipmentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(stock: StockList) {
             binding.textViewStockID.text = stock.id.toString()
@@ -43,7 +43,7 @@ class PreparingForShipmentAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemReceivingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemReceivingPreparingForShipmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
