@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".data.UI.Home.ui.preparingforshipment.PreparingForShipmentDataFragment">
+
+    <!-- Movement Type (Bloqueado) -->
+    <EditText
+        android:id="@+id/editTextMovementType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/movement_type"
+        android:enabled="false"
+        android:focusable="false"
+        android:backgroundTint="@android:color/darker_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- Number of Heaters to Receive (Solo números) -->
+    <EditText
+        android:id="@+id/editTextNumberOfHeaters"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/number_of_heaters"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/editTextMovementType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- Source Container / BOL -->
+    <EditText
+        android:id="@+id/editTextSourceContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/number_of_po"
+        app:layout_constraintTop_toBottomOf="@id/editTextNumberOfHeaters"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- Source (Bloqueado) -->
+    <EditText
+        android:id="@+id/editTextSource"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/source"
+        android:enabled="false"
+        android:focusable="false"
+        android:backgroundTint="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/editTextSourceContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- Destination (Bloqueado) -->
+    <EditText
+        android:id="@+id/editTextDestination"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/destination"
+        android:enabled="false"
+        android:focusable="false"
+        android:backgroundTint="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/editTextSource"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- Botón Save -->
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintTop_toBottomOf="@id/editTextDestination"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Botón Edit (Oculto al inicio) -->
+    <Button
+        android:id="@+id/buttonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        app:layout_constraintTop_toBottomOf="@id/buttonSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"/> <!-- Se oculta hasta que se guarde -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@
     <string name="receiving_section_name">Receiving</string>
     <string name="movement_type">Movement Type</string>
     <string name="number_of_heaters">Number of Heaters to Receive</string>
+    <string name="number_of_po">Number of Po</string>
     <string name="source_container_bol">Source Container / BOL</string>
     <string name="source">Source: </string>
     <string name="destination">Destination: </string>
@@ -20,7 +21,9 @@
     <string name="container_bol">Container / BOL: </string>
     <string name="delete">Delete</string>
     <string name="tab_receiving_data">Receiving Data</string>
+    <string name="tab_preparing_for_shipment_data">Preparing For Shipment Data</string>
     <string name="tab_receiving">Scan Item Receiving</string>
+    <string name="tab_preparing_for_shipment">Scan Item Preparing For Shipment</string>
     <string name="enter_stock_item">Scan New Item</string>
     <string name="production_date"> Production Date: </string>
     <string name="country_of_production">Country of Production: </string>

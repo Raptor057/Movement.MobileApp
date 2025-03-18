@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Contenedor de la información del stock -->
+    <LinearLayout
+        android:id="@+id/layoutStockInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonDelete"
+        android:layout_marginEnd="8dp">
+
+
+        <!-- ID de Stock -->
+        <TextView
+            android:id="@+id/textViewStockID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stock_id"
+            android:textStyle="bold"/>
+
+        <!-- ID de Trazabilidad -->
+        <TextView
+            android:id="@+id/textViewIDTraceabilityStockList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/traceability_stock_id"
+            android:textStyle="bold"/>
+
+        <!-- Empresa -->
+        <TextView
+            android:id="@+id/textViewCompany"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/company"/>
+
+        <!-- Origen -->
+        <TextView
+            android:id="@+id/textViewSource"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/source"/>
+
+        <!-- Ubicación de Origen -->
+        <TextView
+            android:id="@+id/textViewSourceLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/source_location"/>
+
+        <!-- Destino -->
+        <TextView
+            android:id="@+id/textViewDestination"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/destination"/>
+
+        <!-- Ubicación de Destino -->
+        <TextView
+            android:id="@+id/textViewDestinationLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/destination_location"/>
+
+        <!-- Pallet -->
+        <TextView
+            android:id="@+id/textViewPallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pallet"/>
+
+        <!-- Número de Parte -->
+        <TextView
+            android:id="@+id/textViewPartNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/part_no"/>
+
+        <!-- Revisión -->
+        <TextView
+            android:id="@+id/textViewRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/revision"/>
+
+        <!-- Lote -->
+        <TextView
+            android:id="@+id/textViewLot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lot"/>
+
+        <!-- Cantidad -->
+        <TextView
+            android:id="@+id/textViewQty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quantity"/>
+
+        <!-- Fecha de Producción -->
+        <TextView
+            android:id="@+id/textViewProductionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/production_date"/>
+
+        <!-- País de Producción -->
+        <TextView
+            android:id="@+id/textViewCountryOfProduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/country_of_production"/>
+
+        <!-- Número de Serie -->
+        <TextView
+            android:id="@+id/textViewSerialNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/serial_number"/>
+
+        <!-- Fecha -->
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"/>
+
+        <!-- Marca de Tiempo -->
+        <TextView
+            android:id="@+id/textViewTimeStamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timestamp"/>
+
+        <!-- Usuario -->
+        <TextView
+            android:id="@+id/textViewUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user"/>
+
+        <!-- Contenedor / BOL -->
+        <TextView
+            android:id="@+id/textViewContBolNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/container_bol"/>
+    </LinearLayout>
+
+    <!-- Botón de eliminar con icono de basura -->
+    <ImageButton
+        android:id="@+id/buttonDelete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/delete_forever_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
