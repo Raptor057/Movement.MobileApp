@@ -39,7 +39,7 @@ class PreparingForShipmentDataFragment : BaseFragment()
         users = AppUserRepository(MyDatabaseHelper(requireContext()))
         repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
 
-        //loadLastTraceabilityStock() // Auto-rellenar (si hay) o limpiar campos
+        loadLastTraceabilityStock() // Auto-rellenar (si hay) o limpiar campos
         setupListeners()
         return binding.root
     }
