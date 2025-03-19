@@ -84,21 +84,20 @@ class ReceivingFragment : BaseFragment() {
         binding.editTextNewStockItem.requestFocus()
     }
 
-
-    private fun getLastInserted(): StockList? {
-        val db = dbHelper.readableDatabase
-        var lastStock: StockList? = null
-        val query = "SELECT * FROM StockList ORDER BY ID DESC LIMIT 1"
-        val cursor = db.rawQuery(query, null)
-
-        cursor.use {
-            if (it.moveToFirst()) {
-                lastStock = cursorToStock(it)
-            }
-        }
-
-        return lastStock
-    }
+//    private fun getLastInserted(): StockList? {
+//        val db = dbHelper.readableDatabase
+//        var lastStock: StockList? = null
+//        val query = "SELECT * FROM StockList ORDER BY ID DESC LIMIT 1"
+//        val cursor = db.rawQuery(query, null)
+//
+//        cursor.use {
+//            if (it.moveToFirst()) {
+//                lastStock = cursorToStock(it)
+//            }
+//        }
+//
+//        return lastStock
+//    }
 
     private fun setupTextInputValidation() {
         binding.editTextNewStockItem.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, event ->
@@ -108,7 +107,7 @@ class ReceivingFragment : BaseFragment() {
                 (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)) {
 
                 // 1) Obtener el registro de trazabilidad actual
-                val currentTraceability = repository.getLastInserted()
+                val currentTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
 
                 // 2) Verificar si ya hay un lote finalizado o si no existe
                 if (currentTraceability == null || currentTraceability.finish) {
@@ -144,7 +143,7 @@ class ReceivingFragment : BaseFragment() {
                         val scannedCount = getStockListForLastTraceability().size
 
                     // 2) Obtener el TraceabilityStockList actual (último insertado)
-                        val getlastTraceability = repository.getLastInserted()
+                        val getlastTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
                         if (getlastTraceability == null) {
                             // Si no hay lote, no puedes insertar. Regresas con error o como gustes.
                             binding.editTextNewStockItem.error = "No hay lote activo. Por favor, registra datos de recepción."
@@ -181,7 +180,7 @@ class ReceivingFragment : BaseFragment() {
                         binding.editTextNewStockItem.text.clear()
 
                         // Verificar si se completó el lote actual
-                        val lastTraceability = repository.getLastInserted()
+                        val lastTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
                         if (lastTraceability != null) {
                             val scannedItems = getStockListForLastTraceability()
                             val scannedCount = scannedItems.size
@@ -250,7 +249,7 @@ class ReceivingFragment : BaseFragment() {
         val stockList = mutableListOf<StockList>()
 
         // 🔹 Obtener el último `IDTraceabilityStockList`
-        val lastTraceabilityStock = repository.getLastInserted()
+        val lastTraceabilityStock = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
         val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
 
         //val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
@@ -271,7 +270,7 @@ class ReceivingFragment : BaseFragment() {
         val stockList = mutableListOf<StockList>()
 
         // 🔹 Obtener el último `IDTraceabilityStockList`
-        val lastTraceabilityStock = repository.getLastInsertedFinished()
+        val lastTraceabilityStock = repository.getLastInsertedFinished(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
         val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
 
         //val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"
@@ -290,7 +289,7 @@ class ReceivingFragment : BaseFragment() {
     private fun convertToStockList(parsedData: BarcodeData): List<StockList> {
         val destination = movementType.getDestinationInMovementTypesByTypeandUserType(moduleName, sharedPreferences.getString("userType", "Unknown") ?: "Unknown")
         val source = movementType.getSourceInMovementTypesByTypeandUserType(moduleName, sharedPreferences.getString("userType", "Unknown") ?: "Unknown")
-        val lastTraceability = repository.getLastInserted()
+        val lastTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
         val traceId = lastTraceability?.id ?: 0
         val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val currentDate = sdf.format(Date())
@@ -392,7 +391,7 @@ class ReceivingFragment : BaseFragment() {
     // Función para enviar el correo con la información del último lote
     private fun sendLastBatchEmail() {
         // Obtener la información del último lote (la cabecera y los items)
-        val lastTraceability = repository.getLastInsertedFinished() ?: return
+        val lastTraceability = repository.getLastInsertedFinished(moduleName,sharedPreferences.getString("userName", "Unknown") ?: "Unknown") ?: return
         //val stockItems = getStockListForLastTraceability()
         val stockItems = getStockListForLastTraceabilityFinished()
         if (stockItems.isEmpty()) return
@@ -468,11 +467,11 @@ class ReceivingFragment : BaseFragment() {
 
 
     private fun updateCounterUI() {
-        val lastTraceability = repository.getLastInserted()
+        val lastTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
 
         if (lastTraceability == null) {
             // Si no existe ningún registro, mostramos 0/0
-            binding.textViewCounter.text = "Calentadores: 0 / 0"
+            binding.textViewCounter.text = "2Calentadores: 0 / 0"
             return
         }
 
@@ -516,7 +515,7 @@ class ReceivingFragment : BaseFragment() {
             updateCounterUI()
 
             // Actualizar el registro de trazabilidad según la nueva cantidad de piezas escaneadas
-            val lastTraceability = repository.getLastInserted()
+            val lastTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
             if (lastTraceability != null) {
                 val scannedItems = getStockListForLastTraceability()
                 val scannedCount = scannedItems.size

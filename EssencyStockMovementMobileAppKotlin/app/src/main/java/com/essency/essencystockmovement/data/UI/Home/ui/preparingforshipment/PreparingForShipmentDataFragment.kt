@@ -76,7 +76,7 @@ class PreparingForShipmentDataFragment : BaseFragment()
         val source = userData?.source ?: "Default Source"
         val destination = userData?.destination ?: "Default Destination"
 
-        val lastStock = repository.getLastInserted()
+        val lastStock = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
 
         if (lastStock != null && !lastStock.finish) {
             // 🔹 Actualizar la fila existente (todavía no terminada)
@@ -112,7 +112,7 @@ class PreparingForShipmentDataFragment : BaseFragment()
                 destination = destination
             )
 
-            val result = repository.insert(newStock)
+            val result = repository.insert(newStock, defaultMovementType, userName)
             if (result == -1L) {
                 Toast.makeText(requireContext(), "No se puede insertar: Finaliza o completa los calentadores primero", Toast.LENGTH_SHORT).show()
             } else {
@@ -124,7 +124,7 @@ class PreparingForShipmentDataFragment : BaseFragment()
     }
 
     private fun loadLastTraceabilityStock() {
-        val lastStock = repository.getLastInserted()
+        val lastStock = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
 
         if (lastStock != null) {
             // Hay un registro en la BD

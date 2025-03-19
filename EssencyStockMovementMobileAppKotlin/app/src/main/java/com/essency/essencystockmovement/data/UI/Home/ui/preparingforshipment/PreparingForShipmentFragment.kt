@@ -90,7 +90,7 @@ class PreparingForShipmentFragment : BaseFragment() {
             updateCounterUI()
 
             // Actualizar el registro de trazabilidad según la nueva cantidad de piezas escaneadas
-            val lastTraceability = repository.getLastInserted()
+            val lastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
             if (lastTraceability != null) {
                 val scannedItems = getStockListForLastTraceability()
                 val scannedCount = scannedItems.size
@@ -114,7 +114,7 @@ class PreparingForShipmentFragment : BaseFragment() {
     }
 
     private fun updateCounterUI() {
-        val lastTraceability = repository.getLastInserted()
+        val lastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
 
         if (lastTraceability == null) {
             // Si no existe ningún registro, mostramos 0/0
@@ -139,7 +139,7 @@ class PreparingForShipmentFragment : BaseFragment() {
         val stockList = mutableListOf<StockList>()
 
         // 🔹 Obtener el último `IDTraceabilityStockList`
-        val lastTraceabilityStock = repository.getLastInserted()
+        val lastTraceabilityStock = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
         val traceabilityId = lastTraceabilityStock?.id ?: return emptyList() // Si no hay ID, retorna lista vacía
 
         //val query = "SELECT * FROM StockList WHERE IDTraceabilityStockList = ? ORDER BY ID DESC"

@@ -6,6 +6,7 @@ interface IStockListRepository {
     fun insert(stock: StockList): Long
     fun getAll(): List<StockList>
     fun getById(id: Int): StockList?
+    fun getLastStockListByMovementTypeAndCreatedBy(movementType: String,  createdBy : String): List<StockList>?
     fun update(stock: StockList): Int
     fun deleteById(id: Int): Int
 }

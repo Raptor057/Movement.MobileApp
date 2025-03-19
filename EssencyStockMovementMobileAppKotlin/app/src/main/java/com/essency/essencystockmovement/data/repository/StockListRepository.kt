@@ -96,6 +96,29 @@ class StockListRepository(private val dbHelper: MyDatabaseHelper) : IStockListRe
         return stock // 🔹 NO cerramos la base de datos aquí
     }
 
+    override fun getLastStockListByMovementTypeAndCreatedBy(movementType: String, createdBy: String): List<StockList>? {
+        val db = dbHelper.readableDatabase
+        val stockList = mutableListOf<StockList>()
+        val cursor = db.rawQuery(
+            "SELECT SL.* FROM StockList SL " +
+                    "INNER JOIN TRACEABILITYSTOCKLIST TSL ON SL.IDTraceabilityStockList = TSL.ID " +
+                    "AND TSL.MovementType = ? " +
+                    "AND TSL.CreatedBy = ? " +
+                    "AND TSL.Finish = 0 " +
+                    "ORDER BY SL.ID DESC",
+            arrayOf(movementType, createdBy)
+        )
+
+        cursor.use {
+            if (it.moveToFirst()) {
+                do {
+                    stockList.add(cursorToStock(it))
+                } while (it.moveToNext())
+            }
+        }
+        return stockList
+    }
+
     override fun update(stock: StockList): Int {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {

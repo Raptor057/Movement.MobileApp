@@ -8,12 +8,12 @@ import com.essency.essencystockmovement.data.model.TraceabilityStockList
 
 class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : ITraceabilityStockListRepository {
 
-    override fun insert(traceabilityStock: TraceabilityStockList): Long {
+    override fun insert(traceabilityStock: TraceabilityStockList, movementType: String, createdBy: String): Long {
         val db = dbHelper.writableDatabase
 
         try {
             // 🔹 Obtener la última fila insertada sin cerrar la base de datos
-            val lastStock = getLastInserted()
+            val lastStock = getLastInserted(movementType, createdBy)
 
             // 🔹 Verificar si la última fila no cumple con los requisitos
             if (lastStock != null && !lastStock.finish && lastStock.numberOfHeatersFinished != lastStock.numberOfHeaters) {
@@ -75,45 +75,71 @@ class TraceabilityStockListRepository(private val dbHelper: MyDatabaseHelper) : 
         return stock
     }
 
-    override fun getLastInserted(): TraceabilityStockList? {
+//    override fun getLastInserted(): TraceabilityStockList? {
+//        val db = dbHelper.readableDatabase
+//        var lastStock: TraceabilityStockList? = null
+//        var cursor: Cursor? = null
+//
+//        try {
+//            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList WHERE Finish = 0 ORDER BY ID DESC LIMIT 1", null)
+//            if (cursor.moveToFirst()) {
+//                lastStock = cursorToTraceabilityStock(cursor)
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            cursor?.close() // 🔹 Cerramos el cursor correctamente
+//            // 🔹 NO cerramos `db` aquí, porque podría usarse después
+//        }
+//
+//        return lastStock
+//    }
+
+    override fun getLastInserted(movementType: String, createdBy: String): TraceabilityStockList? {
         val db = dbHelper.readableDatabase
         var lastStock: TraceabilityStockList? = null
         var cursor: Cursor? = null
 
         try {
-            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList WHERE Finish = 0 ORDER BY ID DESC LIMIT 1", null)
+            val query = "SELECT * FROM TRACEABILITYSTOCKLIST WHERE Finish = 0 AND MovementType = ? AND CreatedBy = ? ORDER BY ID DESC LIMIT 1"
+            cursor = db.rawQuery(query, arrayOf(movementType, createdBy))
+
             if (cursor.moveToFirst()) {
                 lastStock = cursorToTraceabilityStock(cursor)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
-            cursor?.close() // 🔹 Cerramos el cursor correctamente
-            // 🔹 NO cerramos `db` aquí, porque podría usarse después
+            cursor?.close() // Cerramos el cursor correctamente
         }
 
         return lastStock
     }
 
-    override fun getLastInsertedFinished(): TraceabilityStockList? {
+    override fun getLastInsertedFinished(
+        movementType: String,
+        createdBy: String
+    ): TraceabilityStockList? {
         val db = dbHelper.readableDatabase
         var lastStock: TraceabilityStockList? = null
         var cursor: Cursor? = null
 
         try {
-            cursor = db.rawQuery("SELECT * FROM TraceabilityStockList WHERE Finish = 1 ORDER BY ID DESC LIMIT 1", null)
+            val query = "SELECT * FROM TRACEABILITYSTOCKLIST WHERE Finish = 1 AND MovementType = ? AND CreatedBy = ? ORDER BY ID DESC LIMIT 1"
+            cursor = db.rawQuery(query, arrayOf(movementType, createdBy))
+
             if (cursor.moveToFirst()) {
                 lastStock = cursorToTraceabilityStock(cursor)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
-            cursor?.close() // 🔹 Cerramos el cursor correctamente
-            // 🔹 NO cerramos `db` aquí, porque podría usarse después
+            cursor?.close() // Cerramos el cursor correctamente
         }
 
         return lastStock
     }
+
 
     override fun update(traceabilityStock: TraceabilityStockList): Int {
         val db = dbHelper.writableDatabase
