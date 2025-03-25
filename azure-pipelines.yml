@@ -2,51 +2,37 @@ trigger:
 - main
 
 pool:
-  name: 'Deployment'
+  name: 'Deployment'  # Agente self-hosted con JDK, Gradle y Android SDK configurados
 
 variables:
-  buildType: 'release'
-  keystoreFileName: 'my-release-key.jks'
+  buildConfiguration: 'release'
+  apkOutputPath: 'app/build/outputs/apk/release'
 
 steps:
-# 1. Descargar el keystore del Secure Files
+# 1. Descargar el .jks desde Secure Files
 - task: DownloadSecureFile@1
-  name: downloadKeystore
-  displayName: 'Descargar archivo keystore'
+  name: DownloadKeystore
   inputs:
-    secureFile: '$(keystoreFileName)'
+    secureFile: 'my-release-key.jks'  # <-- nombre exacto del archivo subido a Secure Files
 
-# 2. Construir el APK firmado
+# 2. Compilar el APK con firma
 - task: Gradle@2
-  displayName: 'Construir APK firmado (Release)'
+  displayName: 'Compilar APK firmado (release)'
   inputs:
     gradleWrapperFile: 'gradlew'
-    workingDirectory: ''
-    gradleOptions: '-Xmx3072m'
+    gradleOptions: '-Xmx4096m'
     publishJUnitResults: false
     tasks: 'assembleRelease'
-    options: >
-      -Pandroid.injected.signing.store.file=$(downloadKeystore.secureFilePath)
-      -Pandroid.injected.signing.store.password=$(KEYSTORE_PASSWORD)
-      -Pandroid.injected.signing.key.alias=$(KEY_ALIAS)
-      -Pandroid.injected.signing.key.password=$(KEY_PASSWORD)
+  env:
+    android.injected.signing.store.file: '$(DownloadKeystore.secureFilePath)'
+    android.injected.signing.store.password: '$(keystorePassword)'
+    android.injected.signing.key.alias: '$(keyAlias)'
+    android.injected.signing.key.password: '$(keyPassword)'
 
-# 3. Buscar el APK generado y guardarlo como variable
-- powershell: |
-    $apk = Get-ChildItem -Recurse -Filter "*.apk" | Where-Object { $_.FullName -like "*release*.apk" } | Select-Object -First 1
-    if ($apk) {
-      Write-Host "APK generado: $($apk.FullName)"
-      Write-Host "##vso[task.setvariable variable=ApkPath]$($apk.FullName)"
-    } else {
-      Write-Error "❌ No se encontró el APK"
-      exit 1
-    }
-  displayName: 'Buscar APK firmado'
-
-# 4. Publicar el APK como artefacto
+# 3. Publicar el APK firmado como artefacto
 - task: PublishBuildArtifacts@1
-  displayName: 'Publicar artefacto APK'
+  displayName: 'Publicar APK firmado como artefacto'
   inputs:
-    pathToPublish: '$(ApkPath)'
-    artifactName: 'APK-Release-$(Build.BuildNumber)'
+    pathToPublish: '$(apkOutputPath)'
+    artifactName: 'SignedAPK'
     publishLocation: 'Container'
