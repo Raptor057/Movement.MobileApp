@@ -1,20 +1,52 @@
-# Android
-# Build your Android project with Gradle.
-# Add steps that test, sign, and distribute the APK, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/android
-
 trigger:
 - main
 
 pool:
-  vmImage: 'Deployment'
+  name: 'Deployment'
+
+variables:
+  buildType: 'release'
+  keystoreFileName: 'my-release-key.jks'
 
 steps:
-- task: Gradle@2
+# 1. Descargar el keystore del Secure Files
+- task: DownloadSecureFile@1
+  name: downloadKeystore
+  displayName: 'Descargar archivo keystore'
   inputs:
-    workingDirectory: ''
+    secureFile: '$(keystoreFileName)'
+
+# 2. Construir el APK firmado
+- task: Gradle@2
+  displayName: 'Construir APK firmado (Release)'
+  inputs:
     gradleWrapperFile: 'gradlew'
+    workingDirectory: ''
     gradleOptions: '-Xmx3072m'
     publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'assembleDebug'
+    tasks: 'assembleRelease'
+    options: >
+      -Pandroid.injected.signing.store.file=$(downloadKeystore.secureFilePath)
+      -Pandroid.injected.signing.store.password=$(KEYSTORE_PASSWORD)
+      -Pandroid.injected.signing.key.alias=$(KEY_ALIAS)
+      -Pandroid.injected.signing.key.password=$(KEY_PASSWORD)
+
+# 3. Buscar el APK generado y guardarlo como variable
+- powershell: |
+    $apk = Get-ChildItem -Recurse -Filter "*.apk" | Where-Object { $_.FullName -like "*release*.apk" } | Select-Object -First 1
+    if ($apk) {
+      Write-Host "APK generado: $($apk.FullName)"
+      Write-Host "##vso[task.setvariable variable=ApkPath]$($apk.FullName)"
+    } else {
+      Write-Error "❌ No se encontró el APK"
+      exit 1
+    }
+  displayName: 'Buscar APK firmado'
+
+# 4. Publicar el APK como artefacto
+- task: PublishBuildArtifacts@1
+  displayName: 'Publicar artefacto APK'
+  inputs:
+    pathToPublish: '$(ApkPath)'
+    artifactName: 'APK-Release-$(Build.BuildNumber)'
+    publishLocation: 'Container'
