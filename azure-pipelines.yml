@@ -2,51 +2,58 @@ trigger:
 - main
 
 pool:
-  name: 'Deployment'
+  name: 'Deployment'  # Tu agente self-hosted con Android SDK, Java y Gradle configurados
 
 variables:
-  buildType: 'release'
-  keystoreFileName: 'my-release-key.jks'
+  buildConfiguration: 'release'
+  apkOutputPath: 'app/build/outputs/apk/release'
 
 steps:
-# 1. Descargar el keystore del Secure Files
+# 1. Descargar el .jks desde Secure Files
 - task: DownloadSecureFile@1
-  name: downloadKeystore
-  displayName: 'Descargar archivo keystore'
+  name: DownloadKeystore
   inputs:
-    secureFile: '$(keystoreFileName)'
+    secureFile: 'essency-release-key.jks'  # <- Este es el nombre del .jks que subiste a Secure Files
 
-# 2. Construir el APK firmado
+# 2. Compilar APK firmado con Gradle
 - task: Gradle@2
-  displayName: 'Construir APK firmado (Release)'
+  displayName: 'Compilar APK firmado (release)'
   inputs:
     gradleWrapperFile: 'gradlew'
-    workingDirectory: ''
-    gradleOptions: '-Xmx3072m'
+    gradleOptions: '-Xmx4096m'
     publishJUnitResults: false
     tasks: 'assembleRelease'
-    options: >
-      -Pandroid.injected.signing.store.file=$(downloadKeystore.secureFilePath)
-      -Pandroid.injected.signing.store.password=$(KEYSTORE_PASSWORD)
-      -Pandroid.injected.signing.key.alias=$(KEY_ALIAS)
-      -Pandroid.injected.signing.key.password=$(KEY_PASSWORD)
+  env:
+    android.injected.signing.store.file: '$(DownloadKeystore.secureFilePath)'
+    android.injected.signing.store.password: '$(keystorePassword)'
+    android.injected.signing.key.alias: '$(keyAlias)'
+    android.injected.signing.key.password: '$(keyPassword)'
 
-# 3. Buscar el APK generado y guardarlo como variable
+# 3. Verificar firma del APK usando apksigner
 - powershell: |
-    $apk = Get-ChildItem -Recurse -Filter "*.apk" | Where-Object { $_.FullName -like "*release*.apk" } | Select-Object -First 1
-    if ($apk) {
-      Write-Host "APK generado: $($apk.FullName)"
-      Write-Host "##vso[task.setvariable variable=ApkPath]$($apk.FullName)"
-    } else {
-      Write-Error "❌ No se encontró el APK"
+    $apkPath = "$(Build.SourcesDirectory)\$(apkOutputPath)\app-release.apk"
+    $apksigner = "${env:ANDROID_HOME}\build-tools\34.0.0\apksigner.bat"
+
+    if (-Not (Test-Path $apkPath)) {
+      Write-Error "APK no encontrado: $apkPath"
       exit 1
     }
-  displayName: 'Buscar APK firmado'
 
-# 4. Publicar el APK como artefacto
+    Write-Host "Verificando firma con apksigner..."
+    & $apksigner verify --verbose $apkPath
+
+    if ($LASTEXITCODE -ne 0) {
+      Write-Error "La verificación de firma falló."
+      exit $LASTEXITCODE
+    } else {
+      Write-Host "✅ La firma del APK es válida."
+    }
+  displayName: 'Verificar firma del APK'
+
+# 4. Publicar APK firmado como artefacto
 - task: PublishBuildArtifacts@1
-  displayName: 'Publicar artefacto APK'
+  displayName: 'Publicar artefacto APK firmado'
   inputs:
-    pathToPublish: '$(ApkPath)'
-    artifactName: 'APK-Release-$(Build.BuildNumber)'
+    pathToPublish: '$(apkOutputPath)'
+    artifactName: 'EssencyAPK'
     publishLocation: 'Container'
