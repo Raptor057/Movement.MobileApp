@@ -4,6 +4,52 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+//android {
+//    namespace = "com.essency.essencystockmovement"
+//    compileSdk = 35
+//
+//    defaultConfig {
+//        applicationId = "com.essency.essencystockmovement"
+//        minSdk = 24
+//        targetSdk = 34
+//        versionCode = 1
+//        versionName = "1.0"
+//
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//    }
+//
+//    buildTypes {
+//        release {
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_11
+//        targetCompatibility = JavaVersion.VERSION_11
+//    }
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
+//    buildFeatures {
+//        compose = true
+//        viewBinding = true
+//    }
+//
+//    packaging {
+//        resources {
+//            excludes.add("META-INF/LICENSE.md")
+//            excludes.add("META-INF/LICENSE.txt")
+//            excludes.add("META-INF/NOTICE.md")
+//            excludes.add("META-INF/NOTICE.txt")
+//        }
+//    }
+//
+//}
+
 android {
     namespace = "com.essency.essencystockmovement"
     compileSdk = 35
@@ -14,19 +60,36 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release") {
+            val keystoreFilePath = project.findProperty("android.injected.signing.store.file") as String?
+            val keystorePassword = project.findProperty("android.injected.signing.store.password") as String?
+            val keyAlias = project.findProperty("android.injected.signing.key.alias") as String?
+            val keyPassword = project.findProperty("android.injected.signing.key.password") as String?
+
+            if (!keystoreFilePath.isNullOrBlank()) {
+                storeFile = file(keystoreFilePath)
+                storePassword = keystorePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -47,8 +110,8 @@ android {
             excludes.add("META-INF/NOTICE.txt")
         }
     }
-
 }
+
 
 dependencies {
 
