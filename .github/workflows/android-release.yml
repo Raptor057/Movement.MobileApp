@@ -1,4 +1,4 @@
-name: Build and Sign APK
+name: Build and Sign APK (auto-detect)
 
 on:
   push:
@@ -11,12 +11,8 @@ jobs:
     name: Generate Signed APK
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: EssencyStockMovementMobileAppKotlin
-
     steps:
-    - name: Checkout Code
+    - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Set up JDK 17
@@ -25,20 +21,28 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Find gradlew path
+      id: find_gradlew
+      run: |
+        GRADLEW_PATH=$(find . -name "gradlew" -type f | head -n 1)
+        echo "Found gradlew at: $GRADLEW_PATH"
+        echo "GRADLEW_DIR=$(dirname "$GRADLEW_PATH")" >> $GITHUB_ENV
+
     - name: Decode Keystore
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > essency-release-key.jks
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > "$GRADLEW_DIR/essency-release-key.jks"
 
     - name: Build Signed APK
       run: |
+        cd "$GRADLEW_DIR"
         ./gradlew assembleRelease \
-        -Pandroid.injected.signing.store.file=essency-release-key.jks \
-        -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-        -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-        -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+          -Pandroid.injected.signing.store.file=essency-release-key.jks \
+          -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+          -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+          -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: EssencyStockMovement-release-apk
-        path: EssencyStockMovementMobileAppKotlin/app/build/outputs/apk/release/*.apk
+        path: ${{ env.GRADLEW_DIR }}/app/build/outputs/apk/release/*.apk
