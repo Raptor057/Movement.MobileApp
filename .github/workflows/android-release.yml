@@ -44,10 +44,16 @@ jobs:
       run: |
         cd "$GRADLEW_DIR"
         ./gradlew assembleRelease \
-          -Pandroid.injected.signing.store.file=essency-release-key.jks \
-          -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-          -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-          -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+    - name: Build Signed APK
+      run: |
+        cd "$GRADLEW_DIR"
+        ./gradlew assembleRelease \
+          -PRELEASE_STORE_FILE=app/essency-release-key.jks \
+          -PRELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} \
+          -PRELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }} \
+          -PRELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
+
+
 
 
     - name: Upload APK Artifact
