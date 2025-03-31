@@ -4,52 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-//android {
-//    namespace = "com.essency.essencystockmovement"
-//    compileSdk = 35
-//
-//    defaultConfig {
-//        applicationId = "com.essency.essencystockmovement"
-//        minSdk = 24
-//        targetSdk = 34
-//        versionCode = 1
-//        versionName = "1.0"
-//
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//    }
-//
-//    buildTypes {
-//        release {
-//            isMinifyEnabled = false
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
-//        }
-//    }
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_11
-//        targetCompatibility = JavaVersion.VERSION_11
-//    }
-//    kotlinOptions {
-//        jvmTarget = "11"
-//    }
-//    buildFeatures {
-//        compose = true
-//        viewBinding = true
-//    }
-//
-//    packaging {
-//        resources {
-//            excludes.add("META-INF/LICENSE.md")
-//            excludes.add("META-INF/LICENSE.txt")
-//            excludes.add("META-INF/NOTICE.md")
-//            excludes.add("META-INF/NOTICE.txt")
-//        }
-//    }
-//
-//}
-
 android {
     namespace = "com.essency.essencystockmovement"
     compileSdk = 35

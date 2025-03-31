@@ -119,6 +119,52 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         """.trimIndent()
         db.execSQL(createTableQueryTraceabilityStockList)
 
+        //---------------
+        val createTableQueryAuditStockList = """
+            CREATE TABLE AuditStockList (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            IDTraceabilityStockList INTEGER NOT NULL,
+            Company TEXT NOT NULL,
+            Source TEXT NOT NULL,
+            SourceLoc TEXT,
+            Destination TEXT NOT NULL,
+            DestinationLoc TEXT,
+            Pallet TEXT,  -- 🔹 Nuevo campo agregado
+            PartNo TEXT NOT NULL,
+            Rev TEXT NOT NULL,
+            Lot TEXT NOT NULL,
+            Qty INTEGER NOT NULL,
+            ProductionDate TEXT,  -- 🔹 Nuevo campo agregado
+            CountryOfProduction TEXT,  -- 🔹 Nuevo campo agregado
+            SerialNumber TEXT,  -- 🔹 Nuevo campo agregado
+            Date TEXT NOT NULL,
+            TimeStamp DATETIME NOT NULL,
+            User TEXT NOT NULL,
+            ContBolNum TEXT NOT NULL
+        );
+        """.trimIndent()
+        db.execSQL(createTableQueryStockList)
+
+        val createTableQueryAuditTraceabilityStockList = """
+            CREATE TABLE AuditTraceabilityStockList (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            BatchNumber TEXT NOT NULL,
+            MovementType TEXT NOT NULL,
+            NumberOfHeaters INTEGER NOT NULL,
+            NumberOfHeatersFinished INTEGER NOT NULL,
+            Finish INTEGER NOT NULL DEFAULT 0,
+            SendByEmail INTEGER NOT NULL DEFAULT 0,
+            CreatedBy TEXT,
+            Source TEXT NOT NULL,   -- 🔹 Asegúrate de que esta línea existe
+            Destination TEXT NOT NULL,
+            TimeStamp DATETIME NOT NULL,
+            Notes TEXT
+            );
+        """.trimIndent()
+        db.execSQL(createTableQueryTraceabilityStockList)
+
+        //---------------
+
         val createTableQueryMovementType = """
             CREATE TABLE MovementType (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -177,6 +223,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             Password TEXT NOT NULL);
         """.trimIndent()
         db.execSQL(createTableQueryEmailSender)
+
 
         // *** Agregar lenguaje predeterminado  ***
         val insertEmailSender = """
