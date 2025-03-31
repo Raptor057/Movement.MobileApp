@@ -31,9 +31,10 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x "$GRADLEW_DIR/gradlew"
 
-    - name: Decode Keystore into gradle project folder
+    - name: Decode Keystore into /app folder
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > "$GRADLEW_DIR/essency-release-key.jks"
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > "$GRADLEW_DIR/app/essency-release-key.jks"
+
 
 
     - name: 🔍 Verifica que el .jks fue creado (debug)
