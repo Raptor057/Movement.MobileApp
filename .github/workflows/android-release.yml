@@ -28,9 +28,8 @@ jobs:
         echo "Found gradlew at: $GRADLEW_PATH"
         echo "GRADLEW_DIR=$(dirname "$GRADLEW_PATH")" >> $GITHUB_ENV
 
-    - name: Decode Keystore
-      run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > "$GRADLEW_DIR/essency-release-key.jks"
+    - name: Make gradlew executable
+      run: chmod +x "$GRADLEW_DIR/gradlew"
 
     - name: Build Signed APK
       run: |
@@ -40,6 +39,7 @@ jobs:
           -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
           -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
           -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
