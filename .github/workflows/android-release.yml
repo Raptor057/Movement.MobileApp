@@ -23,9 +23,10 @@ jobs:
 
     - name: Decode Keystore
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > essency-release-key.jks
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > EssencyStockMovementMobileAppKotlin/essency-release-key.jks
 
     - name: Build Signed APK
+      working-directory: EssencyStockMovementMobileAppKotlin
       run: |
         ./gradlew assembleRelease \
         -Pandroid.injected.signing.store.file=essency-release-key.jks \
@@ -37,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: EssencyStockMovement-release-apk
-        path: app/build/outputs/apk/release/*.apk
+        path: EssencyStockMovementMobileAppKotlin/app/build/outputs/apk/release/*.apk
