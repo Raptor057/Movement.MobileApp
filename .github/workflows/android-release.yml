@@ -31,6 +31,11 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x "$GRADLEW_DIR/gradlew"
 
+    - name: Decode Keystore into Gradle user home
+      run: |
+        mkdir -p ~/.gradle/daemon/8.11.1
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > ~/.gradle/daemon/8.11.1/essency-release-key.jks
+
     - name: Build Signed APK
       run: |
         cd "$GRADLEW_DIR"
@@ -39,7 +44,6 @@ jobs:
           -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
           -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
           -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
-
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
