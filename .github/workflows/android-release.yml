@@ -11,6 +11,10 @@ jobs:
     name: Generate Signed APK
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: EssencyStockMovementMobileAppKotlin
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -23,10 +27,9 @@ jobs:
 
     - name: Decode Keystore
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > EssencyStockMovementMobileAppKotlin/essency-release-key.jks
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > essency-release-key.jks
 
     - name: Build Signed APK
-      working-directory: EssencyStockMovementMobileAppKotlin
       run: |
         ./gradlew assembleRelease \
         -Pandroid.injected.signing.store.file=essency-release-key.jks \
