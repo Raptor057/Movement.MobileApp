@@ -18,14 +18,14 @@ android {
     }
 
 
-    signingConfigs {
+signingConfigs {
     create("release") {
-        storeFile = file("essency-release-key.jks")
+        storeFile = file("app/essency-release-key.jks")
         storePassword = "Sh4QGvJjajB6feBbfiAi"
         keyAlias = "essency_release"
-        keyPassword = "zTxIzO24SUV8TMYlCTL1"
-        }
+        keyPassword = "Sh4QGvJjajB6feBbfiAi"
     }
+}
 
     buildTypes {
         release {
