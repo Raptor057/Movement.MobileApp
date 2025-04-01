@@ -44,14 +44,11 @@ jobs:
       run: |
         cd "$GRADLEW_DIR"
         ./gradlew assembleRelease \
-    - name: Build Signed APK
-      run: |
-        cd "$GRADLEW_DIR"
-        ./gradlew assembleRelease \
-          -PRELEASE_STORE_FILE=app/essency-release-key.jks \
-          -PRELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} \
-          -PRELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }} \
-          -PRELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
+        RELEASE_STORE_FILE=essency-release-key.jks
+        RELEASE_STORE_PASSWORD=Sh4QGvJjajB6feBbfiAi
+        RELEASE_KEY_ALIAS=essency_release
+        RELEASE_KEY_PASSWORD=zTxIzO24SUV8TMYlCTL1
+
 
 
 
