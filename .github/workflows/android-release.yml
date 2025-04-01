@@ -43,15 +43,7 @@ jobs:
     - name: Build Signed APK
       run: |
         cd "$GRADLEW_DIR"
-        ./gradlew assembleRelease \
-        RELEASE_STORE_FILE=essency-release-key.jks
-        RELEASE_STORE_PASSWORD=Sh4QGvJjajB6feBbfiAi
-        RELEASE_KEY_ALIAS=essency_release
-        RELEASE_KEY_PASSWORD=zTxIzO24SUV8TMYlCTL1
-
-
-
-
+        ./gradlew assembleRelease
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
