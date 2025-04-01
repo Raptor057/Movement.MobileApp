@@ -1,0 +1,29 @@
+trigger:
+  - main
+
+pool: 'Development'
+
+steps:
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '17'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+
+  - task: DownloadSecureFile@1
+    name: keystore
+    inputs:
+      secureFile: 'essency-release-key.jks'
+
+  - script: |
+      ./gradlew assembleRelease ^
+        -Pandroid.injected.signing.store.file="$(keystore.secureFilePath)" ^
+        -Pandroid.injected.signing.store.password="Sh4QGvJjajB6feBbfiAi" ^
+        -Pandroid.injected.signing.key.alias="essency_release" ^
+        -Pandroid.injected.signing.key.password="Sh4QGvJjajB6feBbfiAi"
+    displayName: '🚀 Build Signed APK'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: 'app/build/outputs/apk/release/'
+      artifactName: 'EssencyStockMovement-release-apk'
