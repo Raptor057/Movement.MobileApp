@@ -20,7 +20,7 @@ android {
 
     signingConfigs {
     create("release") {
-        storeFile = file("app/$storeFilePath")
+        storeFile = file("app/essency-release-key.jks")
         storePassword = "Sh4QGvJjajB6feBbfiAi"
         keyAlias = "essency_release"
         keyPassword = "zTxIzO24SUV8TMYlCTL1"
