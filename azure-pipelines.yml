@@ -1,7 +1,7 @@
 trigger:
   - main
 
-pool: 'Development'
+name: 'Deployment'
 
 steps:
   - task: JavaToolInstaller@0
