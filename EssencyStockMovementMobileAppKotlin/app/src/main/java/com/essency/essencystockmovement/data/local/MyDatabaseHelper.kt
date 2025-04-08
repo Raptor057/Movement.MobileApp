@@ -143,7 +143,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             ContBolNum TEXT NOT NULL
         );
         """.trimIndent()
-        db.execSQL(createTableQueryStockList)
+        db.execSQL(createTableQueryAuditStockList)
 
         val createTableQueryAuditTraceabilityStockList = """
             CREATE TABLE AuditTraceabilityStockList (
@@ -161,7 +161,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
             Notes TEXT
             );
         """.trimIndent()
-        db.execSQL(createTableQueryTraceabilityStockList)
+        db.execSQL(createTableQueryAuditTraceabilityStockList)
 
         //---------------
 
