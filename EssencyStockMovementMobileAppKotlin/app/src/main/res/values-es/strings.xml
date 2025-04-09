@@ -8,5 +8,6 @@
     <string name="delete_button">Borrar</string>
     <string name="add_button">Agregar</string>
     <string name="nav_header_desc">Descripción</string>
+    <string name="calendar_scaned">Calentadores Escaneados: 0</string>
 
 </resources>
