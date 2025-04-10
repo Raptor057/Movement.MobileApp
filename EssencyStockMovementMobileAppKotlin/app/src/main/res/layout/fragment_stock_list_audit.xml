@@ -35,7 +35,22 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="8dp" />
 
+    <!-- Botón con ícono de correo al lado del contador -->
+
     <!-- RecyclerView para listar los elementos -->
+    <ImageButton
+        android:id="@+id/btnMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/mail_icon"
+        android:src="@drawable/forward_to_inbox_24px"
+        app:layout_constraintBottom_toBottomOf="@id/textViewCounter"
+        app:layout_constraintStart_toEndOf="@id/textViewCounter"
+        app:layout_constraintTop_toTopOf="@id/textViewCounter"
+        app:layout_constraintVertical_bias="1.0" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStockList"
         android:layout_width="0dp"

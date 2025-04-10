@@ -9,5 +9,6 @@
     <string name="add_button">Add</string>
     <string name="nav_header_desc">Description</string>
     <string name="calendar_scaned">Calentadores Escaneados: 0</string>
+    <string name="mail_icon">Send Email Button</string>
 
 </resources>
