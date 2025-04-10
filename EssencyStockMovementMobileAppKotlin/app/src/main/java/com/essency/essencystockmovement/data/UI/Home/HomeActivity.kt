@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.BaseActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.inventory.InventoryActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.preparingforshipment.PreparingForShipmentActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.SettingsActivity
@@ -71,6 +72,11 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
                     true}
                 R.id.nav_Preparing_for_shipment -> {
                     val intent = Intent(this, PreparingForShipmentActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
+                R.id.nav_Inventory -> {
+                    val intent = Intent(this, InventoryActivity::class.java)
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true}
