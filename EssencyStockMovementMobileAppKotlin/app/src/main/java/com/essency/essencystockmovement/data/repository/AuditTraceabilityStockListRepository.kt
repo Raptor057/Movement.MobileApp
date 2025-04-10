@@ -14,7 +14,7 @@ open class AuditTraceabilityStockListRepository(private val dbHelper: MyDatabase
         try {
             val last = getLastInserted(movementType, createdBy)
 
-            if (last != null && last.finish == 0 && last.numberOfHeatersFinished != last.numberOfHeaters) {
+            if (last != null && last.finish && last.numberOfHeatersFinished != last.numberOfHeaters) {
                 return -1L
             }
 
@@ -128,8 +128,8 @@ open class AuditTraceabilityStockListRepository(private val dbHelper: MyDatabase
             movementType = cursor.getString(cursor.getColumnIndexOrThrow("MovementType")),
             numberOfHeaters = cursor.getInt(cursor.getColumnIndexOrThrow("NumberOfHeaters")),
             numberOfHeatersFinished = cursor.getInt(cursor.getColumnIndexOrThrow("NumberOfHeatersFinished")),
-            finish = cursor.getInt(cursor.getColumnIndexOrThrow("Finish")),
-            sendByEmail = cursor.getInt(cursor.getColumnIndexOrThrow("SendByEmail")),
+            finish = cursor.getInt(cursor.getColumnIndexOrThrow("Finish")) ==1,
+            sendByEmail = cursor.getInt(cursor.getColumnIndexOrThrow("SendByEmail"))==1,
             createdBy = cursor.getString(cursor.getColumnIndexOrThrow("CreatedBy")),
             source = cursor.getString(cursor.getColumnIndexOrThrow("Source")),
             destination = cursor.getString(cursor.getColumnIndexOrThrow("Destination")),
