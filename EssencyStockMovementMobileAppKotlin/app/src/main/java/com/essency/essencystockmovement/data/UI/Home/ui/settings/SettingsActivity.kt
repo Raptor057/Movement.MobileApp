@@ -24,7 +24,6 @@ import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
-//class SettingsActivity : AppCompatActivity() {
 class SettingsActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
