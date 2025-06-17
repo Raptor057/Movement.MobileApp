@@ -11,5 +11,30 @@
     <string name="calendar_scaned">Calentadores Escaneados:</string>
     <string name="mail_icon">Send Email Button</string>
     <string name="inventory">Inventory</string>
+    <string name="toast_batch_finished">The current batch is already finished. Please start a new record.</string>
+    <string name="toast_missing_batch_info">Please complete the fields in Receiving Data.</string>
+    <string name="error_already_scanned">This item has already been scanned</string>
+    <string name="error_no_active_batch">No active batch. Please register receiving data.</string>
+    <string name="error_limit_exceeded">You exceeded the heater limit! You have %1$d of %2$d, and this label adds %3$d.</string>
+    <string name="error_inserting_item">Error inserting item</string>
+    <string name="toast_batch_completed">Batch completed. Starting new record.</string>
+    <string name="toast_item_added">Heater added: %1$d of %2$d</string>
+    <string name="error_invalid_barcode">Invalid barcode format</string>
+    <string name="error_duplicate_serial">This item has already been scanned</string>
+    <string name="error_heater_limit_exceeded">You have exceeded the heater limit! You have %1$d out of %2$d, and this label adds %3$d.</string>
+    <string name="toast_heater_added">Heater added: %1$d of %2$d</string>
+    <string name="error_invalid_barcode_format">Invalid barcode format</string>
+
+    <string name="lot_already_finished_start_new">The current batch is already finished. Start a new record.</string>
+    <string name="please_complete_receiving_fields">Please complete the fields in Receiving Data.</string>
+    <string name="error_duplicate_barcode">This item has already been scanned</string>
+    <string name="no_active_batch_please_register">No active batch. Please register receiving data.</string>
+    <string name="exceed_heater_limit">You are exceeding the heater limit! You have %1$d of %2$d, and this label adds %3$d.</string>
+    <string name="batch_completed_starting_new">Batch completed. Starting new registration.</string>
+    <string name="heater_added_summary">Heater added: %1$d of %2$d</string>
+    <string name="email_sent_successfully">Email sent with batch information</string>
+    <string name="email_send_error">Error sending email: %1$s</string>
+    <string name="delete_item_error">Error deleting item</string>
+    <string name="heater_counter">Heaters: %1$d / %2$d</string>
 
 </resources>

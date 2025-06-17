@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.essency.essencystockmovement.R
 import com.essency.essencystockmovement.data.UI.BaseFragment
 import com.essency.essencystockmovement.data.UI.Home.ui.receiving.ReceivingAdapter
 import com.essency.essencystockmovement.data.UtilClass.BarcodeParser
@@ -115,13 +116,15 @@ class PreparingForShipmentFragment : BaseFragment() {
 
                 // 2) Verificar si ya hay un lote finalizado o si no existe
                 if (currentTraceability == null || currentTraceability.finish) {
-                    Toast.makeText(requireContext(), "El lote actual ya está finalizado. Inicia un nuevo registro.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "El lote actual ya está finalizado. Inicia un nuevo registro.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.toast_batch_finished), Toast.LENGTH_SHORT).show()
                     return@OnEditorActionListener true
                 }
 
                 // 3) Verificar si faltan datos (batchNumber o numberOfHeaters)
                 if (currentTraceability.batchNumber.isEmpty() || currentTraceability.numberOfHeaters == 0) {
-                    Toast.makeText(requireContext(), "Por favor, complete los campos en Datos de Recepción.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "Por favor, complete los campos en Datos de Recepción.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.toast_missing_batch_info), Toast.LENGTH_SHORT).show()
                     return@OnEditorActionListener true
                 }
 
@@ -138,7 +141,8 @@ class PreparingForShipmentFragment : BaseFragment() {
                         // Evitar duplicados
                         val duplicate = stockList.any { it.serialNumber == scannedSerial }
                         if (duplicate) {
-                            binding.editTextNewStockItem.error = "Este dato ya fue escaneado"
+                            //binding.editTextNewStockItem.error = "Este dato ya fue escaneado"
+                            binding.editTextNewStockItem.error = getString(R.string.error_duplicate_serial)
                             return@OnEditorActionListener true // Evita la inserción
                         }
 
@@ -150,7 +154,9 @@ class PreparingForShipmentFragment : BaseFragment() {
                         val getlastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
                         if (getlastTraceability == null) {
                             // Si no hay lote, no puedes insertar. Regresas con error o como gustes.
-                            binding.editTextNewStockItem.error = "No hay lote activo. Por favor, registra datos de recepción."
+                            //binding.editTextNewStockItem.error = "No hay lote activo. Por favor, registra datos de recepción."
+                            binding.editTextNewStockItem.error = getString(R.string.error_no_active_batch)
+
                             return@OnEditorActionListener true
                         }
 
@@ -160,8 +166,14 @@ class PreparingForShipmentFragment : BaseFragment() {
 
                         // 4) Verificamos si al sumar rebasaríamos el límite
                         if (scannedCount + newItemsCount > totalHeaters) {
-                            binding.editTextNewStockItem.error = "¡Excedes el límite de calentadores! " +
-                                    "Llevas $scannedCount de $totalHeaters, y esta etiqueta añade $newItemsCount."
+//                            binding.editTextNewStockItem.error = "¡Excedes el límite de calentadores! " +
+//                                    "Llevas $scannedCount de $totalHeaters, y esta etiqueta añade $newItemsCount."
+                            binding.editTextNewStockItem.error = getString(
+                                R.string.error_heater_limit_exceeded,
+                                scannedCount,
+                                totalHeaters,
+                                newItemsCount
+                            )
                             return@OnEditorActionListener true
                         }
 
@@ -174,7 +186,9 @@ class PreparingForShipmentFragment : BaseFragment() {
                                 stockList.add(itemWithId)
                                 adapter.notifyItemInserted(stockList.size - 1)
                             } else {
-                                binding.editTextNewStockItem.error = "Error inserting item"
+                                //binding.editTextNewStockItem.error = "Error inserting item"
+                                binding.editTextNewStockItem.error = getString(R.string.error_inserting_item)
+
                             }
                         }
                         adapter.notifyDataSetChanged()
@@ -198,7 +212,8 @@ class PreparingForShipmentFragment : BaseFragment() {
                                 // Lote finalizado
                                 val updatedTraceability = lastTraceability.copy(finish = true)
                                 repository.update(updatedTraceability)
-                                Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.toast_batch_completed), Toast.LENGTH_SHORT).show()
 
                                 // Enviar la información del último lote por correo
                                 sendLastBatchEmail()
@@ -211,11 +226,19 @@ class PreparingForShipmentFragment : BaseFragment() {
                                 // Aún no se completa
                                 val updatedTraceability = lastTraceability.copy(numberOfHeatersFinished = scannedCount)
                                 repository.update(updatedTraceability)
-                                Toast.makeText(requireContext(), "Calentador agregado: $scannedCount de ${lastTraceability.numberOfHeaters}", Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(requireContext(), "Calentador agregado: $scannedCount de ${lastTraceability.numberOfHeaters}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.toast_heater_added, scannedCount, lastTraceability.numberOfHeaters),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
                             }
                         }
                     } else {
-                        binding.editTextNewStockItem.error = "Invalid barcode format!"
+                        //binding.editTextNewStockItem.error = "Invalid barcode format!"
+                        binding.editTextNewStockItem.error = getString(R.string.error_invalid_barcode_format)
+
                     }
                 }
                 return@OnEditorActionListener true // Indicar que el evento fue manejado

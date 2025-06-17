@@ -11,5 +11,32 @@
     <string name="calendar_scaned">Calentadores Escaneados: </string>
     <string name="mail_icon">Send Email Button</string>
     <string name="inventory">Inventory</string>
+    <string name="toast_batch_finished">El lote actual ya está finalizado. Inicia un nuevo registro.</string>
+    <string name="toast_missing_batch_info">Por favor, complete los campos en Datos de Recepción.</string>
+    <string name="error_already_scanned">Este dato ya fue escaneado</string>
+    <string name="error_no_active_batch">No hay lote activo. Por favor, registra datos de recepción.</string>
+    <string name="error_limit_exceeded">¡Excedes el límite de calentadores! Llevas %1$d de %2$d, y esta etiqueta añade %3$d.</string>
+    <string name="error_inserting_item">Error al insertar el elemento</string>
+    <string name="toast_batch_completed">Lote completado. Iniciando nuevo registro.</string>
+    <string name="toast_item_added">Calentador agregado: %1$d de %2$d</string>
+    <string name="error_invalid_barcode">Formato de código de barras inválido</string>
+    <string name="error_duplicate_serial">Este dato ya fue escaneado</string>
+    <string name="error_heater_limit_exceeded">¡Excedes el límite de calentadores! Llevas %1$d de %2$d, y esta etiqueta añade %3$d.</string>
+    <string name="toast_heater_added">Calentador agregado: %1$d de %2$d</string>
+    <string name="error_invalid_barcode_format">Formato de código de barras inválido</string>
+
+    <string name="lot_already_finished_start_new">El lote actual ya está finalizado. Inicia un nuevo registro.</string>
+    <string name="please_complete_receiving_fields">Por favor, complete los campos en Datos de Recepción.</string>
+    <string name="error_duplicate_barcode">Este dato ya fue escaneado</string>
+    <string name="no_active_batch_please_register">No hay lote activo. Por favor, registra datos de recepción.</string>
+    <string name="exceed_heater_limit">¡Excedes el límite de calentadores! Llevas %1$d de %2$d, y esta etiqueta añade %3$d.</string>
+    <string name="batch_completed_starting_new">Lote completado. Iniciando nuevo registro.</string>
+    <string name="heater_added_summary">Calentador agregado: %1$d de %2$d</string>
+    <string name="email_sent_successfully">Correo enviado con la información del lote</string>
+    <string name="email_send_error">Error al enviar correo: %1$s</string>
+    <string name="delete_item_error">Error al borrar el ítem</string>
+    <string name="heater_counter">Calentadores: %1$d / %2$d</string>
+
+
 
 </resources>

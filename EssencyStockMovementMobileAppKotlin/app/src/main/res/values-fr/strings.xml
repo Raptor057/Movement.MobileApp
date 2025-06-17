@@ -12,4 +12,32 @@
     <string name="mail_icon">Send Email Button</string>
     <string name="inventory">Inventory</string>
 
+    <string name="toast_batch_finished">Le lot actuel est déjà terminé. Veuillez commencer un nouvel enregistrement.</string>
+    <string name="toast_missing_batch_info">Veuillez compléter les champs dans les données de réception.</string>
+    <string name="error_already_scanned">Cet élément a déjà été scanné</string>
+    <string name="error_no_active_batch">Aucun lot actif. Veuillez enregistrer les données de réception.</string>
+    <string name="error_limit_exceeded">Vous avez dépassé la limite de chauffe-eau ! Vous avez %1$d sur %2$d, et cette étiquette en ajoute %3$d.</string>
+    <string name="error_inserting_item">Erreur lors de l\'insertion de l\'élément</string>
+    <string name="toast_batch_completed">Lot terminé. Nouveau enregistrement en cours.</string>
+    <string name="toast_item_added">Chauffe-eau ajouté : %1$d sur %2$d</string>
+    <string name="error_invalid_barcode">Format de code-barres invalide</string>
+    <string name="error_duplicate_serial">Cet élément a déjà été scanné</string>
+    <string name="error_heater_limit_exceeded">Vous avez dépassé la limite de chauffe-eau ! Vous en avez %1$d sur %2$d, et cette étiquette en ajoute %3$d.</string>
+    <string name="toast_heater_added">Chauffe-eau ajouté : %1$d sur %2$d</string>
+    <string name="error_invalid_barcode_format">Format de code-barres invalide</string>
+
+    <string name="lot_already_finished_start_new">Le lot actuel est déjà terminé. Commencez un nouvel enregistrement.</string>
+    <string name="please_complete_receiving_fields">Veuillez compléter les champs dans Données de Réception.</string>
+    <string name="error_duplicate_barcode">Cet élément a déjà été scanné</string>
+    <string name="no_active_batch_please_register">Aucun lot actif. Veuillez enregistrer les données de réception.</string>
+    <string name="exceed_heater_limit">Vous dépassez la limite de chauffages ! Vous avez %1$d sur %2$d, et cette étiquette en ajoute %3$d.</string>
+    <string name="batch_completed_starting_new">Lot terminé. Démarrage d\'un nouvel enregistrement.</string>
+    <string name="heater_added_summary">Chauffage ajouté : %1$d sur %2$d</string>
+    <string name="email_sent_successfully">Email envoyé avec les informations du lot</string>
+    <string name="email_send_error">Erreur lors de l\'envoi de l\'email : %1$s</string>
+    <string name="delete_item_error">Erreur lors de la suppression de l\'élément</string>
+    <string name="heater_counter">Chauffages : %1$d / %2$d</string>
+
+
+
 </resources>
