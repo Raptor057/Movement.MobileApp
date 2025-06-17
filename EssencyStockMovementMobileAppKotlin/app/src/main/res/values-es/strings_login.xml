@@ -6,7 +6,7 @@
     <string name="login_login_Image">Imagen de inicio de sesión</string>
     <string name="login_UserName">Nombre de usuario</string>
     <string name="login_Password">Contraseña</string>
-    <string name="login_Login">Acceso</string>
+    <string name="login_Login">Iniciar Sesion</string>
 
     <!-- Message-->
     <string name="error_empty_fields">Complete todos los campos.</string>

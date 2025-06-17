@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class InfoViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is Info Fragment"
+        value = "Section Info"
     }
     val text: LiveData<String> = _text
 }

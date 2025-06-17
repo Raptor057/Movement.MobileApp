@@ -24,6 +24,7 @@
     <string name="settings_users_user_admin_status">Is Admin</string>"
     <string name="settings_users_user_active">Active User</string>"
     <string name="administrator">Administrator</string>
+    <string name="user">Usuario</string>
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
     <string name="settings_users_user_save_user">Save User</string>"

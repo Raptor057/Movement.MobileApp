@@ -10,7 +10,7 @@ class WarehouseActivity : BaseActivity()
 {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_users)
+        setContentView(R.layout.activity_warehouse)
 
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         val tabLayout: com.google.android.material.tabs.TabLayout = findViewById(R.id.tabLayout)

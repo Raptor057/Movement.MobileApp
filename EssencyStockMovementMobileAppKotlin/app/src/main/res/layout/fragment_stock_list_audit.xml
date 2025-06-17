@@ -8,6 +8,21 @@
     tools:context=".data.UI.Home.ui.inventory.InventoryFragment"
     android:padding="16dp">
 
+    <!-- Título: Inventario -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/inventory"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp" />
+
     <!-- Campo de entrada de datos (con scanner o manual) -->
     <EditText
         android:id="@+id/editTextNewStockItem"
@@ -18,10 +33,10 @@
         android:imeOptions="actionDone"
         android:padding="12dp"
         android:background="@android:drawable/edit_text"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="8dp"/>
+        android:layout_marginEnd="8dp" />
 
     <!-- TextView para mostrar el contador de calentadores X/Y -->
     <TextView
@@ -36,8 +51,6 @@
         android:layout_marginTop="8dp" />
 
     <!-- Botón con ícono de correo al lado del contador -->
-
-    <!-- RecyclerView para listar los elementos -->
     <ImageButton
         android:id="@+id/btnMail"
         android:layout_width="wrap_content"
@@ -51,6 +64,7 @@
         app:layout_constraintTop_toTopOf="@id/textViewCounter"
         app:layout_constraintVertical_bias="1.0" />
 
+    <!-- RecyclerView para listar los elementos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStockList"
         android:layout_width="0dp"

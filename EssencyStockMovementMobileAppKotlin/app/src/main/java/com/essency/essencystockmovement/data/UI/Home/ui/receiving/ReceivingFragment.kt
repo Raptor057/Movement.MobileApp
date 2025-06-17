@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -78,11 +79,23 @@ class ReceivingFragment : BaseFragment() {
         return binding.root
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        // Al volver de otra pantalla, recupera el foco
+//        binding.editTextNewStockItem.requestFocus()
+//    }
+
     override fun onResume() {
         super.onResume()
-        // Al volver de otra pantalla, recupera el foco
-        binding.editTextNewStockItem.requestFocus()
+        binding.editTextNewStockItem.post {
+            binding.editTextNewStockItem.requestFocus()
+
+            // Oculta el teclado si solo usas escáner
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
+        }
     }
+
 
 //    private fun getLastInserted(): StockList? {
 //        val db = dbHelper.readableDatabase
@@ -178,6 +191,14 @@ class ReceivingFragment : BaseFragment() {
 
                         // Limpiar campo de texto
                         binding.editTextNewStockItem.text.clear()
+
+                        binding.editTextNewStockItem.post {
+                            binding.editTextNewStockItem.requestFocus()
+
+                            // (Opcional) Ocultar teclado si no lo usas
+                            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
+                        }
 
                         // Verificar si se completó el lote actual
                         val lastTraceability = repository.getLastInserted(moduleName, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
@@ -495,6 +516,10 @@ class ReceivingFragment : BaseFragment() {
         }
         binding.recyclerViewStockList.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewStockList.adapter = adapter
+
+        binding.recyclerViewStockList.isFocusable = false
+        binding.recyclerViewStockList.isFocusableInTouchMode = false
+
     }
 
 

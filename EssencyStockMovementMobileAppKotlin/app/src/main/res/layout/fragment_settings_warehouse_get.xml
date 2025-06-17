@@ -17,7 +17,7 @@
             android:id="@+id/editTextWarehouseFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Filter Warehouses"
+            android:hint="@string/update_warehouse_filter_hint"
             android:inputType="text"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

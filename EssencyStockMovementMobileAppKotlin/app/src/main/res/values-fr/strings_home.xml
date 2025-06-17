@@ -1,5 +1,5 @@
 <resources>
     <string name="home_section_name">Maison</string>
     <string name="home_todo">TOUS</string>
-    <string name="home_logout">Se déconnecter</string>
+    <string name="home_logout">Déconnexion</string>
 </resources>

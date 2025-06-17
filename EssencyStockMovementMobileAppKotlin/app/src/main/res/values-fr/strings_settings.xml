@@ -10,9 +10,8 @@
     <string name="settings_users_update_label">Mettre à jour l\'utilisateur</string>"
     <string name="settings_users_user_update_user">Mettre à jour l\'utilisateur</string>"
     <string name="settings_users_load_user">Chargez l\'utilisateur</string>"
-    <string name="settings_users_user_id">Utilisateur d\'identité</string>"
+    <string name="settings_users_user_id">Identité Utilisateur</string>"
     <string name="settings_users_user_delete">Supprimer l\'utilisateur</string>"
-
 
     <string name="settings_users_user_get">Obtenir des utilisateurs</string>"
     <string name="settings_users_user_filter">Filtre par nom ou ID</string>"
@@ -30,10 +29,10 @@
     <string name="settings_users_user_save_user">Économiser l\'utilisateur</string>"
     <string name="settings_users_user_new_password">Nouveau mot de passe</string>
 
-    <string name="tab_add_user">Ajouter l\'utilisateur</string>
+    <string name="tab_add_user">AJOUTER UTILISATEUR</string>
     <string name="tab_get_user">Obtenir des utilisateurs</string>
-    <string name="tab_update_user">Mettre à jour l\'utilisateur</string>
-    <string name="tab_delete_user">Supprimer l\'utilisateur</string>
+    <string name="tab_update_user">MAJ UTILISATEUR</string>
+    <string name="tab_delete_user">SUPPRIMER UTILISATEUR</string>
 
     <string name="settings_users_delete_label">Supprimer l\'utilisateur</string>
     <string name="settings_users_user_delete_user">Supprimer l\'utilisateur</string>
@@ -42,10 +41,10 @@
 
 
     <!--Email -->
-    <string name="settings_change_sending_email">Modifier l\'envoi e-mail</string>
-    <string name="settings_change_sender_email">Modifier l\'e-mail de l\'expéditeur</string>
+    <string name="settings_change_sending_email">Changer l\'e-mail destinataire</string>
+    <string name="settings_change_sender_email">Changer l\'e-mail expéditeur</string>
 
-    <string name="settings_email_update_label">Mettre à jour l\'envoi e-mail</string>
+    <string name="settings_email_update_label">Changer l\'e-mail expéditeur</string>
     <string name="settings_email_hint">Entrer le courrier électronique</string>
     <string name="settings_password_hint">Entrez le mot de passe</string>
     <string name="settings_email_update_button">Mise à jour</string>
@@ -79,9 +78,9 @@
     <string name = "settings_change_warehouse">Changer l\'entrepôt</string>
     <string name = "settings_warehouse_update">Mettre à jour l\'entrepôt</string>
     <string name = "settings_warehouse_add">Ajout d\'entrepôt</string>
-    <string name="tab_add_warehouse">Ajouter l\'entrepôt</string>
-    <string name="tab_get_warehouse">Faire l\'entrepôt</string>
-    <string name="tab_update_warehouse">Mettre à jour l\'entrepôt</string>
+    <string name="tab_add_warehouse">AJOUTER ENTREPOT</string>
+    <string name="tab_get_warehouse">AFFICHER ENTREPOTS</string>
+    <string name="tab_update_warehouse">MAJ ENTREPOT</string>
     <string name="tab_delete_warehouse">Supprimer l\'entrepôt</string>
     <string name="add_warehouse_title">Ajouter l\'entrepôt</string>
     <string name="add_warehouse_hint">Nom de l\'entrepôt</string>
@@ -89,7 +88,7 @@
     <string name="get_warehouse_title">Liste des entrepôts</string>
     <string name="get_warehouse_filter_hint">Entrepôts de filtre</string>
     <string name="update_warehouse_title">Mettre à jour les entrepôts</string>
-    <string name="update_warehouse_filter_hint">Entrepôts de filtre</string>
+    <string name="update_warehouse_filter_hint">Filtrer Entrepôt</string>
     <string name="update_warehouse_name_hint">Modifier le nom de l\'entrepôt</string>
     <string name="update_warehouse_button_save">Sauvegarder</string>
     <string name="update_warehouse_edit_warehouse">Modifier l\'entrepôt</string>

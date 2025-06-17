@@ -1,12 +1,15 @@
 <resources>
     <!--general UI and buttons Common -->
-    <string name="app_name">Mouvement des stocks d\'essence</string>
-    <string name="welcome">Accueillir!</string>
+    <string name="app_name">Mouvement des stocks Essency</string>
+    <string name="welcome">Bienvenue!</string>
 
     <string name="ok_button">D\'ACCORD</string>
     <string name="update_button">Mise à jour</string>
     <string name="delete_button">Supprimer</string>
     <string name="add_button">Ajouter</string>
+    <string name="calendar_scaned">Chauffe-eaux:</string>
     <string name="nav_header_desc">Description</string>
+    <string name="mail_icon">Send Email Button</string>
+    <string name="inventory">Inventory</string>
 
 </resources>

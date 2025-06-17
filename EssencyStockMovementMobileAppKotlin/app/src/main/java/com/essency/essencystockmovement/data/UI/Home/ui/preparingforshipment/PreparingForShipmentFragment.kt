@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -62,6 +63,8 @@ class PreparingForShipmentFragment : BaseFragment() {
         repository = TraceabilityStockListRepository(MyDatabaseHelper(requireContext()))
         sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         movementType = MovementTypeRepository(MyDatabaseHelper(requireContext()))
+        binding.editTextNewStockItem.setShowSoftInputOnFocus(false)
+
 
         // Inicializa el adapter antes de usar stockList
         setupRecyclerView()
@@ -82,26 +85,22 @@ class PreparingForShipmentFragment : BaseFragment() {
         return binding.root
     }
 
-
     override fun onResume() {
         super.onResume()
-        // Al volver de otra pantalla, recupera el foco
-        binding.editTextNewStockItem.requestFocus()
+        binding.editTextNewStockItem.post {
+            binding.editTextNewStockItem.requestFocus()
+
+            // Opcional: evita que se abra el teclado si solo usas escáner
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
+        }
     }
 
-//    private fun getLastInserted(): StockList? {
-//        val db = dbHelper.readableDatabase
-//        var lastStock: StockList? = null
-//        val query = "SELECT * FROM StockList ORDER BY ID DESC LIMIT 1"
-//        val cursor = db.rawQuery(query, null)
-//
-//        cursor.use {
-//            if (it.moveToFirst()) {
-//                lastStock = cursorToStock(it)
-//            }
-//        }
-//
-//        return lastStock
+
+//    override fun onResume() {
+//        super.onResume()
+//        // Al volver de otra pantalla, recupera el foco
+//        binding.editTextNewStockItem.requestFocus()
 //    }
 
     private fun setupTextInputValidation() {
@@ -183,6 +182,11 @@ class PreparingForShipmentFragment : BaseFragment() {
 
                         // Limpiar campo de texto
                         binding.editTextNewStockItem.text.clear()
+
+                        // Forzar el foco de nuevo
+                        binding.editTextNewStockItem.post {
+                            binding.editTextNewStockItem.requestFocus()
+                        }
 
                         // Verificar si se completó el lote actual
                         val lastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
