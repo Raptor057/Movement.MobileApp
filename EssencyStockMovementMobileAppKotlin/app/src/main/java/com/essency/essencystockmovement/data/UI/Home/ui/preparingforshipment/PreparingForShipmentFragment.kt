@@ -195,7 +195,7 @@ class PreparingForShipmentFragment : BaseFragment() {
                         updateCounterUI()
 
                         // Limpiar campo de texto
-                        binding.editTextNewStockItem.text.clear()
+                        binding.editTextNewStockItem.text?.clear()
 
                         // Forzar el foco de nuevo
                         binding.editTextNewStockItem.post {

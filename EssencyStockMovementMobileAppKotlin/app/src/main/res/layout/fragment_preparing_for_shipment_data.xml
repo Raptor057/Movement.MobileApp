@@ -7,80 +7,107 @@
     android:layout_height="match_parent"
     tools:context=".data.UI.Home.ui.preparingforshipment.PreparingForShipmentDataFragment">
 
-    <!-- Movement Type (Bloqueado) -->
-    <EditText
-        android:id="@+id/editTextMovementType"
+    <!-- Movement Type -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMovementType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/movement_type"
-        android:enabled="false"
-        android:focusable="false"
-        android:backgroundTint="@android:color/darker_gray"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp">
 
-    <!-- Number of Heaters to Receive (Solo números) -->
-    <EditText
-        android:id="@+id/editTextNumberOfHeaters"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextMovementType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Number of Heaters -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutNumberOfHeaters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/number_of_heaters"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/editTextMovementType"
+        app:layout_constraintTop_toBottomOf="@id/layoutMovementType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp">
 
-    <!-- Source Container / BOL -->
-    <EditText
-        android:id="@+id/editTextSourceContainer"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextNumberOfHeaters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Source Container -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSourceContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/number_of_po"
-        app:layout_constraintTop_toBottomOf="@id/editTextNumberOfHeaters"
+        app:layout_constraintTop_toBottomOf="@id/layoutNumberOfHeaters"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp">
 
-    <!-- Source (Bloqueado) -->
-    <EditText
-        android:id="@+id/editTextSource"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextSourceContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Source -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSource"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/source"
-        android:enabled="false"
-        android:focusable="false"
-        android:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/editTextSourceContainer"
+        app:layout_constraintTop_toBottomOf="@id/layoutSourceContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp">
 
-    <!-- Destination (Bloqueado) -->
-    <EditText
-        android:id="@+id/editTextDestination"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Destination -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutDestination"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/destination"
-        android:enabled="false"
-        android:focusable="false"
-        android:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/editTextSource"
+        app:layout_constraintTop_toBottomOf="@id/layoutSource"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Botón Save -->
     <Button
@@ -88,12 +115,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
-        app:layout_constraintTop_toBottomOf="@id/editTextDestination"
+        app:layout_constraintTop_toBottomOf="@id/layoutDestination"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Botón Edit (Oculto al inicio) -->
+    <!-- Botón Edit -->
     <Button
         android:id="@+id/buttonEdit"
         android:layout_width="wrap_content"
@@ -103,6 +130,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
-        android:visibility="gone"/> <!-- Se oculta hasta que se guarde -->
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

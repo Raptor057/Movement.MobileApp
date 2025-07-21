@@ -207,7 +207,7 @@ class ReceivingFragment : BaseFragment() {
                         updateCounterUI()
 
                         // Limpiar campo de texto
-                        binding.editTextNewStockItem.text.clear()
+                        binding.editTextNewStockItem.text?.clear()
 
                         binding.editTextNewStockItem.post {
                             binding.editTextNewStockItem.requestFocus()

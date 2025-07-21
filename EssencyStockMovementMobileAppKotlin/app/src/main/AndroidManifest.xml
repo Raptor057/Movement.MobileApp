@@ -21,63 +21,63 @@
             android:name=".data.UI.Home.ui.receiving.ReceivingActivity"
             android:exported="true"
             android:label="@string/receiving_section_name"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Change Sender Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.inventory.InventoryActivity"
             android:exported="true"
             android:label="@string/inventory_section_name"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Change Sender Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.preparingforshipment.PreparingForShipmentActivity"
             android:exported="true"
             android:label="@string/receiving_section_name"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Change Sender Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.changesenderemail.ChangeSenderEmailActivity"
             android:exported="true"
             android:label="@string/settings_change_sender_email"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Warehouse Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.warehouse.WarehouseActivity"
             android:exported="true"
             android:label="@string/settings_warehouse_label"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Change Lenguage Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.changelanguage.ChangeLanguageActivity"
             android:exported="true"
             android:label="@string/settings_change_language"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Change Regex Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity"
             android:exported="true"
             android:label="@string/settings_change_regex"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Change Email Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.changesendingemail.ChangeSendingEmailActivity"
             android:exported="true"
             android:label="@string/settings_change_sending_email"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <!-- Declaración de Users Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.users.UsersActivity"
             android:exported="true"
             android:label="@string/settings_users_label"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
 
         <!-- Declaración de SettingsActivity -->
@@ -85,13 +85,13 @@
             android:name=".data.UI.Home.ui.settings.SettingsActivity"
             android:exported="true"
             android:label="SettingsActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <activity
             android:name=".data.UI.Home.HomeActivity"
             android:exported="true"
             android:label="@string/home_todo"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.EssencyStockMovement" />
 
         <activity
             android:name=".data.UI.LoginActivity"

@@ -2,6 +2,7 @@ package com.essency.essencystockmovement.data.UI.Home.ui.receiving
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -159,13 +160,10 @@ class ReceivingDataFragment : BaseFragment() {
     private fun disableFields() {
         binding.editTextNumberOfHeaters.isEnabled = false
         binding.editTextSourceContainer.isEnabled = false
-
-        binding.editTextNumberOfHeaters.setBackgroundColor(Color.WHITE)
-        binding.editTextSourceContainer.setBackgroundColor(Color.WHITE)
-
         binding.buttonSave.visibility = View.GONE
         binding.buttonEdit.visibility = View.VISIBLE
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
