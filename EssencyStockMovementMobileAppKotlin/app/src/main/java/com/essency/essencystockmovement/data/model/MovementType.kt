@@ -7,3 +7,4 @@ data class MovementType(
     val source: String,  // Origen del movimiento
     val destination: String // Destino del movimiento
 )
+

@@ -5,6 +5,7 @@ import android.database.Cursor
 import com.essency.essencystockmovement.data.interfaces.IMovementTypeRepository
 import com.essency.essencystockmovement.data.local.MyDatabaseHelper
 import com.essency.essencystockmovement.data.model.MovementType
+import com.essency.essencystockmovement.data.model.MovementTypeDestination
 
 class MovementTypeRepository(private val dbHelper: MyDatabaseHelper) : IMovementTypeRepository {
 
@@ -101,5 +102,41 @@ class MovementTypeRepository(private val dbHelper: MyDatabaseHelper) : IMovement
         cursor.close()
         db.close()
         return source
+    }
+
+    override fun getDestinationInMovementTypesByID(): List<MovementTypeDestination> {
+        val db = dbHelper.readableDatabase
+        val movementTypeListDestination = mutableListOf<MovementTypeDestination>()
+
+        val query = "SELECT ID, Destination FROM MovementType ORDER BY ID ASC LIMIT 2"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("ID"))
+                val destination = cursor.getString(cursor.getColumnIndexOrThrow("Destination"))
+
+                movementTypeListDestination.add(MovementTypeDestination(id, destination))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return movementTypeListDestination
+    }
+
+    override fun updateDestinationInMovementTypeByID(destination: String, id: Int): Boolean {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put("Destination", destination)
+        }
+        val rowsUpdated = db.update(
+            "MovementType",
+            values,
+            "ID = ?",                     // WHERE clause
+            arrayOf(id.toString())        // WHERE arguments
+        )
+        db.close()
+        return rowsUpdated > 0
     }
 }

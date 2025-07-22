@@ -18,6 +18,7 @@ import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changel
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesenderemail.ChangeSenderEmailActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.changesendingemail.ChangeSendingEmailActivity
+import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.updatedestinations.UpdateDestinationsActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.users.UsersActivity
 import com.essency.essencystockmovement.data.UI.Home.ui.settings.options.warehouse.WarehouseActivity
 import com.essency.essencystockmovement.databinding.ActivitySettingsBinding
@@ -56,7 +57,8 @@ class SettingsActivity : BaseActivity() {
                 R.id.nav_settings_change_sender_email,
                 R.id.nav_settings_change_regex,
                 R.id.nav_settings_warehouse,
-                R.id.nav_settings_change_language
+                R.id.nav_settings_change_language,
+                R.id.nav_settings_update_destination
             ), drawerLayout
         )
 
@@ -101,6 +103,11 @@ class SettingsActivity : BaseActivity() {
                     true}
                 R.id.nav_settings_change_language -> {
                     val intent = Intent(this, ChangeLanguageActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    true}
+                R.id.nav_settings_update_destination -> {
+                    val intent = Intent(this, UpdateDestinationsActivity::class.java)
                     startActivity(intent)
                     drawerLayout.closeDrawers()
                     true}

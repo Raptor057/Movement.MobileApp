@@ -1,6 +1,7 @@
 package com.essency.essencystockmovement.data.interfaces
 
 import com.essency.essencystockmovement.data.model.MovementType
+import com.essency.essencystockmovement.data.model.MovementTypeDestination
 
 interface IMovementTypeRepository {
     /**
@@ -31,5 +32,15 @@ interface IMovementTypeRepository {
     fun deleteMovementTypeById(id: Int): Boolean
 
     fun getDestinationInMovementTypesByTypeandUserType(Type: String, UserType: String): String
+
+    /**
+     * Obtiene el tipo de movimiento por su ID.
+     * */
     fun getSourceInMovementTypesByTypeandUserType(Type: String, UserType: String): String
+
+    fun getDestinationInMovementTypesByID(): List<MovementTypeDestination>
+
+    fun updateDestinationInMovementTypeByID(Destination: String, id: Int): Boolean
+
+
 }

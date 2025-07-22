@@ -58,6 +58,12 @@
             android:label="@string/settings_change_language"
             android:theme="@style/Theme.EssencyStockMovement" />
 
+        <activity
+            android:name=".data.UI.Home.ui.settings.options.updatedestinations.UpdateDestinationsActivity"
+            android:exported="true"
+            android:label="@string/update_destination_label"
+            android:theme="@style/Theme.EssencyStockMovement" />
+
         <!-- Declaración de Change Regex Activity Label -->
         <activity
             android:name=".data.UI.Home.ui.settings.options.changeregex.ChangeRegexActivity"

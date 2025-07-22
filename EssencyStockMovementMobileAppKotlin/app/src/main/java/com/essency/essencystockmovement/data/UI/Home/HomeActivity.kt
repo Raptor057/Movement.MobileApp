@@ -62,8 +62,20 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Agrega un listener para manejar el clic en Logout y Settings
-        navView.setNavigationItemSelectedListener { menuItem ->
+
+        // 1) Leer isAdmin
+        val prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val isAdmin = prefs.getBoolean("isAdmin", false)
+
+        // 2) Ocultar el ítem de Settings si NO es Admin
+        val menu = binding.navView.menu
+        menu.findItem(R.id.nav_Setting).isVisible = isAdmin
+
+        // 3) Ahora sí enlazamos el navView con NavController
+        binding.navView.setupWithNavController(navController)
+
+        // 4) Listener para manejar las selecciones
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_Receiving -> {
                     val intent = Intent(this, ReceivingActivity::class.java)
@@ -86,18 +98,17 @@ class HomeActivity : BaseActivity() { //AppCompatActivity() {
                     true
                 }
                 R.id.nav_Setting -> {
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    startActivity(intent)
-                    drawerLayout.closeDrawers()
-                    true
+                    // Este bloque solo se ejecuta si isAdmin == true
+                    startActivity(Intent(this, SettingsActivity::class.java))
                 }
                 else -> {
+                    // resto de destinos por NavController
                     menuItem.isChecked = true
                     navController.navigate(menuItem.itemId)
-                    drawerLayout.closeDrawers()
-                    true
                 }
             }
+            drawerLayout.closeDrawers()
+            true
         }
     }
 

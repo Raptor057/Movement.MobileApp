@@ -35,12 +35,36 @@ class DeleteUserFragment : BaseFragment() { //Fragment() {
         return root
     }
 
+//    private fun setupListeners() {
+//        // Botón para eliminar usuario por ID
+//        binding.buttonDeleteUser.setOnClickListener {
+//            val userId = binding.editTextUserId.text.toString().toIntOrNull()
+//            if (userId == null) {
+//                Toast.makeText(requireContext(), "Ingresa un ID válido.", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            val rowsDeleted = userRepository.deleteById(userId)
+//            if (rowsDeleted > 0) {
+//                Toast.makeText(requireContext(), "Usuario eliminado correctamente.", Toast.LENGTH_SHORT).show()
+//                clearForm()
+//            } else {
+//                Toast.makeText(requireContext(), "No se encontró un usuario con ese ID.", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+
     private fun setupListeners() {
-        // Botón para eliminar usuario por ID
         binding.buttonDeleteUser.setOnClickListener {
             val userId = binding.editTextUserId.text.toString().toIntOrNull()
             if (userId == null) {
                 Toast.makeText(requireContext(), "Ingresa un ID válido.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Nunca permitir borrar el admin por defecto (ID = 1)
+            if (userId == 1) {
+                Toast.makeText(requireContext(), "No puedes eliminar el administrador por defecto (ID=1).", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -53,6 +77,7 @@ class DeleteUserFragment : BaseFragment() { //Fragment() {
             }
         }
     }
+
 
     private fun clearForm() {
         binding.editTextUserId.text.clear()

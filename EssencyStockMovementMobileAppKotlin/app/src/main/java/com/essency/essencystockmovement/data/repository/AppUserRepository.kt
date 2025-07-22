@@ -132,39 +132,85 @@ class AppUserRepository(private val dbHelper: MyDatabaseHelper) : IAppUserReposi
         return rowsAffected
     }
 
-    override fun deleteById(id: Int): Int {
-        val db = dbHelper.writableDatabase
-        val rowsDeleted = db.delete("AppUsers", "ID = ?", arrayOf(id.toString()))
-        db.close()
-        return rowsDeleted
-    }
-
-    override fun login(username: String, plainPassword: String): Boolean {
-        val db = dbHelper.readableDatabase
-        val query = "SELECT Salt, PasswordHash FROM AppUsers WHERE UserName = ?"
-        val cursor = db.rawQuery(query, arrayOf(username))
-
-        if (cursor.moveToFirst()) {
-            val saltBase64 = cursor.getString(cursor.getColumnIndexOrThrow("Salt"))
-            val hashBase64 = cursor.getString(cursor.getColumnIndexOrThrow("PasswordHash"))
-            cursor.close()
+//    override fun deleteById(id: Int): Int {
+//        val db = dbHelper.writableDatabase
+//        val rowsDeleted = db.delete("AppUsers", "ID = ?", arrayOf(id.toString()))
+//        db.close()
+//        return rowsDeleted
+//    }
+        override fun deleteById(id: Int): Int {
+            if (id == 1) {
+                // Opcional: loggear el intento
+                return 0
+            }
+            val db = dbHelper.writableDatabase
+            val rowsDeleted = db.delete("AppUsers", "ID = ?", arrayOf(id.toString()))
             db.close()
-
-            // Decodificar para recuperar salt y hash almacenado
-            val salt = Base64.decode(saltBase64, Base64.NO_WRAP)
-            val storedHash = Base64.decode(hashBase64, Base64.NO_WRAP)
-
-            // Re-hashear la contraseña ingresada
-            val newHash = PBKDF2Helper.hashPassword(plainPassword, salt)
-
-            // Comparar ambos
-            return newHash.contentEquals(storedHash)
-        } else {
-            cursor.close()
-            db.close()
-            return false
+            return rowsDeleted
         }
-    }
+
+//    override fun login(username: String, plainPassword: String): Boolean {
+//        val db = dbHelper.readableDatabase
+//        val query = "SELECT Salt, PasswordHash FROM AppUsers WHERE UserName = ?"
+//        val cursor = db.rawQuery(query, arrayOf(username))
+//
+//        if (cursor.moveToFirst()) {
+//            val saltBase64 = cursor.getString(cursor.getColumnIndexOrThrow("Salt"))
+//            val hashBase64 = cursor.getString(cursor.getColumnIndexOrThrow("PasswordHash"))
+//            cursor.close()
+//            db.close()
+//
+//            // Decodificar para recuperar salt y hash almacenado
+//            val salt = Base64.decode(saltBase64, Base64.NO_WRAP)
+//            val storedHash = Base64.decode(hashBase64, Base64.NO_WRAP)
+//
+//            // Re-hashear la contraseña ingresada
+//            val newHash = PBKDF2Helper.hashPassword(plainPassword, salt)
+//
+//            // Comparar ambos
+//            return newHash.contentEquals(storedHash)
+//        } else {
+//            cursor.close()
+//            db.close()
+//            return false
+//        }
+//    }
+        override fun login(username: String, plainPassword: String): Boolean {
+            val userNorm = username.trim()
+
+            val db = dbHelper.readableDatabase
+            val query = """
+                SELECT Salt, PasswordHash, Enable
+                FROM AppUsers
+                WHERE UserName = ? COLLATE NOCASE
+                LIMIT 1
+            """.trimIndent()
+
+            db.rawQuery(query, arrayOf(userNorm)).use { cursor ->
+                if (!cursor.moveToFirst()) {
+                    db.close()
+                    return false
+                }
+
+                val enable = cursor.getInt(cursor.getColumnIndexOrThrow("Enable")) == 1
+                if (!enable) {
+                    db.close()
+                    return false // usuario deshabilitado
+                }
+
+                val saltBase64 = cursor.getString(cursor.getColumnIndexOrThrow("Salt"))
+                val hashBase64 = cursor.getString(cursor.getColumnIndexOrThrow("PasswordHash"))
+                db.close()
+
+                val salt = Base64.decode(saltBase64, Base64.NO_WRAP)
+                val storedHash = Base64.decode(hashBase64, Base64.NO_WRAP)
+                val newHash = PBKDF2Helper.hashPassword(plainPassword, salt)
+
+                // Comparación en tiempo constante
+                return java.security.MessageDigest.isEqual(newHash, storedHash)
+            }
+        }
+
 
 
     /**

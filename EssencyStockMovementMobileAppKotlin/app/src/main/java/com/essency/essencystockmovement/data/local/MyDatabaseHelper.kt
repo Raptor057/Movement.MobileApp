@@ -17,7 +17,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val createTableQueryAppUsers = """
             CREATE TABLE AppUsers (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            UserName TEXT NOT NULL,
+            UserName TEXT NOT NULL UNIQUE COLLATE NOCASE,
             Name TEXT NOT NULL,
             LastName TEXT NOT NULL,
             UserType TEXT NOT NULL,

@@ -84,6 +84,38 @@ class UpdateUserFragment : BaseFragment() {
         }
 
         // Botón para actualizar usuario
+//        binding.buttonUpdateUser.setOnClickListener {
+//            val userId = binding.editTextUserId.text.toString().toIntOrNull()
+//            if (userId == null) {
+//                Toast.makeText(requireContext(), "Ingresa un ID válido.", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            val salt = PBKDF2Helper.generateSalt()
+//            val passwordHash = PBKDF2Helper.hashPassword(binding.editTextNewPassword.text.toString(), salt)
+//            val userType = binding.spinnerUserType.selectedItem.toString() // Obtener el valor seleccionado del Spinner
+//
+//            val updatedUser = AppUser(
+//                id = userId,
+//                userName = binding.editTextUpdatedUserName.text.toString(),
+//                name = binding.editTextUpdatedName.text.toString(),
+//                lastName = binding.editTextUpdatedLastName.text.toString(),
+//                userType = userType, // Nuevo campo UserType (obtenido del Spinner)
+//                passwordHash = Base64.encodeToString(passwordHash, Base64.NO_WRAP),
+//                salt = Base64.encodeToString(salt, Base64.NO_WRAP),
+//                createUserDate = "", // La fecha de creación no cambia
+//                isAdmin = binding.switchUpdatedIsAdmin.isChecked,
+//                enable = binding.switchUpdatedEnable.isChecked
+//            )
+//
+//            val rowsUpdated = userRepository.update(updatedUser)
+//            if (rowsUpdated > 0) {
+//                Toast.makeText(requireContext(), "Usuario actualizado correctamente.", Toast.LENGTH_SHORT).show()
+//                clearForm()
+//            } else {
+//                Toast.makeText(requireContext(), "Error al actualizar el usuario.", Toast.LENGTH_SHORT).show()
+//            }
+//        }
         binding.buttonUpdateUser.setOnClickListener {
             val userId = binding.editTextUserId.text.toString().toIntOrNull()
             if (userId == null) {
@@ -91,19 +123,45 @@ class UpdateUserFragment : BaseFragment() {
                 return@setOnClickListener
             }
 
-            val salt = PBKDF2Helper.generateSalt()
-            val passwordHash = PBKDF2Helper.hashPassword(binding.editTextNewPassword.text.toString(), salt)
-            val userType = binding.spinnerUserType.selectedItem.toString() // Obtener el valor seleccionado del Spinner
+            // Trae al usuario actual para conservar hash/salt/fecha si no cambian
+            val existingUser = userRepository.getById(userId)
+            if (existingUser == null) {
+                Toast.makeText(requireContext(), "Usuario no encontrado.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val newPassword = binding.editTextNewPassword.text.toString()
+            val userType = binding.spinnerUserType.selectedItem.toString()
+
+            // Por defecto, conserva hash y salt actuales
+            var saltBase64 = existingUser.salt
+            var hashBase64 = existingUser.passwordHash
+
+            // Si el campo de nueva contraseña NO está vacío, valida y re-hashea
+            if (newPassword.isNotBlank()) {
+                if (!isValidPassword(newPassword)) {
+                    Toast.makeText(
+                        requireContext(),
+                        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un caracter especial.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+                val salt = PBKDF2Helper.generateSalt()
+                val passwordHash = PBKDF2Helper.hashPassword(newPassword, salt)
+                saltBase64 = Base64.encodeToString(salt, Base64.NO_WRAP)
+                hashBase64 = Base64.encodeToString(passwordHash, Base64.NO_WRAP)
+            }
 
             val updatedUser = AppUser(
                 id = userId,
                 userName = binding.editTextUpdatedUserName.text.toString(),
                 name = binding.editTextUpdatedName.text.toString(),
                 lastName = binding.editTextUpdatedLastName.text.toString(),
-                userType = userType, // Nuevo campo UserType (obtenido del Spinner)
-                passwordHash = Base64.encodeToString(passwordHash, Base64.NO_WRAP),
-                salt = Base64.encodeToString(salt, Base64.NO_WRAP),
-                createUserDate = "", // La fecha de creación no cambia
+                userType = userType,
+                passwordHash = hashBase64,              // <- conserva o reemplaza según lo anterior
+                salt = saltBase64,                      // <- conserva o reemplaza según lo anterior
+                createUserDate = existingUser.createUserDate, // <- mantén la fecha original
                 isAdmin = binding.switchUpdatedIsAdmin.isChecked,
                 enable = binding.switchUpdatedEnable.isChecked
             )
@@ -141,6 +199,13 @@ class UpdateUserFragment : BaseFragment() {
         binding.switchUpdatedEnable.isChecked = true
         binding.spinnerUserType.setSelection(0) // Reinicia el Spinner a la primera opción
     }
+
+    private fun isValidPassword(password: String): Boolean {
+        // Al menos 8 caracteres, 1 mayúscula, 1 minúscula y 1 caracter especial
+        val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{14,}$")
+        return password.matches(passwordPattern)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

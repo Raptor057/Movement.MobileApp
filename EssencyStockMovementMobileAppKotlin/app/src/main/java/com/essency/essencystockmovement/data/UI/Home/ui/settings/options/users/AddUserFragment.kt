@@ -49,6 +49,13 @@ class AddUserFragment : BaseFragment() {
         return root
     }
 
+    private fun isValidPassword(password: String): Boolean {
+        // Al menos 8 caracteres, 1 mayúscula, 1 minúscula y 1 caracter especial
+        val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{14,}$")
+        return password.matches(passwordPattern)
+    }
+
+
     private fun loadUserTypes() {
         // Obtener la lista de almacenes desde la base de datos
         val warehouses = warehouseRepository.getAllWarehouses()
@@ -85,6 +92,24 @@ class AddUserFragment : BaseFragment() {
                 Toast.makeText(requireContext(), "Todos los campos son obligatorios.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            //Validar contraseña
+            if (!isValidPassword(password)) {
+                Toast.makeText(
+                    requireContext(),
+                    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un caracter especial.",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+            // Validar usuario duplicado
+            val existing = userRepository.getByUserName(userName)
+            if (existing != null) {
+                Toast.makeText(requireContext(), "El nombre de usuario ya existe.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
 
             val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
             val newUser = AppUser(

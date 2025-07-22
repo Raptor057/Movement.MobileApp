@@ -36,6 +36,10 @@
             android:id="@+id/nav_settings_change_language"
             android:icon="@drawable/public_24px"
             android:title="@string/settings_change_language" />
+        <item
+            android:id="@+id/nav_settings_update_destination"
+            android:icon="@drawable/edit_destination_24px"
+            android:title="@string/settings_update_destination" />
 
     </group>
 </menu>
