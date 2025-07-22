@@ -25,7 +25,10 @@
         android:inputType="text"
         android:imeOptions="actionDone"
         android:textColor="?attr/colorOnSurface"
-        android:textColorHint="?attr/colorOnSurface" />
+        android:textColorHint="?attr/colorOnSurface"
+
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 </com.google.android.material.textfield.TextInputLayout>
 
 <TextView

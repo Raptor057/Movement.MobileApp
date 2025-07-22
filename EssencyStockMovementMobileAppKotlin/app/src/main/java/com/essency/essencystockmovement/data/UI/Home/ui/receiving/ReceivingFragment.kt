@@ -89,6 +89,11 @@ class ReceivingFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         binding.editTextNewStockItem.post {
+
+            // colocar el cursor al final (o en la posición que quieras)
+            val len = binding.editTextNewStockItem.text?.length ?: 0
+            binding.editTextNewStockItem.setSelection(len)
+            // volver a pedir foco
             binding.editTextNewStockItem.requestFocus()
 
             // Oculta el teclado si solo usas escáner

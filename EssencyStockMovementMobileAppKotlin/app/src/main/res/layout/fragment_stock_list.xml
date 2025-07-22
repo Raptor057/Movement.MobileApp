@@ -25,7 +25,11 @@
             android:hint="@string/enter_stock_item"
             android:imeOptions="actionDone"
             android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorOnSurface" />
+            android:textColorHint="?attr/colorOnSurface"
+
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- TextView con soporte de tema -->
