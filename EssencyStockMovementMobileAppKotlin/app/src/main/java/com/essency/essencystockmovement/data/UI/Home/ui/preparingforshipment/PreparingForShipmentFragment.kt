@@ -74,16 +74,11 @@ class PreparingForShipmentFragment : BaseFragment() {
         // stockList.addAll(getStockListForLastTraceability())
         adapter.notifyDataSetChanged()
 
-        // después de adapter.notifyDataSetChanged()
-        updateCounterUI()
-
+        // Actualiza el contador de entrada (opcional, si lo requieres)
+        // updateCounterUI()
 
         binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
         binding.editTextNewStockItem.requestFocus()
-        binding.buttonSendEmailNow.setOnClickListener {
-            sendEmailFromCurrentListIfComplete()
-        }
-
 
         // Asegúrate de llamar al método para configurar la validación del input
         setupTextInputValidation()
@@ -107,41 +102,12 @@ class PreparingForShipmentFragment : BaseFragment() {
         }
     }
 
-    private fun sendEmailFromCurrentListIfComplete() {
-        val user = sharedPreferences.getString("userName", "Unknown") ?: "Unknown"
-        val last = repository.getLastInserted(defaultMovementType, user)
 
-        if (last == null) {
-            Toast.makeText(requireContext(), getString(R.string.toast_missing_batch_info), Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val scannedCount = getStockListForLastTraceability().size
-        val totalHeaters = last.numberOfHeaters
-
-        if (scannedCount < totalHeaters) {
-            val faltan = totalHeaters - scannedCount
-            Toast.makeText(requireContext(),
-                getString(R.string.email_incomplete_batch, faltan, totalHeaters),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-
-        //Ahora sí, al pulsar el botón, marcamos terminado
-        repository.update(last.copy(finish = true, numberOfHeatersFinished = scannedCount))
-
-        // Enviar correo del lote TERMINADO
-        sendLastBatchEmail()
-
-        // Limpiar UI tras el envío manual
-        stockList.clear()
-        adapter.notifyDataSetChanged()
-        binding.editTextNewStockItem.text?.clear()
-        updateCounterUI() // dejará el botón deshabilitado (0/0)
-    }
-
-
+//    override fun onResume() {
+//        super.onResume()
+//        // Al volver de otra pantalla, recupera el foco
+//        binding.editTextNewStockItem.requestFocus()
+//    }
 
     private fun setupTextInputValidation() {
         binding.editTextNewStockItem.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, event ->
@@ -231,9 +197,7 @@ class PreparingForShipmentFragment : BaseFragment() {
                             }
                         }
                         adapter.notifyDataSetChanged()
-                        // después de adapter.notifyDataSetChanged()
                         updateCounterUI()
-
 
                         // Limpiar campo de texto
                         binding.editTextNewStockItem.text?.clear()
@@ -248,27 +212,33 @@ class PreparingForShipmentFragment : BaseFragment() {
                         if (lastTraceability != null) {
                             val scannedItems = getStockListForLastTraceability()
                             val scannedCount = scannedItems.size
+
                             if (scannedCount >= lastTraceability.numberOfHeaters) {
-                                // NO marcar finish aquí. Solo actualiza el contador.
-                                repository.update(lastTraceability.copy(numberOfHeatersFinished = scannedCount))
+                                // Lote finalizado
+                                val updatedTraceability = lastTraceability.copy(finish = true)
+                                repository.update(updatedTraceability)
+                                //Toast.makeText(requireContext(), "Lote completado. Iniciando nuevo registro.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.toast_batch_completed), Toast.LENGTH_SHORT).show()
 
-                                Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.toast_batch_ready_to_send), // “Lote listo para enviar”
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                // Enviar la información del último lote por correo
+                                sendLastBatchEmail()
 
-                                // Esto habilitará el botón porque scanned == total
+                                // Limpiar la lista para iniciar un nuevo lote
+                                stockList.clear()
+                                adapter.notifyDataSetChanged()
                                 updateCounterUI()
                             } else {
-                                repository.update(lastTraceability.copy(numberOfHeatersFinished = scannedCount))
+                                // Aún no se completa
+                                val updatedTraceability = lastTraceability.copy(numberOfHeatersFinished = scannedCount)
+                                repository.update(updatedTraceability)
+                                //Toast.makeText(requireContext(), "Calentador agregado: $scannedCount de ${lastTraceability.numberOfHeaters}", Toast.LENGTH_SHORT).show()
                                 Toast.makeText(
                                     requireContext(),
                                     getString(R.string.toast_heater_added, scannedCount, lastTraceability.numberOfHeaters),
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }
 
+                            }
                         }
                     } else {
                         //binding.editTextNewStockItem.error = "Invalid barcode format!"
@@ -532,14 +502,29 @@ class PreparingForShipmentFragment : BaseFragment() {
         }
     }
 
-private fun updateCounterUI() {
-    val last = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName","Unknown")?: "Unknown")
-    val scanned = if (last == null) 0 else getStockListForLastTraceability().size
-    val total   = last?.numberOfHeaters ?: 0
 
-    binding.textViewCounter.text = getString(R.string.heater_count, scanned, total)
-    binding.buttonSendEmailNow.isEnabled = (last != null && scanned == total && total > 0)
-}
+    private fun updateCounterUI() {
+        val lastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
+
+        if (lastTraceability == null) {
+            // Si no existe ningún registro, mostramos 0/0
+            binding.textViewCounter.text = "2Calentadores: 0 / 0"
+            return
+        }
+
+        if (lastTraceability.finish) {
+            // Si el último lote ya está finalizado, también mostramos 0/0
+            binding.textViewCounter.text = "Calentadores: 0 / 0"
+            return
+        }
+
+        // Si el lote no está finalizado, calculamos cuántos lleva
+        val scannedCount = getStockListForLastTraceability().size
+        val totalHeaters = lastTraceability.numberOfHeaters
+        binding.textViewCounter.text = "Calentadores: $scannedCount / $totalHeaters"
+    }
+
+
 
     private fun setupRecyclerView() {
         adapter = ReceivingAdapter(stockList) { itemToDelete ->
@@ -563,9 +548,8 @@ private fun updateCounterUI() {
             stockList.remove(item)
             adapter.notifyDataSetChanged()
 
-            // después de adapter.notifyDataSetChanged()
+            // Actualizar contador
             updateCounterUI()
-
 
             // Actualizar el registro de trazabilidad según la nueva cantidad de piezas escaneadas
             val lastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
