@@ -12,8 +12,8 @@ android {
         applicationId = "com.essency.essencystockmovement"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 92
+        versionName = "beta-1.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

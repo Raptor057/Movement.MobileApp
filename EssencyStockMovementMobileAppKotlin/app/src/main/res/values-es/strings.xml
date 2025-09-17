@@ -38,6 +38,12 @@
     <string name="heater_counter">Calentadores: %1$d / %2$d</string>
     <string name="settings_update_destination">Update Destinations</string>
     <string name="update_destination_label">Update Destination</string>
+    <string name="dialog_send_email_msg">¿Deseas enviar por correo la información del lote finalizado?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dialog_send_email_title">Enviar correo</string>
+    <string name="toast_you_can_send_later">Puedes enviarlo más tarde con el botón.</string>
+    <string name="heater_count">Calentadores: %1$d / %2$d</string>
 
 
 </resources>

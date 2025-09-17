@@ -102,13 +102,6 @@ class PreparingForShipmentFragment : BaseFragment() {
         }
     }
 
-
-//    override fun onResume() {
-//        super.onResume()
-//        // Al volver de otra pantalla, recupera el foco
-//        binding.editTextNewStockItem.requestFocus()
-//    }
-
     private fun setupTextInputValidation() {
         binding.editTextNewStockItem.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, event ->
             // Detectar "Enter" desde el teclado físico o botón en pantalla
@@ -504,25 +497,16 @@ class PreparingForShipmentFragment : BaseFragment() {
 
 
     private fun updateCounterUI() {
-        val lastTraceability = repository.getLastInserted(defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown")
+        val last = repository.getLastInserted(
+            defaultMovementType, sharedPreferences.getString("userName", "Unknown") ?: "Unknown"
+        )
 
-        if (lastTraceability == null) {
-            // Si no existe ningún registro, mostramos 0/0
-            binding.textViewCounter.text = "2Calentadores: 0 / 0"
-            return
-        }
+        val scanned = if (last == null) 0 else getStockListForLastTraceability().size
+        val total   = last?.numberOfHeaters ?: 0
 
-        if (lastTraceability.finish) {
-            // Si el último lote ya está finalizado, también mostramos 0/0
-            binding.textViewCounter.text = "Calentadores: 0 / 0"
-            return
-        }
-
-        // Si el lote no está finalizado, calculamos cuántos lleva
-        val scannedCount = getStockListForLastTraceability().size
-        val totalHeaters = lastTraceability.numberOfHeaters
-        binding.textViewCounter.text = "Calentadores: $scannedCount / $totalHeaters"
+        binding.textViewCounter.text = getString(R.string.heater_count, scanned, total)
     }
+
 
 
 

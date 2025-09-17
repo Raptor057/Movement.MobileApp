@@ -38,5 +38,11 @@
     <string name="heater_counter">Heaters: %1$d / %2$d</string>
     <string name="settings_update_destination">Update Destinations</string>
     <string name="update_destination_label">Update Destination</string>
+    <string name="dialog_send_email_title">Send email</string>
+    <string name="dialog_send_email_msg">Do you want to email the information for the completed batch?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="toast_you_can_send_later">You can send it later with the button.</string>
+    <string name="heater_count">Heaters: %1$d / %2$d</string>
 
 </resources>

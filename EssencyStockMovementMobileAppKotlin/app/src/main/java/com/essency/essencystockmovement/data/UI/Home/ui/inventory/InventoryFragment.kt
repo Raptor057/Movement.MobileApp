@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -76,12 +77,24 @@ class InventoryFragment : BaseFragment() {
         binding.btnMail.setOnClickListener {
             finalizeRecordAndSendEmail()
         }
+
+        binding.recyclerViewStockList.isFocusable = false
+        binding.recyclerViewStockList.isFocusableInTouchMode = false
+        binding.editTextNewStockItem.setShowSoftInputOnFocus(false)
+
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         binding.editTextNewStockItem.requestFocus()
+        val len = binding.editTextNewStockItem.text?.length ?: 0
+        binding.editTextNewStockItem.setSelection(len)
+        binding.editTextNewStockItem.requestFocus()
+        // Si no quieres teclado:
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.editTextNewStockItem.windowToken, 0)
     }
 
     private fun setupTextInputValidation() {
@@ -145,6 +158,12 @@ class InventoryFragment : BaseFragment() {
                         adapter.notifyDataSetChanged()
                         updateCounterUI()
                         binding.editTextNewStockItem.text.clear()
+                        binding.editTextNewStockItem.post {
+                            val len = binding.editTextNewStockItem.text?.length ?: 0
+                            binding.editTextNewStockItem.setSelection(len)
+                            binding.editTextNewStockItem.requestFocus()
+                        }
+
                     } else {
                         binding.editTextNewStockItem.error = "Formato de código inválido"
                     }

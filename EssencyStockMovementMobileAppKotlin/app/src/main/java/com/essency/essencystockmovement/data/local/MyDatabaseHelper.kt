@@ -8,7 +8,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 {
     companion object {
         private const val DATABASE_NAME = "EssencyStockMovement.db"
-        private const val DATABASE_VERSION = 9
+        private const val DATABASE_VERSION = 10
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -62,7 +62,7 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val defaultEmailInsert = """
         INSERT INTO AppConfigurationEmail (Email)
-        VALUES ('r.arriaga@generaltransmissions.com,f.guerrier@generaltransmissions.com');
+        VALUES ('sistemas@generaltransmissions.com');
     """.trimIndent()
         db.execSQL(defaultEmailInsert)
 
@@ -260,7 +260,8 @@ class MyDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL("DROP TABLE IF EXISTS WarehouseList")
         db.execSQL("DROP TABLE IF EXISTS EmailSender")
         db.execSQL("DROP VIEW IF EXISTS UserMovementsView")
+        db.execSQL("DROP TABLE IF EXISTS AuditStockList")
+        db.execSQL("DROP TABLE IF EXISTS AuditTraceabilityStockList")
         onCreate(db)
     }
-
 }
