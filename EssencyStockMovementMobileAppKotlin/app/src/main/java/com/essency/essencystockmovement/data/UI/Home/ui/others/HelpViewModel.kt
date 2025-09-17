@@ -1,13 +1,14 @@
-package com.essency.essencystockmovement.data.UI.Home.ui.others
-
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.text.SpannableString
+import android.text.util.Linkify
+import androidx.lifecycle.*
 
 class HelpViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Help Fragment"
+    private fun buildHelpText(): CharSequence {
+        val s = SpannableString("Technical support\nsistemas@generaltransmissions.com")
+        Linkify.addLinks(s, Linkify.EMAIL_ADDRESSES)
+        return s
     }
-    val text: LiveData<String> = _text
+
+    private val _text = MutableLiveData<CharSequence>(buildHelpText())
+    val text: LiveData<CharSequence> = _text
 }

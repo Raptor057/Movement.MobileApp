@@ -17,6 +17,21 @@
     app:layout_constraintEnd_toEndOf="parent"
     android:layout_marginEnd="8dp">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSendEmailNow"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/send_email"
+        android:enabled="false"
+        app:icon="@drawable/forward_to_inbox_24px"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:layout_constraintStart_toEndOf="@id/textViewCounter"
+        app:layout_constraintBaseline_toBaselineOf="@id/textViewCounter"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@string/send_email" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextNewStockItem"
         android:layout_width="match_parent"
@@ -26,7 +41,6 @@
         android:imeOptions="actionDone"
         android:textColor="?attr/colorOnSurface"
         android:textColorHint="?attr/colorOnSurface"
-
         android:focusable="true"
         android:focusableInTouchMode="true" />
 </com.google.android.material.textfield.TextInputLayout>

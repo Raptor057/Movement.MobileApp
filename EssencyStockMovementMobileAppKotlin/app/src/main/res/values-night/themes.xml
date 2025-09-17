@@ -11,10 +11,13 @@
         <item name="colorOnSurface">@android:color/white</item>
         <item name="colorOnBackground">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
+
+        <!-- 🔑 Overlay para diálogos también en modo noche -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
     </style>
 
-    <!-- 🔧 REQUERIDO para evitar el error -->
-    <style name="Theme.EssencyStockMovement.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-    <style name="Theme.EssencyStockMovement.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="Theme.EssencyStockMovement.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="Theme.EssencyStockMovement.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
 
 </resources>
