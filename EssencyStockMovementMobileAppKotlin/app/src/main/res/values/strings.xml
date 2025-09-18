@@ -38,5 +38,8 @@
     <string name="heater_counter">Heaters: %1$d / %2$d</string>
     <string name="settings_update_destination">Update Destinations</string>
     <string name="update_destination_label">Update Destination</string>
+    <string name="email_incomplete_batch">The batch is not complete. %1$d of %2$d are missing.</string>
+    <string name="toast_batch_ready_to_send">Batch ready to ship</string>
+    <string name="heater_count">Heaters: %1$d / %2$d</string>
 
 </resources>

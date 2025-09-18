@@ -77,8 +77,6 @@ class ReceivingFragment : BaseFragment() {
         binding.buttonSendEmailNow.setOnClickListener {
             sendEmailFromCurrentListIfComplete()
         }
-
-
         binding.editTextNewStockItem.setBackgroundColor(Color.WHITE)
         binding.editTextNewStockItem.requestFocus()
         setupTextInputValidation()
@@ -551,8 +549,6 @@ class ReceivingFragment : BaseFragment() {
         // Habilitar botón SOLO si está completo y hay lote
         binding.buttonSendEmailNow.isEnabled = (last != null && scanned == total && total > 0)
     }
-
-
 
     private fun setupRecyclerView() {
         adapter = ReceivingAdapter(stockList) { itemToDelete ->
